@@ -1,0 +1,24 @@
+[submodule "extensions/org-noter"]
+	path = extensions/org-noter
+	url = https://github.com/zenith-john/org-noter
+[submodule "extensions/fd-dired"]
+	path = extensions/fd-dired
+	url = https://github.com/yqrashawn/fd-dired
+[submodule "extensions/sdcv"]
+	path = extensions/sdcv
+	url = https://github.com/manateelazycat/sdcv
+[submodule "extensions/company-english-helper"]
+	path = extensions/company-english-helper
+	url = https://github.com/manateelazycat/company-english-helper
+[submodule "extensions/insert-translated-name"]
+	path = extensions/insert-translated-name
+	url = https://github.com/manateelazycat/insert-translated-name
+[submodule "extensions/auto-save"]
+	path = extensions/auto-save
+	url = https://github.com/manateelazycat/auto-save
+[submodule "extensions/awesome-tab"]
+	path = extensions/awesome-tab
+	url = https://github.com/manateelazycat/awesome-tab
+[submodule "extensions/keyfreq"]
+	path = extensions/keyfreq
+	url = https://github.com/dacap/keyfreq
