@@ -50,6 +50,7 @@
                                     evil-ex
                                     evil-normal-state
                                     )))
+
 (use-package ox-hugo
   :after ox
   :init
@@ -139,7 +140,7 @@
     :load-path "~/zenith-emacs/extensions/liberime/build/liberime.so"
     :config
     (liberime-start (expand-file-name "/usr/share/rime-data/")
-                    (expand-file-name "~/.doom.d/pyim/rime/"))
+                    (concat zenith-emacs-root-dir "local/pyim/rime/"))
     (liberime-select-schema "luna_pinyin_simp")
     (setq pyim-default-scheme 'rime))
   :config
