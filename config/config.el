@@ -1,5 +1,6 @@
 ;;; config.el -*- lexical-binding: t; -*-
-(def-package! keyfreq
+;;; Code:
+(use-package keyfreq
   :commands (keyfreq-mode keyfreq-show keyfreq-reset)
   :config
   (keyfreq-mode 1)
@@ -49,6 +50,11 @@
                                     evil-ex
                                     evil-normal-state
                                     )))
+(use-package ox-hugo
+  :after ox
+  :init
+  (require 'ox-hugo))
+
 (use-package org-noter
   :commands (org-noter)
   :after pdf-tools
@@ -69,11 +75,11 @@
   :after (evil)
   :init
   (when (executable-find "fd")
-      (evil-define-command +evil:fd (query)
-        "Ex interface for fd-dired"
-        (interactive "<a>")
-        (fd-dired (file-name-directory (buffer-file-name)) query))
-      (evil-ex-define-cmd "fd" #'+evil:fd)))
+    (evil-define-command +evil:fd (query)
+      "Ex interface for fd-dired"
+      (interactive "<a>")
+      (fd-dired (file-name-directory (buffer-file-name)) query))
+    (evil-ex-define-cmd "fd" #'+evil:fd)))
 
 (use-package sdcv
   :commands (sdcv-search-input+ sdcv-search-pointer+)
@@ -94,9 +100,10 @@
   :init
   (map! :i "C-'" #'insert-translated-name-insert)
   (defun +zenith/advice-insert-translated-name-active (style)
-     (interactive "P")
-     (add-hook 'after-change-functions 'insert-translated-name-monitor-after-change t t))
+    (interactive "P")
+    (add-hook 'after-change-functions 'insert-translated-name-monitor-after-change t t))
   (advice-add! 'insert-translated-name-active :before #'+zenith/advice-insert-translated-name-active))
+
 
 (use-package auto-save
   :init
@@ -121,5 +128,89 @@
         "TAB" #'awesome-tab-build-ivy-source)
   (dotimes (i 10)
     (map! :nvi (concat "M-" (int-to-string i)) #'awesome-tab-select-visible-tab)))
+
+(use-package pyim
+  :init
+  (setq pyim-page-tooltip 'posframe)
+  (setq default-input-method "pyim")
+
+  (map! "M-/" 'pyim-convert-string-at-point)
+  (use-package liberime
+    :load-path "~/zenith-emacs/extensions/liberime/build/liberime.so"
+    :config
+    (liberime-start (expand-file-name "/usr/share/rime-data/")
+                    (expand-file-name "~/.doom.d/pyim/rime/"))
+    (liberime-select-schema "luna_pinyin_simp")
+    (setq pyim-default-scheme 'rime))
+  :config
+  (pyim-isearch-mode 1)
+  (add-to-list 'pyim-punctuation-dict '("\\" "、"))
+  (setq-default pyim-english-input-switch-functions
+                '(pyim-probe-dynamic-english
+                  pyim-probe-isearch-mode
+                  pyim-probe-program-mode))
+
+  (setq-default pyim-punctuation-half-width-functions
+                '(pyim-probe-punctuation-line-beginning
+                  pyim-probe-punctuation-after-punctuation)))
+
+(use-package org-edit-latex
+  :after org
+  (require 'org-edit-latex))
+
+(use-package org-ref
+  :after org
+  :init
+  (require 'bibtex-completion)
+  (setq org-ref-completion-library 'org-ref-reftex)
+  ;; Copy from org-ref-ivy-cite
+  (defhydra org-ref-cite-hydra (:color blue)
+    "
+_p_: Open pdf     _w_: WOS          _g_: Google Scholar _K_: Copy citation to clipboard
+_u_: Open url     _r_: WOS related  _P_: Pubmed         _k_: Copy key to clipboard
+_n_: Open notes   _c_: WOS citing   _C_: Crossref       _f_: Copy formatted entry
+_o_: Open entry   _e_: Email entry  ^ ^                 _q_: quit
+"
+    ("o" org-ref-open-citation-at-point nil)
+    ("p" org-ref-open-pdf-at-point nil)
+    ("n" org-ref-open-notes-at-point nil)
+    ("u" org-ref-open-url-at-point nil)
+    ("w" org-ref-wos-at-point nil)
+    ("r" org-ref-wos-related-at-point nil)
+    ("c" org-ref-wos-citing-at-point nil)
+    ("g" org-ref-google-scholar-at-point nil)
+    ("P" org-ref-pubmed-at-point nil)
+    ("C" org-ref-crossref-at-point nil)
+    ("K" org-ref-copy-entry-as-summary nil)
+    ("k" (progn
+           (kill-new
+            (car (org-ref-get-bibtex-key-and-file))))
+     nil)
+    ("f" (kill-new
+          (org-ref-format-entry (org-ref-get-bibtex-key-under-cursor)))
+     nil)
+
+    ("e" (kill-new (save-excursion
+                     (org-ref-open-citation-at-point)
+                     (org-ref-email-bibtex-entry)))
+     nil)
+    ("q" nil))
+  :config
+  (setq org-ref-cite-onclick-function (lambda (_) (org-ref-cite-hydra/body)))
+  (setq org-ref-pdf-directory "~/Documents/Library/")
+  (setq org-ref-default-bibliography '("~/Dropbox/Library.bib"))
+
+  ;; Make citation work
+  (setq org-latex-pdf-process
+        '("%latex -interaction nonstopmode -output-directory %o %f"
+          "biber %b"
+          "%latex -interaction nonstopmode -output-directory %o %f"
+          "%latex -interaction nonstopmode -output-directory %o %f")))
+
+(use-package lsp-python-ms
+  :init
+  (setq lsp-python-ms-dir
+        (concat zenith-emacs-extension-dir "python-language-server/output/bin/Release/"))
+  (add-hook! python-mode (lsp)))
 
 ;;; config.el ends here

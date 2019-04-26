@@ -22,3 +22,39 @@
 [submodule "extensions/keyfreq"]
 	path = extensions/keyfreq
 	url = https://github.com/dacap/keyfreq
+[submodule "extensions/ox-hugo"]
+	path = extensions/ox-hugo
+	url = https://github.com/kaushalmodi/ox-hugo
+[submodule "extensions/posframe"]
+	path = extensions/posframe
+	url = https://github.com/tumashu/posframe
+[submodule "extensions/pyim"]
+	path = extensions/pyim
+	url = https://github.com/tumashu/pyim
+[submodule "extensions/org-ref"]
+	path = extensions/org-ref
+	url = https://github.com/jkitchin/org-ref
+[submodule "extensions/graphviz-dot-mode"]
+	path = extensions/graphviz-dot-mode
+	url = https://github.com/ppareit/graphviz-dot-mode
+[submodule "extensions/python-language-server"]
+	path = extensions/python-language-server
+	url = https://github.com/microsoft/python-language-server
+[submodule "extensions/lsp-python-ms"]
+	path = extensions/lsp-python-ms
+	url = https://github.com/andrew-christianson/lsp-python-ms
+[submodule "extensions/org-edit-latex"]
+	path = extensions/org-edit-latex
+	url = https://github.com/et2010/org-edit-latex
+[submodule "extensions/helm-bibtex"]
+	path = extensions/helm-bibtex
+	url = https://github.com/tmalsburg/helm-bibtex
+[submodule "extensions/liberime"]
+	path = extensions/liberime
+	url = https://gitlab.com/liberime/liberime
+[submodule "extensions/expand-region"]
+	path = extensions/expand-region
+	url = https://github.com/magnars/expand-region.el
+[submodule "extensions/multiple-cursor"]
+	path = extensions/multiple-cursor
+	url = https://github.com/magnars/multiple-cursors.el
