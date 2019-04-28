@@ -13,9 +13,6 @@
 [submodule "extensions/insert-translated-name"]
 	path = extensions/insert-translated-name
 	url = https://github.com/manateelazycat/insert-translated-name
-[submodule "extensions/auto-save"]
-	path = extensions/auto-save
-	url = https://github.com/manateelazycat/auto-save
 [submodule "extensions/awesome-tab"]
 	path = extensions/awesome-tab
 	url = https://github.com/manateelazycat/awesome-tab
@@ -62,3 +59,27 @@
 [submodule "extensions/magit"]
 	path = extensions/magit
 	url = https://github.com/magit/magit
+[submodule "extensions/use-package"]
+	path = extensions/use-package
+	url = https://github.com/jwiegley/use-package
+[submodule "extensions/general.el"]
+	path = extensions/general.el
+	url = https://github.com/noctuid/general.el
+[submodule "extensions/hydra"]
+	path = extensions/hydra
+	url = https://github.com/abo-abo/hydra
+[submodule "extensions/pyvenv"]
+	path = extensions/pyvenv
+	url = https://github.com/jorgenschaefer/pyvenv
+[submodule "extensions/pipenv.el"]
+	path = extensions/pipenv.el
+	url = https://github.com/pwalsh/pipenv.el
+[submodule "extensions/pip-requirements.el"]
+	path = extensions/pip-requirements.el
+	url = https://github.com/Wilfred/pip-requirements.el
+[submodule "extensions/auto-save"]
+	path = extensions/auto-save
+	url = https://github.com/manateelazycat/auto-save
+[submodule "extensions/emacs-python-pytest"]
+	path = extensions/emacs-python-pytest
+	url = https://github.com/wbolster/emacs-python-pytest
