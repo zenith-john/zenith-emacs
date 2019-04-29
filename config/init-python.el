@@ -5,11 +5,11 @@
 
 ;;; Code:
 (use-package lsp-python-ms
-  :after lsp
+  :hook (python-mode . lsp)
   :init
   (setq lsp-python-ms-dir
         (concat zenith-emacs-extension-dir "python-language-server/output/bin/Release/"))
-  (add-hook python-mode-hook 'lsp))
+  (require 'lsp-python-ms))
 
 (use-package pipenv
   :hook (python-mode . pipenv-mode)
@@ -30,6 +30,18 @@
    python-pytest-repeat
    python-pytest-popup
    ))
+
+(use-package importmagic
+  :hook (python-mode . importmagic-mode)
+  :init
+  (eval-after-load 'ivy
+    '(add-to-list 'ivy-ignore-buffers "\\*epc con")))
+
+(use-package py-isort
+  :commands (py-isort-buffer))
+
+(use-package pyimport
+  :commands (pyimport-remove-unused pyimport-insert-missing))
 
 (provide 'init-python)
 ;;; init-python.el ends here

@@ -11,6 +11,7 @@
 (require 'init-english)
 (require 'init-awesome-tab)
 (require 'init-auto-save)
+(require 'init-lsp)
 
 (require 'init-python)
 
