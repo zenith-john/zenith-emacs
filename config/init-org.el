@@ -5,8 +5,6 @@
 
 ;;; Code:
 ;;;
-
-
 (use-package org-edit-latex
   :after org
   :init
@@ -30,7 +28,7 @@
   ;; Define keymap for org-noter-doc for one-key quit
   (defun zenith/org-noter-doc-hook ()
     (general-nmap
-      pdf-view-mode-map
+      :keymaps 'local
       "C-i" 'org-noter-insert-note-toggle-no-questions
       "q" 'org-noter-kill-session
       "i" 'org-noter-insert-note))

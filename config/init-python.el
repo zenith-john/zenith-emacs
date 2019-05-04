@@ -31,12 +31,6 @@
    python-pytest-popup
    ))
 
-(use-package importmagic
-  :hook (python-mode . importmagic-mode)
-  :init
-  (eval-after-load 'ivy
-    '(add-to-list 'ivy-ignore-buffers "\\*epc con")))
-
 (use-package py-isort
   :commands (py-isort-buffer))
 

@@ -13,6 +13,7 @@
 (require 'init-auto-save)
 (require 'init-lsp)
 
+(require 'init-graphviz-dot)
 (require 'init-python)
 
 ;;; config.el ends here

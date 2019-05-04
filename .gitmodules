@@ -50,6 +50,7 @@
 [submodule "extensions/liberime"]
 	path = extensions/liberime
 	url = https://gitlab.com/liberime/liberime
+	ignore = dirty
 [submodule "extensions/expand-region"]
 	path = extensions/expand-region
 	url = https://github.com/magnars/expand-region.el
@@ -113,3 +114,6 @@
 [submodule "extensions/emacs-ccls"]
 	path = extensions/emacs-ccls
 	url = https://github.com/MaskRay/emacs-ccls
+[submodule "extensions/spinner"]
+	path = extensions/spinner
+	url = https://github.com/Malabarba/spinner.el
