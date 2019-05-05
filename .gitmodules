@@ -84,24 +84,12 @@
 [submodule "extensions/emacs-python-pytest"]
 	path = extensions/emacs-python-pytest
 	url = https://github.com/wbolster/emacs-python-pytest
-[submodule "extensions/importmagic"]
-	path = extensions/importmagic
-	url = https://github.com/anachronic/importmagic.el
 [submodule "extensions/py-isort"]
 	path = extensions/py-isort
 	url = https://github.com/paetzke/py-isort.el
 [submodule "extensions/pyimport"]
 	path = extensions/pyimport
 	url = https://github.com/Wilfred/pyimport
-[submodule "extensions/emacs-epc"]
-	path = extensions/emacs-epc
-	url = https://github.com/kiwanami/emacs-epc
-[submodule "extensions/emacs-deferred"]
-	path = extensions/emacs-deferred
-	url = https://github.com/kiwanami/emacs-deferred
-[submodule "extensions/emacs-ctable"]
-	path = extensions/emacs-ctable
-	url = https://github.com/kiwanami/emacs-ctable
 [submodule "extensions/lsp-ui"]
 	path = extensions/lsp-ui
 	url = https://github.com/emacs-lsp/lsp-ui
