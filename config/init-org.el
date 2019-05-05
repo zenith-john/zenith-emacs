@@ -13,7 +13,8 @@
 (use-package ox-hugo
   :after ox
   :init
-  (require 'ox-hugo))
+  (require 'ox-hugo)
+  (add-to-list 'org-hugo-langs-no-descr-in-code-fences 'nil))
 
 (use-package org-noter
   :commands (org-noter)

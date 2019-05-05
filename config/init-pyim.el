@@ -6,6 +6,7 @@
 ;;; Code:
 (use-package pyim
   :general ("M-/" 'pyim-convert-string-at-point)
+  :demand t
   :init
   (setq pyim-page-tooltip 'posframe)
   (setq default-input-method "pyim")
@@ -22,12 +23,13 @@
                   pyim-probe-punctuation-after-punctuation)))
 
 (use-package liberime
-    :load-path "~/zenith-emacs/extensions/liberime/build/liberime.so"
-    :config
-    (liberime-start (expand-file-name "/usr/share/rime-data/")
-                    (concat zenith-emacs-root-dir "local/pyim/rime/"))
-    (liberime-select-schema "luna_pinyin_simp")
-    (setq pyim-default-scheme 'rime))
+  :load-path "~/zenith-emacs/extensions/liberime/build/liberime.so"
+  :demand t
+  :config
+  (liberime-start (expand-file-name "/usr/share/rime-data/")
+                  (concat zenith-emacs-root-dir "local/pyim/rime/"))
+  (liberime-select-schema "luna_pinyin_simp")
+  (setq pyim-default-scheme 'rime))
 
 (provide 'init-pyim)
 ;;; init-pyim.el ends here

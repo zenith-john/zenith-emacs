@@ -117,3 +117,6 @@
 [submodule "extensions/spinner"]
 	path = extensions/spinner
 	url = https://github.com/Malabarba/spinner.el
+[submodule "extensions/avy"]
+	path = extensions/avy
+	url = https://github.com/abo-abo/avy
