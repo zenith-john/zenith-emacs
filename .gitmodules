@@ -123,3 +123,9 @@
 [submodule "extensions/pfuture"]
 	path = extensions/pfuture
 	url = https://github.com/Alexander-Miller/pfuture
+[submodule "extensions/emacs-which-key"]
+	path = extensions/emacs-which-key
+	url = https://github.com/justbur/emacs-which-key
+[submodule "extensions/cdlatex"]
+	path = extensions/cdlatex
+	url = https://github.com/cdominik/cdlatex
