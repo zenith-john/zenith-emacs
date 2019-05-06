@@ -108,3 +108,18 @@
 [submodule "extensions/avy"]
 	path = extensions/avy
 	url = https://github.com/abo-abo/avy
+[submodule "extensions/ace-window"]
+	path = extensions/ace-window
+	url = https://github.com/abo-abo/ace-window
+[submodule "extensions/treemacs"]
+	path = extensions/treemacs
+	url = https://github.com/Alexander-Miller/treemacs
+[submodule "extensions/evil-easymotion"]
+	path = extensions/evil-easymotion
+	url = https://github.com/PythonNut/evil-easymotion
+[submodule "extensions/ace-link"]
+	path = extensions/ace-link
+	url = https://github.com/abo-abo/ace-link
+[submodule "extensions/pfuture"]
+	path = extensions/pfuture
+	url = https://github.com/Alexander-Miller/pfuture

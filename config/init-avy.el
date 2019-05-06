@@ -2,8 +2,11 @@
 
 (use-package avy
   :init
-  (setq evil-snipe-local-mode-map nil)
-  (general-nvmap "s" 'evil-avy-goto-char))
+  (setq avy-background t
+        avy-all-windows nil)
+  (general-nvmap
+    "s" 'evil-avy-goto-char
+    "f" 'evil-avy-goto-char-in-line))
 
 (provide 'init-avy)
 ;;; init-avy.el ends here

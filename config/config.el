@@ -11,6 +11,8 @@
 (require 'init-english)
 (require 'init-awesome-tab)
 (require 'init-auto-save)
+(require 'init-avy)
+(require 'init-ace-window)
 (require 'init-lsp)
 
 (require 'init-graphviz-dot)
