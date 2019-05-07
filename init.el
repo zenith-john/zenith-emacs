@@ -1,5 +1,10 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;;;
+
+;;; Code:
+
 (defvar zenith-emacs-root-dir (file-truename "~/zenith-emacs/"))
 (defvar zenith-emacs-extension-dir (expand-file-name "extensions/" zenith-emacs-root-dir))
 (defvar zenith-emacs-config-dir (expand-file-name "config/" zenith-emacs-root-dir))
