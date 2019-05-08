@@ -18,16 +18,14 @@
   :init
   (setq darkroom-text-scale-increase 1))
 
+(require 'doom-themes)
+(load-theme 'doom-one t)
+
+(doom-themes-treemacs-config)
+(doom-themes-org-config)
+
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
-
-
-
-
-
-
-
-
-
-
-

@@ -37,7 +37,7 @@
 	reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
 	reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
   (add-hook 'reftex-toc-mode-hook
-    (lambda () (reftex-toc-rescan))))
+	    (lambda () (reftex-toc-rescan))))
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
@@ -183,10 +183,10 @@
   ;; Do not prompt for Master files, this allows auto-insert to add templates to
   ;; .tex files
   (add-hook 'TeX-mode-hook
-    ;; Necessary because it is added as an anonymous, byte-compiled function
-    (remove-hook 'find-file-hook
-                 (cl-find-if #'byte-code-function-p find-file-hook)
-                 'local))
+	    ;; Necessary because it is added as an anonymous, byte-compiled function
+	    (remove-hook 'find-file-hook
+			 (cl-find-if #'byte-code-function-p find-file-hook)
+			 'local))
   (add-hook 'latex-mode-local-vars-hook #'flyspell-mode)
   ;; All these excess pairs dramatically slow down typing in latex buffers, so
   ;; we remove them. Let snippets do their job.
@@ -203,7 +203,7 @@
 
   (add-to-list 'TeX-command-list
                '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
-                 TeX-run-command t t :help "Run xelatex") t))
+                 TeX-run-command t t :help "Run xelatex") t)
 
   (general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\))))
 

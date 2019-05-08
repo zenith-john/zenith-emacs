@@ -207,3 +207,72 @@
 [submodule "extensions/emacs-memoize"]
 	path = extensions/emacs-memoize
 	url = https://github.com/skeeto/emacs-memoize
+[submodule "extensions/emacs-doom-themes"]
+	path = extensions/emacs-doom-themes
+	url = https://github.com/hlissner/emacs-doom-themes
+[submodule "extensions/doom-modeline"]
+	path = extensions/doom-modeline
+	url = https://github.com/seagle0128/doom-modeline
+[submodule "extensions/shrink-path"]
+	path = extensions/shrink-path
+	url = https://gitlab.com/bennya/shrink-path.el
+[submodule "extensions/auctex"]
+	path = extensions/auctex
+	url = https://git.savannah.gnu.org/git/auctex.git
+[submodule "extensions/emacs-htmlize"]
+	path = extensions/emacs-htmlize
+	url = https://github.com/hniksic/emacs-htmlize
+[submodule "extensions/auto-compile"]
+	path = extensions/auto-compile
+	url = https://github.com/emacscollective/auto-compile
+[submodule "extensions/macrostep"]
+	path = extensions/macrostep
+	url = https://github.com/joddie/macrostep
+[submodule "extensions/rainbow-delimiters"]
+	path = extensions/rainbow-delimiters
+	url = https://github.com/Fanael/rainbow-delimiters
+[submodule "extensions/yasnippet"]
+	path = extensions/yasnippet
+	url = https://github.com/joaotavora/yasnippet
+[submodule "extensions/with-editor"]
+	path = extensions/with-editor
+	url = https://github.com/magit/with-editor
+[submodule "extensions/transient"]
+	path = extensions/transient
+	url = https://github.com/magit/transient
+[submodule "extensions/flx"]
+	path = extensions/flx
+	url = https://github.com/lewang/flx
+[submodule "extensions/all-the-icons-ivy"]
+	path = extensions/all-the-icons-ivy
+	url = https://github.com/asok/all-the-icons-ivy
+[submodule "extensions/ivy-rich"]
+	path = extensions/ivy-rich
+	url = https://github.com/Yevgnen/ivy-rich
+[submodule "extensions/emacs-wgrep"]
+	path = extensions/emacs-wgrep
+	url = https://github.com/mhayashi1120/Emacs-wgrep
+[submodule "extensions/projectile"]
+	path = extensions/projectile
+	url = https://github.com/bbatsov/projectile
+[submodule "extensions/counsel-projectile"]
+	path = extensions/counsel-projectile
+	url = https://github.com/ericdanan/counsel-projectile
+[submodule "extensions/key-chord"]
+	path = extensions/key-chord
+	url = https://github.com/emacsorphanage/key-chord
+[submodule "extensions/helpful"]
+	path = extensions/helpful
+	url = https://github.com/Wilfred/helpful
+[submodule "extensions/elisp-refs"]
+	path = extensions/elisp-refs
+	url = https://github.com/Wilfred/elisp-refs
+[submodule "extensions/loop"]
+	path = extensions/loop
+	url = https://github.com/Wilfred/loop.el
+[submodule "extensions/shut-up"]
+	path = extensions/shut-up
+	url = https://github.com/cask/shut-up
+[submodule "extensions/emacs-git-gutter"]
+	path = extensions/emacs-git-gutter
+	url = https://github.com/syohex/emacs-git-gutter

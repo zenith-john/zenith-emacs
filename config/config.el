@@ -6,6 +6,9 @@
 
 (eval-when-compile (require 'use-package))
 
+(require 'init-default)
+(require 'init-helpful)
+(require 'init-project)
 (require 'init-keyfreq)
 (require 'init-org)
 (require 'init-pyim)
@@ -22,6 +25,7 @@
 (require 'init-git)
 (require 'init-pdf)
 
+(require 'init-emacs-lisp)
 (require 'init-graphviz-dot)
 (require 'init-python)
 (require 'init-cc)
