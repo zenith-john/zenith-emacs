@@ -14,7 +14,7 @@
     [remap +lookup/documentation] #'lsp-describe-thing-at-point)
 
   ;; Don't prompt to restart LSP servers while quitting Emacs
-  (add-hook! 'kill-emacs-hook (setq lsp-restart 'ignore)))
+  (add-hook 'kill-emacs-hook (lambda ()(setq lsp-restart 'ignore))))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -73,9 +73,7 @@
 
 
 (use-package company-lsp
-  :after lsp-mode
-  :config
-  (set-company-backend! 'lsp-mode 'company-lsp))
+  :after lsp-mode)
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

@@ -171,6 +171,39 @@
 [submodule "extensions/modern-cpp-font-lock"]
 	path = extensions/modern-cpp-font-lock
 	url = https://github.com/ludwigpacifici/modern-cpp-font-lock
-[submodule "extensions/auctex"]
-	path = extensions/auctex
-	url = https://git.savannah.gnu.org/git/auctex.git
+[submodule "extensions/org-bullets"]
+	path = extensions/org-bullets
+	url = https://github.com/Kaligule/org-bullets
+[submodule "extensions/ob-async"]
+	path = extensions/ob-async
+	url = https://github.com/astahlman/ob-async
+[submodule "extensions/evil-org-mode"]
+	path = extensions/evil-org-mode
+	url = https://github.com/Somelauw/evil-org-mode
+[submodule "extensions/pdf-tools"]
+	path = extensions/pdf-tools
+	url = https://github.com/politza/pdf-tools
+[submodule "extensions/tablist"]
+	path = extensions/tablist
+	url = https://github.com/politza/tablist
+[submodule "extensions/emacs-async"]
+	path = extensions/emacs-async
+	url = https://github.com/jwiegley/emacs-async
+[submodule "extensions/dash"]
+	path = extensions/dash
+	url = https://github.com/magnars/dash.el
+[submodule "extensions/f"]
+	path = extensions/f
+	url = https://github.com/rejeep/f.el
+[submodule "extensions/s"]
+	path = extensions/s
+	url = https://github.com/magnars/s.el
+[submodule "extensions/ht"]
+	path = extensions/ht
+	url = https://github.com/Wilfred/ht.el
+[submodule "extensions/markdown-mode"]
+	path = extensions/markdown-mode
+	url = https://github.com/jrblevin/markdown-mode
+[submodule "extensions/emacs-memoize"]
+	path = extensions/emacs-memoize
+	url = https://github.com/skeeto/emacs-memoize

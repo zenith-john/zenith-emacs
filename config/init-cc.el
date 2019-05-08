@@ -6,7 +6,7 @@
 ;;; The doom dependence is removed. So it is less powerful.
 
 ;;; Code:
-(def-package! cc-mode
+(use-package cc-mode
   :commands (c-mode c++-mode objc-mode java-mode)
   :mode ("\\.mm\\'" . objc-mode)
   :init
@@ -63,8 +63,6 @@
 
   (sp-with-modes '(c-mode c++-mode objc-mode java-mode)
     (sp-local-pair "/*!" "*/" :post-handlers '(("||\n[i]" "RET") ("[d-1]< | " "SPC")))))
-
-(use-package cmake-mode)
 
 (use-package modern-cpp-font-lock
   :hook (c++-mode . modern-c++-font-lock-mode))

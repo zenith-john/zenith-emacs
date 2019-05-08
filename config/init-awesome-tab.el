@@ -15,7 +15,7 @@
 
   (awesome-tab-mode t)
   (general-nvmap
-   :prefix doom-leader-key
+   :prefix ","
     "TAB" #'awesome-tab-build-ivy-source)
   (dotimes (i 10)
     (general-define-key (concat "M-" (int-to-string i)) #'awesome-tab-select-visible-tab)))

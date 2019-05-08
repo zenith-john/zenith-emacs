@@ -33,7 +33,9 @@
           (?s . "\\smartcite[]{%l}")
           (?t . "\\textcite[]{%l}"))
         reftex-plug-into-AUCTeX t
-        reftex-toc-split-windows-fraction 0.3)
+        reftex-toc-split-windows-fraction 0.3
+	reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
+	reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
   (add-hook 'reftex-toc-mode-hook
     (lambda () (reftex-toc-rescan))))
 
@@ -71,7 +73,9 @@
         ;; don't start the emacs server when correlating sources
         TeX-source-correlate-start-server nil
         ;; automatically insert braces after sub/superscript in math mode
-        TeX-electric-sub-and-superscript t)
+        TeX-electric-sub-and-superscript t
+	TeX-engine 'xetex
+	TeX-show-compilation t)
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
   (setq font-latex-match-reference-keywords
@@ -159,6 +163,7 @@
           ("setlistdepth" "{")
           ("restartlist" "{")
           ("crefname" "{")))
+
   ;; prompt for master
   (setq-default TeX-master nil)
   ;; set-up chktex
@@ -194,10 +199,18 @@
                       "\\lfloor" "\\lceil" "\\langle"
                       "\\lVert" "\\lvert" "`"))
         (sp-local-pair modes open nil :actions :rem))
-      (sp-local-pair modes "``" nil :unless '(:add sp-in-math-p)))))
+      (sp-local-pair modes "``" nil :unless '(:add sp-in-math-p))))
+
+  (add-to-list 'TeX-command-list
+               '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
+                 TeX-run-command t t :help "Run xelatex") t))
+
+  (general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\))))
 
 
 (with-eval-after-load 'latex
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
   (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
         '(LaTeX-section-heading
           LaTeX-section-title

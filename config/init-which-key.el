@@ -6,7 +6,6 @@
 ;;; Code:
 (use-package which-key
   :defer 1
-  :after-call pre-command-hook
   :init
   (setq which-key-sort-order #'which-key-prefix-then-key-order
         which-key-sort-uppercase-first nil

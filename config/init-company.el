@@ -23,8 +23,6 @@
           company-echo-metadata-frontend))
   (general-imap "C-x C-j" #'company-complete-common)
   :config
-  (add-hook 'company-mode-hook #'+company|init-backends)
-  (add-hook 'company-mode-hook #'evil-normalize-keymaps)
   (global-company-mode +1))
 
 (use-package company-prescient
