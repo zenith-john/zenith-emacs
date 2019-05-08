@@ -14,6 +14,7 @@
       doom-localleader-key ", m"
       doom-localleader-alt-key "M-, m")
 
+(require 'doom-autoload)
 (require 'init-keyfreq)
 (require 'init-latex)
 (require 'init-org)
@@ -27,9 +28,13 @@
 (require 'init-lsp)
 (require 'init-company)
 (require 'init-ivy)
+;;(require 'init-ui)
+(require 'init-git)
+;;(require 'init-evil)
 
 (require 'init-graphviz-dot)
 (require 'init-python)
 (require 'init-tex)
+(require 'init-cc)
 
 ;;; config.el ends here

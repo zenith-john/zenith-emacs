@@ -153,3 +153,24 @@
 [submodule "extensions/evil"]
 	path = extensions/evil
 	url = https://github.com/emacs-evil/evil
+[submodule "extensions/company-mode"]
+	path = extensions/company-mode
+	url = https://github.com/company-mode/company-mode
+[submodule "extensions/parsebib"]
+	path = extensions/parsebib
+	url = https://github.com/joostkremers/parsebib
+[submodule "extensions/biblio"]
+	path = extensions/biblio
+	url = https://github.com/cpitclaudel/biblio.el
+[submodule "extensions/swiper"]
+	path = extensions/swiper
+	url = https://github.com/abo-abo/swiper
+[submodule "extensions/darkroom"]
+	path = extensions/darkroom
+	url = https://github.com/joaotavora/darkroom
+[submodule "extensions/modern-cpp-font-lock"]
+	path = extensions/modern-cpp-font-lock
+	url = https://github.com/ludwigpacifici/modern-cpp-font-lock
+[submodule "extensions/auctex"]
+	path = extensions/auctex
+	url = https://git.savannah.gnu.org/git/auctex.git
