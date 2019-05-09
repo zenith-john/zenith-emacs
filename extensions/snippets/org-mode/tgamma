@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: gamma
+# key: tgamma
+# condition: t
+# --
+
+\\\(\gamma\\\)

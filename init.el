@@ -1,4 +1,4 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- init file -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;;
@@ -18,7 +18,10 @@
 
 (add-to-list 'load-path zenith-emacs-config-dir)
 (add-subdirs-to-load-path zenith-emacs-extension-dir)
+
 (require 'config)
+
+(add-hook 'after-init-hook (lambda ()(setq gc-cons-threshold 16777216)))
 
 (require 'server)
 (unless (server-running-p)

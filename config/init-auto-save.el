@@ -9,7 +9,7 @@
 
 (setq auto-save-idle 2
       auto-save-silent t
-      auto-save-delete-trailing-whitespace t)
+      auto-save-delete-trailing-whitespace nil)
 
 (auto-save-enable)
 

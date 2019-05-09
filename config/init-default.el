@@ -88,9 +88,6 @@
  truncate-lines t
  truncate-partial-width-windows 50)
 
-(use-package electric-pair
-  :hook (prog-mode . electric-pair-mode))
-
 (use-package paren
   :config
   (show-paren-mode 1))
@@ -114,6 +111,8 @@
     (recentf-mode +1)))
 
 (general-def isearch-mode-map [escape] #'isearch-abort)
+
+(cua-mode 1)
 
 (provide 'init-default)
 ;;; init-default.el ends here

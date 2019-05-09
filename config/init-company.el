@@ -21,7 +21,7 @@
         company-frontends
         '(company-pseudo-tooltip-frontend
           company-echo-metadata-frontend))
-  (general-imap "C-x C-j" #'company-complete-common)
+  (general-define-key "C-x C-j" #'company-complete-common)
   :config
   (global-company-mode +1))
 

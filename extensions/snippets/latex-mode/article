@@ -1,0 +1,29 @@
+# -*- mode: snippet -*-
+# name: article
+# key: article
+# condition: t
+# --
+
+\documentclass[UTF8]{article}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{indentfirst}
+\usepackage{xspace}
+\usepackage{caption}
+\setlength{\parindent}{2em}
+\usepackage[backend=biber,style=gb7714-2015]{biblatex}
+\addbibresource[location=local]{~/Dropbox/Library.bib}
+\geometry{a4paper,centering,scale=0.8}
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+\title{$1}
+\author{张南涛\ 2017012502\ Bio72}
+\date{}
+\begin{document}
+\maketitle
+$0
+\end{document}

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: frac
+# key: fr
+# condition: t
+# --
+
+\frac{$1}{$2}

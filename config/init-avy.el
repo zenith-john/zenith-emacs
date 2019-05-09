@@ -4,9 +4,9 @@
   :init
   (setq avy-background t
         avy-all-windows nil)
-  (general-nvmap
-    "s" 'evil-avy-goto-char
-    "f" 'evil-avy-goto-char-in-line))
+  (general-define-key
+    "M-g s" 'avy-goto-char
+    "M-g f" 'avy-goto-char-in-line))
 
 (provide 'init-avy)
 ;;; init-avy.el ends here

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: frac partial
+# key: p2
+# condition: t
+# --
+
+\frac{\partial $1}{\partial $2}

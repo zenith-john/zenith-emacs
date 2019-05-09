@@ -23,6 +23,25 @@
   ;;; Better fontification (also see `modern-cpp-font-lock')
   (add-hook 'c-mode-common-hook #'rainbow-delimiters-mode)
 
+  (defun +cc-c++-lineup-inclass (langelem)
+    "Indent inclass lines one level further than access modifier keywords."
+    (and (eq major-mode 'c++-mode)
+         (or (assoc 'access-label c-syntactic-context)
+             (save-excursion
+               (save-match-data
+                 (re-search-backward
+                  "\\(?:p\\(?:ublic\\|r\\(?:otected\\|ivate\\)\\)\\)"
+                  (c-langelem-pos langelem) t))))
+         '++))
+  (defun +cc-lineup-arglist-close (langlem)
+    "Line up the closing brace in an arglist with the opening brace IF cursor is
+preceded by the opening brace or a comma (disregarding whitespace in between)."
+    (when (save-excursion
+            (save-match-data
+              (skip-chars-backward " \t\n" (c-langelem-pos langelem))
+              (memq (char-before) (list ?, ?\( ?\;))))
+      (c-lineup-arglist langlem)))
+
   ;; Custom style, based off of linux
   (c-add-style
    "doom" '((c-basic-offset . tab-width)

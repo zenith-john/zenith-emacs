@@ -32,8 +32,9 @@
   (general-def ivy-mode-map
     [remap switch-to-buffer]              #'ivy-switch-buffer
     [remap switch-to-buffer-other-window] #'ivy-switch-buffer-other-window
-    [remap imenu-anywhere]                #'ivy-imenu-anywhere
-    [escape]                              #'keyboard-escape-quit)
+    [remap imenu-anywhere]                #'ivy-imenu-anywhere)
+  
+  (general-def ivy-minibuffer-map [escape] #'keyboard-escape-quit)
 
   (ivy-mode +1)
   (use-package ivy-prescient

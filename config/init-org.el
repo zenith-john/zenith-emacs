@@ -122,7 +122,7 @@
 (use-package org
   :init
   (general-add-hook 'org-mode-hook
-                    #'(org-bullets-mode           ; "prettier" bullets
+                    #'(
                        org-indent-mode            ; margin-based indentation
                        auto-fill-mode             ; line wrapping
                        ))
@@ -131,12 +131,10 @@
                              ;; Enable cdlatex mode
                              ;; TODO configure cdlatex-command-alist
                              (setq-local company-idle-delay nil)
-                             (flycheck-mode 0)
                              (display-line-numbers-mode 0)
                              (org-cdlatex-mode 1)
-                             (LaTeX-math-mode 1)
-                             (sp-with-modes 'org-mode
-                               (sp-local-pair "=" "=" :actions :rem))))
+                             (LaTeX-math-mode 1)))
+
 
   :config
   (org/setup-hook)
@@ -249,7 +247,6 @@
           ("" "amssymb" t)
           "\\tolerance=1000"))
 
-  (require 'org-edit-latex)
   (require 'ob-async)
 
   (org-babel-do-load-languages
@@ -279,6 +276,9 @@
                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
 
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode))
+
 (use-package org-edit-latex
   :after org
   :init
@@ -302,8 +302,8 @@
         org-noter-hide-other nil)
   ;; Define keymap for org-noter-doc for one-key quit
   (defun zenith/org-noter-doc-hook ()
-    (general-nmap
-      :keymaps 'local
+    (general-def
+      pdf-view-mode-map
       "C-i" 'org-noter-insert-note-toggle-no-questions
       "q" 'org-noter-kill-session
       "i" 'org-noter-insert-note))

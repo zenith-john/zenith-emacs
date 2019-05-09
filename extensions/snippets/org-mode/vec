@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: vector
+# key: vec
+# condition: t
+# --
+
+\vec{$1}

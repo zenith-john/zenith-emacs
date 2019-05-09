@@ -1,12 +1,18 @@
-;;; config.el -*- lexical-binding: t; -*-
+;;; config.el --- config file -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;;;
+
 ;;; Code:
 
 (require 'general)
-(general-evil-setup)
-
 (eval-when-compile (require 'use-package))
 
+(use-package use-package-chords
+  :config (key-chord-mode 1))
+
 (require 'init-default)
+(require 'init-sp)
 (require 'init-helpful)
 (require 'init-project)
 (require 'init-keyfreq)
@@ -20,10 +26,13 @@
 (require 'init-which-key)
 (require 'init-lsp)
 (require 'init-company)
+(require 'init-yasnippet)
 (require 'init-ivy)
 (require 'init-ui)
 (require 'init-git)
 (require 'init-pdf)
+(require 'init-keybinding)
+(require 'init-flycheck)
 
 (require 'init-emacs-lisp)
 (require 'init-graphviz-dot)

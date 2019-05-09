@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: prime
+# key: pri
+# condition: t
+# --
+
+{$1}^{\prime}

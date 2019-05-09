@@ -9,10 +9,14 @@
   :config
   (when noninteractive
     (pdf-tools-install))
-  (general-nmap :keymaps 'pdf-view-mode-map "q" 'kill-this-buffer)
+  (general-def pdf-view-mode-map
+    "q" 'kill-this-buffer
+    "k" 'pdf-view-scroll-down-or-previous-page
+    "j" 'pdf-view-scroll-up-or-next-page)
   (setq-default pdf-view-display-size 'fit-page)
-  ;; Turn off cua so copy works
-  (add-hook 'pdf-view-mode-hook (lambda () (cua-mode 0))))
+  ;; Turn on doom-modeline for pdf file
+  (with-eval-after-load 'doom-modeline
+    (add-hook 'pdf-view-mode-hook #'doom-modeline-set-pdf-modeline)))
 
 (provide 'init-pdf)
 ;;; init-pdf.el ends here

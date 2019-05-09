@@ -187,20 +187,7 @@
 	    (remove-hook 'find-file-hook
 			 (cl-find-if #'byte-code-function-p find-file-hook)
 			 'local))
-  (add-hook 'latex-mode-local-vars-hook #'flyspell-mode)
-  ;; All these excess pairs dramatically slow down typing in latex buffers, so
-  ;; we remove them. Let snippets do their job.
-  (with-eval-after-load 'smartparens-latex
-    (let ((modes '(tex-mode plain-tex-mode latex-mode LaTeX-mode)))
-      (dolist (open '("\\left(" "\\left[" "\\left\\{" "\\left|"
-                      "\\bigl(" "\\biggl(" "\\Bigl(" "\\Biggl(" "\\bigl["
-                      "\\biggl[" "\\Bigl[" "\\Biggl[" "\\bigl\\{" "\\biggl\\{"
-                      "\\Bigl\\{" "\\Biggl\\{"
-                      "\\lfloor" "\\lceil" "\\langle"
-                      "\\lVert" "\\lvert" "`"))
-        (sp-local-pair modes open nil :actions :rem))
-      (sp-local-pair modes "``" nil :unless '(:add sp-in-math-p))))
-
+  
   (add-to-list 'TeX-command-list
                '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
                  TeX-run-command t t :help "Run xelatex") t)

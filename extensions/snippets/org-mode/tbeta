@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: beta
+# key: tbeta
+# condition: t
+# --
+
+\\\(\beta\\\)

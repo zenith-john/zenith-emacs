@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: alpha
+# key: talpha
+# condition: t
+# --
+
+\\\(\alpha\\\)

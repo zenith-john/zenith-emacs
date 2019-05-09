@@ -114,9 +114,6 @@
 [submodule "extensions/treemacs"]
 	path = extensions/treemacs
 	url = https://github.com/Alexander-Miller/treemacs
-[submodule "extensions/evil-easymotion"]
-	path = extensions/evil-easymotion
-	url = https://github.com/PythonNut/evil-easymotion
 [submodule "extensions/ace-link"]
 	path = extensions/ace-link
 	url = https://github.com/abo-abo/ace-link
@@ -150,9 +147,6 @@
 [submodule "extensions/org-mode"]
 	path = extensions/org-mode
 	url = https://code.orgmode.org/bzg/org-mode
-[submodule "extensions/evil"]
-	path = extensions/evil
-	url = https://github.com/emacs-evil/evil
 [submodule "extensions/company-mode"]
 	path = extensions/company-mode
 	url = https://github.com/company-mode/company-mode
@@ -177,9 +171,6 @@
 [submodule "extensions/ob-async"]
 	path = extensions/ob-async
 	url = https://github.com/astahlman/ob-async
-[submodule "extensions/evil-org-mode"]
-	path = extensions/evil-org-mode
-	url = https://github.com/Somelauw/evil-org-mode
 [submodule "extensions/pdf-tools"]
 	path = extensions/pdf-tools
 	url = https://github.com/politza/pdf-tools
@@ -258,9 +249,6 @@
 [submodule "extensions/counsel-projectile"]
 	path = extensions/counsel-projectile
 	url = https://github.com/ericdanan/counsel-projectile
-[submodule "extensions/key-chord"]
-	path = extensions/key-chord
-	url = https://github.com/emacsorphanage/key-chord
 [submodule "extensions/helpful"]
 	path = extensions/helpful
 	url = https://github.com/Wilfred/helpful
@@ -276,3 +264,9 @@
 [submodule "extensions/emacs-git-gutter"]
 	path = extensions/emacs-git-gutter
 	url = https://github.com/syohex/emacs-git-gutter
+[submodule "extensions/flycheck"]
+	path = extensions/flycheck
+	url = https://github.com/flycheck/flycheck
+[submodule "extensions/smartparens"]
+	path = extensions/smartparens
+	url = https://github.com/Fuco1/smartparens
