@@ -141,7 +141,6 @@
 
   ;; Org Capture
 
-  (add-hook 'org-capture-mode-hook #'evil-insert-state)
   ;; Enable org protocol
   (require 'org-protocol)
   (defun transform-square-brackets-to-round-ones(string-to-transform)

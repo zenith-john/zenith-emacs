@@ -8,9 +8,6 @@
 (require 'general)
 (eval-when-compile (require 'use-package))
 
-(use-package use-package-chords
-  :config (key-chord-mode 1))
-
 (require 'init-default)
 (require 'init-sp)
 (require 'init-helpful)

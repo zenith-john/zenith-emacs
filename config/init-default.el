@@ -88,12 +88,16 @@
  truncate-lines t
  truncate-partial-width-windows 50)
 
+;; Make yes-or-no y-or-n
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (use-package paren
   :config
   (show-paren-mode 1))
 
 (use-package recentf
   :commands recentf-open-files
+  :defer 1
   :config
   (setq recentf-save-file (concat zenith-emacs-local-dir "recentf")
         recentf-auto-cleanup 'never
@@ -109,6 +113,11 @@
   (unless noninteractive
     (add-hook 'kill-emacs-hook #'recentf-cleanup)
     (recentf-mode +1)))
+
+(use-package autorevert
+  :defer 1
+  :config
+  (global-auto-revert-mode 1))
 
 (general-def isearch-mode-map [escape] #'isearch-abort)
 

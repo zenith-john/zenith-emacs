@@ -4,11 +4,12 @@
 ;;;
 
 ;;; Code:
-(use-package key-chord
-  :config
-  (key-chord-define-global ",," 'switch-to-buffer)
-  (key-chord-define-global ",." 'find-file)
-  (key-chord-mode 1))
- 
+(with-eval-after-load 'general
+  (general-def ","
+    (general-key-dispatch 'self-insert-command
+      :timeout 0.1
+      "," 'switch-to-buffer
+      "." 'find-file)))
+
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

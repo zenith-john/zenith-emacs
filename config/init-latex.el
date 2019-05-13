@@ -7,7 +7,7 @@
 
 (defvar +latex-company-backends '())
 
-(use-package ivy-completion
+(use-package ivy-bibtex
   :commands (ivy-bibtex)
   :after ivy
   :init
@@ -17,9 +17,6 @@
 
 (use-package reftex
   :hook (LaTeX-mode . reftex-mode)
-  :init
-  (add-to-list '+latex-company-backends 'company-reftex-labels)
-  (add-to-list '+latex-company-backends 'company-reftex-citations)
   :config
   ;; Get ReTeX working with biblatex
   ;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992
@@ -46,13 +43,19 @@
         bibtex-text-indentation 20))
 
 (use-package company-auctex
-  :defer t
   :init
+  (add-to-list '+latex-company-backends 'company-auctex-bibs)
+  (add-to-list '+latex-company-backends 'company-auctex-labels)
+  (add-to-list '+latex-company-backends 'company-auctex-symbols)
   (add-to-list '+latex-company-backends 'company-auctex-environments)
   (add-to-list '+latex-company-backends 'company-auctex-macros))
 
+(use-package company-reftex
+  :init
+  (add-to-list '+latex-company-backends 'company-reftex-labels)
+  (add-to-list '+latex-company-backends 'company-reftex-citations))
+
 (use-package company-math
-  :defer t
   :init
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
   (add-to-list '+latex-company-backends 'company-math-symbols-unicode)
@@ -73,9 +76,10 @@
         ;; don't start the emacs server when correlating sources
         TeX-source-correlate-start-server nil
         ;; automatically insert braces after sub/superscript in math mode
-        TeX-electric-sub-and-superscript t
-	TeX-engine 'xetex
-	TeX-show-compilation t)
+        TeX-electric-sub-and-superscript t)
+  (setq-default
+   TeX-engine 'xetex
+   TeX-show-compilation t)
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
   (setq font-latex-match-reference-keywords
@@ -174,7 +178,7 @@
   (add-hook 'TeX-mode-hook #'visual-line-mode)
   ;; Add company-backends
   (add-hook 'TeX-mode-hook (lambda ()
-                             (make-local-variable company-backends)
+                             (make-local-variable 'company-backends)
                              (add-to-list 'company-backends +latex-company-backends)))
   ;; Fold TeX macros
   (add-hook 'TeX-mode-hook #'TeX-fold-mode)
@@ -183,10 +187,11 @@
   ;; Do not prompt for Master files, this allows auto-insert to add templates to
   ;; .tex files
   (add-hook 'TeX-mode-hook
-	    ;; Necessary because it is added as an anonymous, byte-compiled function
-	    (remove-hook 'find-file-hook
-			 (cl-find-if #'byte-code-function-p find-file-hook)
-			 'local))
+	        ;; Necessary because it is added as an anonymous, byte-compiled function
+	        (lambda ()
+              (remove-hook 'find-file-hook
+			               (cl-find-if #'byte-code-function-p find-file-hook)
+			               'local)))
   
   (add-to-list 'TeX-command-list
                '("XeLaTeX" "xelatex -interaction=nonstopmode %s"

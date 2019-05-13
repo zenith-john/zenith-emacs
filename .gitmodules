@@ -270,3 +270,6 @@
 [submodule "extensions/smartparens"]
 	path = extensions/smartparens
 	url = https://github.com/Fuco1/smartparens
+[submodule "extensions/company-auctex"]
+	path = extensions/company-auctex
+	url = https://github.com/alexeyr/company-auctex
