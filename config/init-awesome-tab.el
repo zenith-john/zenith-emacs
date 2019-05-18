@@ -14,6 +14,16 @@
         awesome-tab-label-fixed-length 14)
 
   (awesome-tab-mode t)
+
+  ;; Make hydra compatible with awesome-tab
+  (with-eval-after-load 'hydra
+    (defun zenith/lv-window (fun)
+      (with-selected-window (funcall fun)
+        (setq-local header-line-format nil))
+      lv-wnd)
+
+    (advice-add 'lv-window :around 'zenith/lv-window))
+
   (dotimes (i 10)
     (general-define-key (concat "M-" (int-to-string i)) #'awesome-tab-select-visible-tab)))
 

@@ -111,9 +111,6 @@
 [submodule "extensions/ace-window"]
 	path = extensions/ace-window
 	url = https://github.com/abo-abo/ace-window
-[submodule "extensions/treemacs"]
-	path = extensions/treemacs
-	url = https://github.com/Alexander-Miller/treemacs
 [submodule "extensions/ace-link"]
 	path = extensions/ace-link
 	url = https://github.com/abo-abo/ace-link
@@ -273,3 +270,12 @@
 [submodule "extensions/company-auctex"]
 	path = extensions/company-auctex
 	url = https://github.com/alexeyr/company-auctex
+[submodule "extensions/goto-line-preview"]
+	path = extensions/goto-line-preview
+	url = https://github.com/elpa-host/goto-line-preview
+[submodule "extensions/emacs-git-gutter-fringe"]
+	path = extensions/emacs-git-gutter-fringe
+	url = https://github.com/syohex/emacs-git-gutter-fringe
+[submodule "extensions/fringe-helper"]
+	path = extensions/fringe-helper
+	url = https://github.com/nschum/fringe-helper.el

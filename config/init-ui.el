@@ -21,11 +21,17 @@
 (require 'doom-themes)
 (load-theme 'doom-one t)
 
-(doom-themes-treemacs-config)
 (doom-themes-org-config)
 
 (require 'doom-modeline)
 (doom-modeline-mode 1)
+
+(global-hl-line-mode 1)
+
+(use-package goto-line-preview
+  :commands (goto-line-preview)
+  :init
+  (general-def [remap goto-line] 'goto-line-preview))
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

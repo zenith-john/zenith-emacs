@@ -8,8 +8,9 @@
   :general ("M-/" 'pyim-convert-string-at-point)
   :demand t
   :init
-  (setq pyim-page-tooltip 'posframe)
-  (setq default-input-method "pyim")
+  (setq pyim-dcache-directory (concat zenith-emacs-local-dir "pyim/dcache/")
+        pyim-page-tooltip 'posframe
+        default-input-method "pyim")
   :config
   (pyim-isearch-mode 1)
   (add-to-list 'pyim-punctuation-dict '("\\" "、"))

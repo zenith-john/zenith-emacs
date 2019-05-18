@@ -7,7 +7,7 @@
 (with-eval-after-load 'general
   (general-def ","
     (general-key-dispatch 'self-insert-command
-      :timeout 0.1
+      :timeout 0.2
       "," 'switch-to-buffer
       "." 'find-file)))
 

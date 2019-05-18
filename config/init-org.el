@@ -50,6 +50,7 @@
   (setq-default
    org-adapt-indentation nil
    org-cycle-include-plain-lists t
+   org-catch-invisible-edits 'show-and-error
    org-eldoc-breadcrumb-separator " → "
    org-entities-user
    '(("flat"  "\\flat" nil "" "" "266D" "♭")

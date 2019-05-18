@@ -9,6 +9,7 @@
 (eval-when-compile (require 'use-package))
 
 (require 'init-default)
+(require 'init-undo-tree)
 (require 'init-sp)
 (require 'init-helpful)
 (require 'init-project)

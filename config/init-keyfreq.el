@@ -45,15 +45,13 @@
                                     magit-previous-line
                                     beginning-of-line
                                     indent-for-tab-command
-                                    evil-previous-line
-                                    evil-next-line
                                     backward-delete-char-untabify
-                                    evil-forward-char
                                     exit-minibuffer
-                                    evil-backward-char
                                     exit-minibuffer
-                                    evil-ex
-                                    evil-normal-state
+                                    ace-window
+                                    awesome-tab-select-visible-tab
+                                    company-complete-selection
+                                    newline-and-indentj
                                     )))
 
 (provide 'init-keyfreq)

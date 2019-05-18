@@ -33,5 +33,6 @@
     (add-hook 'after-change-functions 'insert-translated-name-monitor-after-change t t))
   (advice-add 'insert-translated-name-active :before #'+zenith/advice-insert-translated-name-active))
 
+
 (provide 'init-english)
 ;;; init-english.el ends here
