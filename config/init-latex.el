@@ -43,6 +43,7 @@
         bibtex-text-indentation 20))
 
 (use-package company-auctex
+  :defer 2
   :init
   (add-to-list '+latex-company-backends 'company-auctex-bibs)
   (add-to-list '+latex-company-backends 'company-auctex-labels)

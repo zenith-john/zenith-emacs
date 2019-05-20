@@ -5,9 +5,17 @@
 
 ;;; Code:
 
-(use-package magit)
+(use-package magit
+  :commands
+  (magit-status
+   magit-stage-file
+   magit-unstage-file
+   magit-find-file
+   magit-init
+   magit-dispatch))
 
 (use-package git-gutter
+  :defer 1
   :config
   (require 'git-gutter-fringe)
   ;; Configuration from https://github.com/hlissner/doom-emacs/ git-gutter module

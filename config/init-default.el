@@ -91,6 +91,8 @@
 ;; Make yes-or-no y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(put 'dired-find-alternate-file 'disabled nil)
+
 (use-package paren
   :config
   (show-paren-mode 1))
@@ -120,8 +122,30 @@
   (global-auto-revert-mode 1))
 
 (general-def isearch-mode-map [escape] #'isearch-abort)
+(general-define-key [remap list-buffers] #'ibuffer)
+
+(use-package ibuffer-projectile
+  :defer 1
+  :init
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-projectile-set-filter-groups)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))))
+  :config
+  (setq ibuffer-formats
+        '((mark modified read-only " "
+                (name 18 18 :left :elide)
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                project-relative-file))))
 
 (cua-mode 1)
+
+(global-display-line-numbers-mode +1)
 
 (provide 'init-default)
 ;;; init-default.el ends here

@@ -136,7 +136,12 @@
                              (org-cdlatex-mode 1)
                              (LaTeX-math-mode 1)))
 
+  (add-hook 'org-mode-hook (lambda ()
+                           (require 'org-edit-latex)))
 
+  (add-hook 'org-mode-hook (lambda ()
+                             (require 'ox-hugo)
+                             (add-to-list 'org-hugo-langs-no-descr-in-code-fences 'nil)))
   :config
   (org/setup-hook)
 
@@ -279,17 +284,6 @@
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
-(use-package org-edit-latex
-  :after org
-  :init
-  (require 'org-edit-latex))
-
-(use-package ox-hugo
-  :after ox
-  :init
-  (require 'ox-hugo)
-  (add-to-list 'org-hugo-langs-no-descr-in-code-fences 'nil))
-
 (use-package org-noter
   :commands (org-noter)
   :after pdf-tools
@@ -311,12 +305,15 @@
 
 (use-package org-ref
   :after (org)
+  :defer 2
   :init
   (setq org-ref-completion-library 'org-ref-ivy-cite)
   :config
-  (setq org-ref-cite-onclick-function (lambda (_) (org-ref-cite-hydra/body))
-        org-ref-pdf-directory (expand-file-name "~/Documents/Library/")
-        org-ref-default-bibliography `( ,(expand-file-name "~/Dropbox/Library.bib")))
+  (setq
+   org-ref-prefer-bracket-links t
+   org-ref-bibliography-notes ""
+   org-ref-pdf-directory (expand-file-name "~/Documents/Library/")
+   org-ref-default-bibliography `( ,(expand-file-name "~/Dropbox/Library.bib")))
 
   ;; Make citation work
   (setq org-latex-pdf-process

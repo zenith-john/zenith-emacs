@@ -4,12 +4,12 @@
 ;;;
 
 ;;; Code:
-(use-package lsp-python-ms
-  :hook (python-mode . lsp)
-  :init
-  (setq lsp-python-ms-dir
-        (concat zenith-emacs-extension-dir "python-language-server/output/bin/Release/"))
-  (require 'lsp-python-ms))
+(setq lsp-python-ms-dir
+      (concat zenith-emacs-extension-dir "python-language-server/output/bin/Release/"))
+(add-hook 'python-mode-hook
+          (lambda ()
+            (require 'lsp-python-ms)
+            (lsp)))
 
 (use-package pipenv
   :hook (python-mode . pipenv-mode)

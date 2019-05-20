@@ -23,7 +23,6 @@
   (add-hook 'dired-before-readin-hook #'projectile-track-known-projects-find-file-hook)
   (projectile-mode +1)
 
-  (push ".project" projectile-project-root-files-bottom-up)
   (push (abbreviate-file-name zenith-emacs-local-dir) projectile-globally-ignored-directories))
 
 (provide 'init-project)

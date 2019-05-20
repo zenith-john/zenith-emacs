@@ -27,7 +27,7 @@
 (use-package insert-translated-name
   :commands (insert-translated-name-insert)
   :init
-  (general-define-key "C-'" #'insert-translated-name-insert)
+  (general-define-key :keymaps 'override "C-'" #'insert-translated-name-insert)
   (defun +zenith/advice-insert-translated-name-active (style)
     (interactive "P")
     (add-hook 'after-change-functions 'insert-translated-name-monitor-after-change t t))

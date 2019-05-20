@@ -15,6 +15,7 @@
     "j" 'pdf-view-scroll-up-or-next-page)
   (setq-default pdf-view-display-size 'fit-page)
   ;; Turn on doom-modeline for pdf file
+  (add-hook 'pdf-view-mode-hook '(lambda () (display-line-numbers-mode 0)))
   (with-eval-after-load 'doom-modeline
     (add-hook 'pdf-view-mode-hook #'doom-modeline-set-pdf-modeline)))
 

@@ -279,3 +279,12 @@
 [submodule "extensions/fringe-helper"]
 	path = extensions/fringe-helper
 	url = https://github.com/nschum/fringe-helper.el
+[submodule "extensions/ibuffer-projectile"]
+	path = extensions/ibuffer-projectile
+	url = https://github.com/purcell/ibuffer-projectile
+[submodule "extensions/benchmark-init-el"]
+	path = extensions/benchmark-init-el
+	url = https://github.com/dholm/benchmark-init-el
+[submodule "extensions/dired-hacks"]
+	path = extensions/dired-hacks
+	url = https://github.com/Fuco1/dired-hacks

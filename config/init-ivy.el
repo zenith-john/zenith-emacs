@@ -8,7 +8,6 @@
 ;; Package
 ;;
 (use-package ivy
-  :defer 1
   :config
   (setq ivy-height 15
         ivy-wrap t
