@@ -35,6 +35,9 @@
   
   (general-def ivy-minibuffer-map [escape] #'keyboard-escape-quit)
 
+  ;; Don't show annoying helpful buffer in buffer selection list
+  (add-to-list 'ivy-ignore-buffers "\*helpful")
+
   (ivy-mode +1)
   (use-package ivy-prescient
     :after ivy

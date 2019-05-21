@@ -288,3 +288,6 @@
 [submodule "extensions/dired-hacks"]
 	path = extensions/dired-hacks
 	url = https://github.com/Fuco1/dired-hacks
+[submodule "extensions/ws-butler"]
+	path = extensions/ws-butler
+	url = https://github.com/lewang/ws-butler

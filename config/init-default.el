@@ -147,6 +147,11 @@
 
 (global-display-line-numbers-mode +1)
 
+(use-package ws-butler
+  :defer 1
+  :config
+  (ws-butler-global-mode 1))
+
 (provide 'init-default)
 ;;; init-default.el ends here
 
