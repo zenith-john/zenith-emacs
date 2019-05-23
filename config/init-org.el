@@ -30,7 +30,7 @@
   :hook (org-reveal-start . org-decrypt-entry)
   :init
   (add-hook 'org-mode-hook
-    (lambda ()(add-hook 'before-save-hook 'org-encrypt-entries nil t)))
+            (lambda ()(add-hook 'before-save-hook 'org-encrypt-entries nil t)))
   :config
   (setq org-tags-exclude-from-inheritance '("crypt")
         org-crypt-key user-mail-address))
@@ -137,7 +137,7 @@
                              (LaTeX-math-mode 1)))
 
   (add-hook 'org-mode-hook (lambda ()
-                           (require 'org-edit-latex)))
+                             (require 'org-edit-latex)))
 
   (add-hook 'org-mode-hook (lambda ()
                              (require 'ox-hugo)
@@ -301,7 +301,10 @@
       "C-i" 'org-noter-insert-note-toggle-no-questions
       "q" 'org-noter-kill-session
       "i" 'org-noter-insert-note))
-  (add-hook 'org-noter-doc-mode-hook 'zenith/org-noter-doc-hook))
+  (defun zenith/org-noter-notes-hook ()
+    (ws-butler-mode -1))
+  (add-hook 'org-noter-doc-mode-hook #'zenith/org-noter-doc-hook)
+  (add-hook 'org-noter-notes-mode-hook #'zenith/org-noter-notes-hook))
 
 (use-package org-ref
   :after (org)

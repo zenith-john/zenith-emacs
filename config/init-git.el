@@ -6,6 +6,7 @@
 ;;; Code:
 
 (use-package magit
+  :defer 2
   :commands
   (magit-status
    magit-stage-file

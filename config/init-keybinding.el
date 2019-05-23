@@ -31,5 +31,36 @@ _h_     _l_     _s_: goto-char      _n_: next git gutter
     ("q" nil))
   (general-def "M-g" 'hydra-M-g/body))
 
+(defvar symbol-row-p nil)
+
+(defvar zenith/translation-table
+  '(("0" "\)")
+    ("1" "!")
+    ("2" "@")
+    ("3" "#")
+    ("4" "$")
+    ("5" "%")
+    ("6" "^")
+    ("7" "&")
+    ("8" "*")
+    ("9" "(")))
+
+(defun zenith/trans-key (key1 key2)
+  (define-key key-translation-map (kbd key1) (kbd key2)))
+
+(defun zenith/swap-key (key1 key2)
+  (zenith/trans-key key1 key2)
+  (zenith/trans-key key2 key1))
+
+(defun zenith/toggle-number-symbol-row ()
+  "Make number row symbol row!"
+  (interactive)
+  (if symbol-row-p
+      (setq key-translation-map (make-sparse-keymap)
+            symbol-row-p nil)
+    (setq symbol-row-p t)
+    (dolist (keys zenith/translation-table)
+      (apply #'zenith/swap-key keys))))
+
 (provide 'init-keybinding)
 ;;; init-keybinding ends here
