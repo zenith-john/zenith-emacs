@@ -31,5 +31,11 @@
     nil nil 'bottom)
   (global-git-gutter-mode +1))
 
+(use-package git-timemachine
+  :defer 1
+  :commands
+  (git-timemachine
+   git-timemachine-toggle))
+
 (provide 'init-git)
 ;;; init-git.el ends here

@@ -31,6 +31,10 @@
    python-pytest-popup
    ))
 
+(use-package pyvenv
+  :commands (pyvenv-activate
+             pyvenv-workon))
+
 (use-package py-isort
   :commands (py-isort-buffer))
 

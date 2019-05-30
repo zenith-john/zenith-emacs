@@ -49,6 +49,7 @@
   "Configures the UI for `org-mode'."
   (setq-default
    org-adapt-indentation nil
+   org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))
    org-cycle-include-plain-lists t
    org-catch-invisible-edits 'show-and-error
    org-eldoc-breadcrumb-separator " → "
@@ -76,6 +77,7 @@
    org-refile-targets
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3))
+   org-special-ctrl-a/e t
    org-startup-folded t
    org-startup-indented t
    org-startup-with-inline-images nil

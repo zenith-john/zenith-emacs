@@ -107,8 +107,7 @@
     [remap recentf-open-files]       #'counsel-recentf
     [remap org-capture]              #'counsel-org-capture
     [remap swiper]                   #'counsel-grep-or-swiper
-    [remap evil-ex-registers]        #'counsel-evil-registers
-    [remap yank-pop]                 #'counsel-yank-pop)
+    "M-y"                            #'counsel-yank-pop)
   :config
   (setq counsel-find-file-ignore-regexp "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)"
         counsel-describe-function-function #'helpful-callable

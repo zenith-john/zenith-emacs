@@ -19,7 +19,8 @@
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :config
-  (setq lsp-ui-doc-use-childframe t
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-doc-use-childframe t
         lsp-ui-doc-use-webkit t
         lsp-ui-doc-header nil
         lsp-ui-doc-max-width 50
@@ -27,6 +28,7 @@
         lsp-ui-doc-position 'at-point
         lsp-prefer-flymake nil
         lsp-ui-sideline-ignore-duplicate t
+        lsp-ui-sideline-enable nil
         lsp-ui-doc-border (face-background 'default)
         lsp-ui-doc-webkit-client-path (concat "file://" zenith-emacs-extension-dir "lsp-ui-theme/lsp-ui-doc.html"))
 

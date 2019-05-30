@@ -291,3 +291,6 @@
 [submodule "extensions/ws-butler"]
 	path = extensions/ws-butler
 	url = https://github.com/lewang/ws-butler
+[submodule "extensions/git-timemachine"]
+	path = extensions/git-timemachine
+	url = https://gitlab.com/pidu/git-timemachine
