@@ -80,7 +80,7 @@
         TeX-electric-sub-and-superscript t)
   (setq-default
    TeX-engine 'xetex
-   TeX-show-compilation t)
+   TeX-show-compilation nil)
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
   (setq font-latex-match-reference-keywords

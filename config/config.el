@@ -9,6 +9,7 @@
 (eval-when-compile (require 'use-package))
 
 (require 'init-default)
+(require 'init-func)
 (require 'init-undo-tree)
 (require 'init-sp)
 (require 'init-helpful)
@@ -35,6 +36,7 @@
 (require 'init-emacs-lisp)
 (require 'init-graphviz-dot)
 (require 'init-python)
+(require 'init-lisp)
 (require 'init-cc)
 (require 'init-latex)
 

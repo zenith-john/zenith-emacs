@@ -139,7 +139,8 @@
                              (LaTeX-math-mode 1)))
 
   (add-hook 'org-mode-hook (lambda ()
-                             (require 'org-edit-latex)))
+                             (require 'org-edit-latex)
+                             (org-edit-latex-mode 1)))
 
   (add-hook 'org-mode-hook (lambda ()
                              (require 'ox-hugo)
@@ -150,17 +151,19 @@
   ;; Org Capture
 
   ;; Enable org protocol
-  (require 'org-protocol)
-  (defun transform-square-brackets-to-round-ones(string-to-transform)
-    "Transforms [ into ( and ] into ), other chars left unchanged."
-    (concat
-     (mapcar #'(lambda (c) (if (equal c ?\[) ?\( (if (equal c ?\]) ?\) c))) string-to-transform)))
+  ;; (require 'org-protocol)
+
+  ;; (defun transform-square-brackets-to-round-ones(string-to-transform)
+  ;;   "Transforms [ into ( and ] into ), other chars left unchanged."
+  ;;   (concat
+  ;;    (mapcar #'(lambda (c) (if (equal c ?\[) ?\( (if (equal c ?\]) ?\) c))) string-to-transform)))
 
   (setq org-capture-templates
-        '(("p" "Protocol" entry (file+headline "~/Documents/Notes/notes.org" "Bookmarks")
-           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-          ("L" "Protocol Link" entry (file+headline "~/Documents/Notes/notes.org" "Bookmarks")
-           "* %? [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n")
+        '(
+          ;; ("p" "Protocol" entry (file+headline "~/Documents/Notes/notes.org" "Bookmarks")
+          ;;  "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+          ;; ("L" "Protocol Link" entry (file+headline "~/Documents/Notes/notes.org" "Bookmarks")
+          ;;  "* %? [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\n")
           ("h" "Homework" entry (file+headline "~/Dropbox/task.org"  "Homework")
            "* TODO %? :Homework:\n")
           ("s" "Schedule" entry (file+headline "~/Dropbox/task.org" "Schedule")
@@ -173,20 +176,20 @@
            "* TODO %? :Idea:\n")))
 
   ;; For org-protocol from https://github.com/sprig/org-capture-extension
-  (defvar kk/delete-frame-after-capture 0 "Whether to delete the last frame after the current capture")
+  ;; (defvar kk/delete-frame-after-capture 0 "Whether to delete the last frame after the current capture")
 
-  (defun kk/delete-frame-if-neccessary (&rest r)
-    (cond
-     ((= kk/delete-frame-after-capture 0) nil)
-     ((> kk/delete-frame-after-capture 1)
-      (setq kk/delete-frame-after-capture (- kk/delete-frame-after-capture 1)))
-     (t
-      (setq kk/delete-frame-after-capture 0)
-      (delete-frame))))
+  ;; (defun kk/delete-frame-if-neccessary (&rest r)
+  ;;   (cond
+  ;;    ((= kk/delete-frame-after-capture 0) nil)
+  ;;    ((> kk/delete-frame-after-capture 1)
+  ;;     (setq kk/delete-frame-after-capture (- kk/delete-frame-after-capture 1)))
+  ;;    (t
+  ;;     (setq kk/delete-frame-after-capture 0)
+  ;;     (delete-frame))))
 
-  (advice-add 'org-capture-finalize :after 'kk/delete-frame-if-neccessary)
-  (advice-add 'org-capture-kill :after 'kk/delete-frame-if-neccessary)
-  (advice-add 'org-capture-refile :after 'kk/delete-frame-if-neccessary)
+  ;; (advice-add 'org-capture-finalize :after 'kk/delete-frame-if-neccessary)
+  ;; (advice-add 'org-capture-kill :after 'kk/delete-frame-if-neccessary)
+  ;; (advice-add 'org-capture-refile :after 'kk/delete-frame-if-neccessary)
 
   ;; Org tag
   (setq org-tag-alist
@@ -286,27 +289,27 @@
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
-(use-package org-noter
-  :commands (org-noter)
-  :after pdf-tools
-  :config
-  ;; Overriding the function due to make visual-line mode no effect.
-  (defun org-noter--set-notes-scroll (window &rest ignored)
-    nil)
-  (setq org-noter-always-create-frame nil
-        org-noter-kill-frame-at-session-end nil
-        org-noter-hide-other nil)
-  ;; Define keymap for org-noter-doc for one-key quit
-  (defun zenith/org-noter-doc-hook ()
-    (general-def
-      pdf-view-mode-map
-      "C-i" 'org-noter-insert-note-toggle-no-questions
-      "q" 'org-noter-kill-session
-      "i" 'org-noter-insert-note))
-  (defun zenith/org-noter-notes-hook ()
-    (ws-butler-mode -1))
-  (add-hook 'org-noter-doc-mode-hook #'zenith/org-noter-doc-hook)
-  (add-hook 'org-noter-notes-mode-hook #'zenith/org-noter-notes-hook))
+;; (use-package org-noter
+;;   :commands (org-noter)
+;;   :after pdf-tools
+;;   :config
+;;   ;; Overriding the function due to make visual-line mode no effect.
+;;   (defun org-noter--set-notes-scroll (window &rest ignored)
+;;     nil)
+;;   (setq org-noter-always-create-frame nil
+;;         org-noter-kill-frame-at-session-end nil
+;;         org-noter-hide-other nil)
+;;   ;; Define keymap for org-noter-doc for one-key quit
+;;   (defun zenith/org-noter-doc-hook ()
+;;     (general-def
+;;       pdf-view-mode-map
+;;       "C-i" 'org-noter-insert-note-toggle-no-questions
+;;       "q" 'org-noter-kill-session
+;;       "i" 'org-noter-insert-note))
+;;   (defun zenith/org-noter-notes-hook ()
+;;     (ws-butler-mode -1))
+;;   (add-hook 'org-noter-doc-mode-hook #'zenith/org-noter-doc-hook)
+;;   (add-hook 'org-noter-notes-mode-hook #'zenith/org-noter-notes-hook))
 
 (use-package org-ref
   :after (org)

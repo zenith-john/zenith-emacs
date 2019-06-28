@@ -7,6 +7,7 @@
 (use-package macrostep
   :commands (macrostep-expand))
 
+(add-hook 'emacs-lisp-mode-hook #'+enable-paredit-mode)
 ;; From doom-emacs
 
 (defvar +emacs-lisp--face nil)
@@ -58,7 +59,9 @@ library/userland functions"
          `((+emacs-lisp-highlight-vars-and-faces . +emacs-lisp--face))))
 
 (use-package rainbow-delimiters
-  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
+  :hook
+  (emacs-lisp-mode . rainbow-delimiters-mode)
+  (lisp-mode . rainbow-delimiters-mode))
 
 (provide 'init-emacs-lisp)
 ;;; init-emacs-lisp.el ends here

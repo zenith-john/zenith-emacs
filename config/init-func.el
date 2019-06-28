@@ -10,5 +10,9 @@
   (interactive)
   (clear-image-cache))
 
+(defun +enable-paredit-mode ()
+  (require 'paredit)
+  (paredit-mode 1))
+
 (provide 'init-func)
 ;;; init-func.el ends here

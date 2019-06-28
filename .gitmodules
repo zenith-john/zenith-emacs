@@ -294,3 +294,6 @@
 [submodule "extensions/git-timemachine"]
 	path = extensions/git-timemachine
 	url = https://gitlab.com/pidu/git-timemachine
+[submodule "extensions/sly"]
+	path = extensions/sly
+	url = https://github.com/joaotavora/sly
