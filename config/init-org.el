@@ -284,7 +284,13 @@
                     ("\\subsection{%s}" . "\\subsection*{%s}")
                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
+                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+  (defun zenith/my-org-agenda ()
+    (interactive)
+    (org-agenda 0 "b"))
+
+  (general-define-key "C-c C-a" #'zenith/my-org-agenda))
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
@@ -319,7 +325,6 @@
   :config
   (setq
    org-ref-prefer-bracket-links t
-   org-ref-bibliography-notes ""
    org-ref-pdf-directory (expand-file-name "~/Documents/Library/")
    org-ref-default-bibliography `( ,(expand-file-name "~/Dropbox/Library.bib")))
 

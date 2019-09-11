@@ -18,7 +18,7 @@
 (require 'init-org)
 (require 'init-pyim)
 (require 'init-english)
-(require 'init-awesome-tab)
+;; (require 'init-awesome-tab)
 (require 'init-auto-save)
 (require 'init-avy)
 (require 'init-ace-window)
@@ -37,6 +37,7 @@
 (require 'init-graphviz-dot)
 (require 'init-python)
 (require 'init-lisp)
+(require 'init-haskell)
 (require 'init-cc)
 (require 'init-latex)
 

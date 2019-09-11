@@ -297,3 +297,6 @@
 [submodule "extensions/sly"]
 	path = extensions/sly
 	url = https://github.com/joaotavora/sly
+[submodule "extensions/aggressive-fill-paragraph-mode"]
+	path = extensions/aggressive-fill-paragraph-mode
+	url = https://github.com/davidshepherd7/aggressive-fill-paragraph-mode

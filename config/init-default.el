@@ -152,6 +152,11 @@
   :config
   (ws-butler-global-mode 1))
 
+(use-package aggressive-fill-paragraph
+  :defer 1
+  :hook
+  (org-mode . aggressive-fill-paragraph-mode))
+
 (provide 'init-default)
 ;;; init-default.el ends here
 
