@@ -13,12 +13,31 @@
 
 (setq file-name-handler-alist nil)
 
+(require 'cl-lib)
+;; From https://emacs-china.org/t/topic/3931/2
+(defun eh-hack-load-path ()
+  ;; Delete buildin org's PATH
+  (setq load-path
+        (cl-remove-if
+         #'(lambda (path)
+             (string-match "lisp/org$" path))
+         load-path))
+  ;; Demove property lists to defeat cus-load and remove autoloads
+  (mapatoms
+   #'(lambda (sym)
+       (let ((sym-name (symbol-name sym)))
+         (when (string-match "^\\(org\\|ob\\|ox\\)-?" sym-name)
+           (setplist sym nil)
+           (when (autoloadp sym)
+             (unintern sym)))))))
+
 (defun add-subdirs-to-load-path (dir)
   "Recursive add directories to `load-path'."
   (let ((default-directory (file-name-as-directory dir)))
     (add-to-list 'load-path dir)
     (normal-top-level-add-subdirs-to-load-path)))
 
+(eh-hack-load-path)
 (add-to-list 'load-path zenith-emacs-config-dir)
 (add-subdirs-to-load-path zenith-emacs-extension-dir)
 

@@ -121,7 +121,6 @@
 
 ;;
 ;;; Bootstrap
-
 (use-package org
   :init
   (general-add-hook 'org-mode-hook

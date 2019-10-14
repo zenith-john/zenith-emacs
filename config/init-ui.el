@@ -21,9 +21,19 @@
 (require 'doom-themes)
 (load-theme 'doom-one t)
 
-(doom-themes-org-config)
-
 (require 'doom-modeline)
+
+;; Use minimal height to avoid the overlap of org-set-tags-command.
+(setq doom-modeline-height 1)
+
+;; Redefine doom-modeline--font-heigth
+(defun doom-modeline--font-height ()
+  "Calculate the actual char height of the mode-line."
+  (let ((height (face-attribute 'mode-line :height)))
+    (round (cond ((integerp height) (/ height 10))
+                         ((floatp height) (* height (frame-char-height)))
+                         (t (frame-char-height))))))
+
 (doom-modeline-mode 1)
 
 (global-hl-line-mode 1)

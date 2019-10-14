@@ -19,6 +19,7 @@
     (liberime-select-schema "luna_pinyin_simp")
     (setq pyim-default-scheme 'rime))
 
+  (require 'pyim)
   (pyim-isearch-mode 1)
   (add-to-list 'pyim-punctuation-dict '("\\" "、"))
   (setq-default pyim-english-input-switch-functions
