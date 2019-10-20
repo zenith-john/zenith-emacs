@@ -157,6 +157,10 @@
   :hook
   (org-mode . aggressive-fill-paragraph-mode))
 
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)))
+
 (provide 'init-default)
 ;;; init-default.el ends here
 

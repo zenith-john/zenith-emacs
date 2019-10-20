@@ -6,30 +6,86 @@
 ;;; Code:
 (with-eval-after-load 'general
   (general-def ","
-    (general-key-dispatch 'self-insert-command
-      :timeout 0.2
-      "," 'switch-to-buffer
-      "." 'find-file)))
+      (general-key-dispatch 'self-insert-command
+        :timeout 0.2
+        "," 'switch-to-buffer
+        "." 'find-file)))
 
-(with-eval-after-load 'hydra
-  (defhydra hydra-M-g (:color pink
-                       :hint nil)
-    "
-   _k_        ^^_g_: goto-line      _p_: previous git gutter
-_h_     _l_     _s_: goto-char      _n_: next git gutter
-   _j_        ^^_f_: char in line   _q_: quit
-"
-    ("h" backward-char)
-    ("l" forward-char)
-    ("k" previous-line)
-    ("j" next-line)
-    ("g" goto-line-preview)
-    ("s" avy-goto-char)
-    ("f" avy-goto-char-in-line)
-    ("p" git-gutter:previous-hunk)
-    ("n" git-gutter:next-hunk)
-    ("q" nil))
-  (general-def "M-g" 'hydra-M-g/body))
+(use-package hydra
+  :config
+  (require 'pretty-hydra)
+
+  (pretty-hydra-define zenith/reading-mode
+      (:foreign-keys run :title "Reading Mode" :quit-key "q")
+    ("Move"
+     (("h" backward-char "←")
+      ("j" next-line "↓")
+      ("k" previous-line "↑")
+      ("l" forward-char "→")
+      ("g" goto-line-preview)
+      ("s" avy-goto-char)
+      ("f" avy-goto-char-in-line))
+     "Git Gutter"
+     (("p" git-gutter:previous-hunk)
+      ("n" git-gutter:next-hunk))))
+
+  (general-def "M-g" 'zenith/reading-mode/body)
+
+  (pretty-hydra-define zenith/window-mode
+      (:foreign-keys warn :title "Window Mode" :quit-key "q")
+    ("Action"
+     (("TAB" other-window "Switch")
+      ("x" ace-delete-window "Delete")
+      ("m" ace-delete-other-windows "Maximize")
+      ("s" ace-swap-window "Swap")
+      ("a" ace-select-window "Select")
+      ("d" delete-window "Kill"))
+     "Resize"
+     (("o" enlarge-window "Enlarge")
+      ("i" shrink-window "Shrink")
+      ("O" enlarge-window-horizontally "Enlarge horizontally")
+      ("I" shrink-window-horizontally "Shrink horizontally")
+      ("n" balance-window "Balance")
+      ("f" toggle-frame-fullscreen "Toggle fullscreen"))
+     "Split"
+     (("|" split-window-right "Split right")
+      ("b" split-window-horizontally-instead "Split left")
+      ("-" split-window-below "Split below")
+      ("v" split-window-vertically-instead "Split up"))))
+
+  (general-def "M-a" 'zenith/window-mode/body)
+
+  (pretty-hydra-define zenith/sp-mode
+      (:foreign-keys run :title "Smartparen Mode" :quit-key "q")
+    ("Navigation"
+     (("a" sp-beginning-of-sexp "Begin")
+      ("e" sp-end-of-sexp "End")
+      ("n" sp-down-sexp "Down")
+      ("p" sp-up-sexp "Up")
+      ("F" sp-forward-sexp "Forward Exp")
+      ("B" sp-backward-sexp "Backward Exp")
+      ("f" sp-forward-symbol "Forward Sym")
+      ("b" sp-backward-symbol "Backward Sym"))
+     "Warp"
+     (("w" sp-mark-sexp "Warp")
+      ("(" sp-wrap-round "()")
+      ("[" sp-wrap-square "[]")
+      ("{" sp-wrap-curly "{}"))
+     "Unwarp"
+     (("u" sp-unwrap-sexp "Unwrap")
+      ("U" sp-backward-unwrap-sexp "Unwrap Back"))
+     "Slurp and Barf"
+     (("<right>" sp-forward-slurp-sexp "Slurp right")
+      ("<left>" sp-backward-slurp-sexp "Slurp left")
+      ("<down>" sp-forward-barf-sexp "Barf right")
+      ("<up>" sp-backward-barf-sexp "Barf left"))
+     "Manipulation"
+     (("t" sp-transpose-sexp "Transpose")
+      ("k" sp-kill-sexp "Kill sexp")
+      ("K" sp-kill-hybrid-sexp "Kill hybrid")
+      ("M-k" sp-backward-kill-sexp "Kill backward"))))
+
+  (general-def "M-\\" 'zenith/sp-mode/body))
 
 (defvar symbol-row-p nil)
 

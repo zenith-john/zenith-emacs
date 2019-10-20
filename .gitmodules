@@ -300,3 +300,9 @@
 [submodule "extensions/aggressive-fill-paragraph-mode"]
 	path = extensions/aggressive-fill-paragraph-mode
 	url = https://github.com/davidshepherd7/aggressive-fill-paragraph-mode
+[submodule "extensions/major-mode-hydra.el"]
+	path = extensions/major-mode-hydra
+	url = https://github.com/jerrypnz/major-mode-hydra.el
+[submodule "extensions/sly-el-indent"]
+	path = extensions/sly-el-indent
+	url = https://github.com/cireu/sly-el-indent

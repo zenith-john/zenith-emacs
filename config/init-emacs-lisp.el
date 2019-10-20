@@ -7,9 +7,12 @@
 (use-package macrostep
   :commands (macrostep-expand))
 
-(add-hook 'emacs-lisp-mode-hook #'+enable-paredit-mode)
-;; From doom-emacs
+(defun zenith/load-sly-el-indent ()
+  (require 'sly-el-indent)
+  (sly-el-indent-setup))
+(add-hook 'emacs-lisp-mode-hook #'zenith/load-sly-el-indent)
 
+;; From doom-emacs
 (defvar +emacs-lisp--face nil)
 ;;;###autoload
 (defun +emacs-lisp-highlight-vars-and-faces (end)
@@ -57,6 +60,7 @@ library/userland functions"
            ("^;;;###\\(autodef\\|if\\|package\\)[ \n]" (1 font-lock-warning-face t)))
          ;; highlight defined, special variables & functions
          `((+emacs-lisp-highlight-vars-and-faces . +emacs-lisp--face))))
+
 
 (use-package rainbow-delimiters
   :hook
