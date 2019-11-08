@@ -10,7 +10,8 @@
   :config
   (yas-global-mode +1)
   (with-eval-after-load 'company
-    (general-def company-active-map [tab] yas-maybe-expand)))
+    (general-def company-active-map [tab] yas-maybe-expand))
+  (general-def "C-." 'yas-insert-snippet))
 
 (provide 'init-yasnippet)
 ;;; init-yasnippet.el ends here

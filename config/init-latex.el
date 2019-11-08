@@ -31,10 +31,10 @@
           (?t . "\\textcite[]{%l}"))
         reftex-plug-into-AUCTeX t
         reftex-toc-split-windows-fraction 0.3
-	reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
-	reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
+	    reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
+	    reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
   (add-hook 'reftex-toc-mode-hook
-	    (lambda () (reftex-toc-rescan))))
+	        (lambda () (reftex-toc-rescan))))
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
@@ -175,8 +175,6 @@
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s")
   ;; tell emacs how to parse tex files
   (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
-  ;; Enable word wrapping
-  (add-hook 'TeX-mode-hook #'visual-line-mode)
   ;; Add company-backends
   (add-hook 'TeX-mode-hook (lambda ()
                              (make-local-variable 'company-backends)
@@ -198,7 +196,18 @@
                '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
                  TeX-run-command t t :help "Run xelatex") t)
 
-  (general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\))))
+  (defun LaTeX-star-environment-dwim ()
+    "Convert between the starred and the not starred version of the current environment."
+    (interactive)
+    ;; If the current environment is starred.
+    (if (string-match "\*$" (LaTeX-current-environment))
+        ;; Remove the star from the current environment.
+        (LaTeX-modify-environment (substring (LaTeX-current-environment) 0 -1))
+      ;; Else add a star to the current environment.
+      (LaTeX-modify-environment (concat (LaTeX-current-environment) "*"))))
+
+  (general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\)))
+  (general-def LaTeX-mode-map "C-*" 'LaTeX-star-environment-dwim))
 
 
 (with-eval-after-load 'latex
@@ -207,12 +216,13 @@
   (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
         '(LaTeX-section-heading
           LaTeX-section-title
-          LaTeX-section-toc
-          LaTeX-section-section
-          LaTeX-section-label)
+          LaTeX-section-section)
         LaTeX-fill-break-at-separators nil
         LaTeX-item-indent 0))
 
+(use-package webkit-katex-render
+  :hook ((org-mode . webkit-katex-render-mode)
+         (LaTeX-mode . webkit-katex-render-mode)))
 
 (provide 'init-latex)
 ;;; init-latex.el ends here

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: id
+# key: id
+# --
+{\rm Id}_{$1}

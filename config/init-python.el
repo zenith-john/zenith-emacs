@@ -41,5 +41,12 @@
 (use-package pyimport
   :commands (pyimport-remove-unused pyimport-insert-missing))
 
+(use-package yapfify
+  :commands (yapfify-region yapfify-buffer))
+
+(use-package conda
+  :init (setq conda-anaconda-home (expand-file-name "~/anaconda3/"))
+  :commands (conda-env-activate conda-env-deactivate))
+
 (provide 'init-python)
 ;;; init-python.el ends here

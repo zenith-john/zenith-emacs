@@ -306,3 +306,15 @@
 [submodule "extensions/sly-el-indent"]
 	path = extensions/sly-el-indent
 	url = https://github.com/cireu/sly-el-indent
+[submodule "extensions/yapfify"]
+	path = extensions/yapfify
+	url = https://github.com/JorisE/yapfify
+[submodule "extensions/conda"]
+	path = extensions/conda
+	url = https://github.com/necaris/conda.el
+[submodule "extensions/pythonic"]
+	path = extensions/pythonic
+	url = https://github.com/pythonic-emacs/pythonic
+[submodule "extensions/emacs-webkit-katex-render"]
+	path = extensions/emacs-webkit-katex-render
+	url = https://github.com/fuxialexander/emacs-webkit-katex-render
