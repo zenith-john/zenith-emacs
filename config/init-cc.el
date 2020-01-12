@@ -79,15 +79,15 @@ preceded by the opening brace or a comma (disregarding whitespace in between)."
   ;; The result isn't very intelligent (causes redundant characters), so just do
   ;; it ourselves.
   (general-def c++-mode-map "<" nil ">" nil)
-
-  (sp-with-modes '(c-mode c++-mode objc-mode java-mode)
-    (sp-local-pair "/*!" "*/" :post-handlers '(("||\n[i]" "RET") ("[d-1]< | " "SPC")))))
+  (with-eval-after-load 'smartparens-config
+    (sp-with-modes '(c-mode c++-mode objc-mode java-mode)
+      (sp-local-pair "/*!" "*/" :post-handlers '(("||\n[i]" "RET") ("[d-1]< | " "SPC"))))))
 
 (use-package modern-cpp-font-lock
   :hook (c++-mode . modern-c++-font-lock-mode))
 
 (use-package ccls
-  :hook ((c-mode c++-mode objc-mode) . lsp)
+  :hook ((c-mode c++-mode objc-mode) . (lambda () (require 'ccls) (lsp)))
   :init
   (with-eval-after-load 'projectile
     (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")

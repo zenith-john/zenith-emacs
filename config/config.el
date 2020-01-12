@@ -11,6 +11,7 @@
 (require 'init-default)
 (require 'init-func)
 (require 'init-undo-tree)
+(require 'init-evil)
 (require 'init-sp)
 (require 'init-helpful)
 (require 'init-project)

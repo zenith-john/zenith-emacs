@@ -59,7 +59,6 @@
 (use-package company-math
   :init
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
-  (add-to-list '+latex-company-backends 'company-math-symbols-unicode)
   (add-to-list '+latex-company-backends 'company-latex-commands))
 
 
@@ -220,9 +219,9 @@
         LaTeX-fill-break-at-separators nil
         LaTeX-item-indent 0))
 
-(use-package webkit-katex-render
-  :hook ((org-mode . webkit-katex-render-mode)
-         (LaTeX-mode . webkit-katex-render-mode)))
+;; (use-package webkit-katex-render
+;;   :hook ((org-mode . webkit-katex-render-mode)
+;;          (LaTeX-mode . webkit-katex-render-mode)))
 
 (provide 'init-latex)
 ;;; init-latex.el ends here

@@ -5,15 +5,17 @@
 # --
 
 \documentclass[UTF8]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{float}
 \usepackage{geometry}
 \usepackage{graphicx}
-\usepackage{float}
-\usepackage{amsmath}
-\usepackage{booktabs}
-\usepackage{enumerate}
 \usepackage{indentfirst}
+\usepackage{mathrsfs}
 \usepackage{xspace}
-\usepackage{caption}
 \setlength{\parindent}{2em}
 \usepackage[backend=biber,style=gb7714-2015]{biblatex}
 \addbibresource[location=local]{~/Dropbox/Library.bib}

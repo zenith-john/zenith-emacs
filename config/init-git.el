@@ -13,7 +13,13 @@
    magit-unstage-file
    magit-find-file
    magit-init
-   magit-dispatch))
+   magit-dispatch
+   magit-stash-both)
+  :config
+  (defun magit-stage-this-file ()
+    "Stage current buffer for magit"
+    (interactive)
+    (magit-stage-file (buffer-file-name))))
 
 (use-package git-gutter
   :defer 1

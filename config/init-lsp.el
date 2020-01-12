@@ -28,7 +28,7 @@
         lsp-ui-doc-position 'at-point
         lsp-prefer-flymake nil
         lsp-ui-sideline-ignore-duplicate t
-        lsp-ui-sideline-enable nil
+        lsp-ui-sideline-enable t
         lsp-ui-doc-border (face-background 'default)
         lsp-ui-doc-webkit-client-path (concat "file://" zenith-emacs-extension-dir "lsp-ui-theme/lsp-ui-doc.html"))
 

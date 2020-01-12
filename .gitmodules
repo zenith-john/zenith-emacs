@@ -40,7 +40,7 @@
 	ignore = dirty
 [submodule "extensions/lsp-python-ms"]
 	path = extensions/lsp-python-ms
-	url = https://github.com/andrew-christianson/lsp-python-ms
+	url = https://github.com/emacs-lsp/lsp-python-ms
 [submodule "extensions/org-edit-latex"]
 	path = extensions/org-edit-latex
 	url = https://github.com/et2010/org-edit-latex
@@ -318,3 +318,12 @@
 [submodule "extensions/emacs-webkit-katex-render"]
 	path = extensions/emacs-webkit-katex-render
 	url = https://github.com/fuxialexander/emacs-webkit-katex-render
+[submodule "extensions/evil"]
+	path = extensions/evil
+	url = https://github.com/emacs-evil/evil
+[submodule "extensions/evil-collection"]
+	path = extensions/evil-collection
+	url = https://github.com/emacs-evil/evil-collection
+[submodule "extensions/annalist"]
+	path = extensions/annalist
+	url = https://github.com/noctuid/annalist.el
