@@ -38,9 +38,6 @@
 	path = extensions/python-language-server
 	url = https://github.com/microsoft/python-language-server
 	ignore = dirty
-[submodule "extensions/lsp-python-ms"]
-	path = extensions/lsp-python-ms
-	url = https://github.com/emacs-lsp/lsp-python-ms
 [submodule "extensions/org-edit-latex"]
 	path = extensions/org-edit-latex
 	url = https://github.com/et2010/org-edit-latex
@@ -123,12 +120,12 @@
 [submodule "extensions/cdlatex"]
 	path = extensions/cdlatex
 	url = https://github.com/cdominik/cdlatex
-[submodule "extensions/all-the-icons.el"]
+[submodule "extensions/all-the-icons"]
 	path = extensions/all-the-icons
-	url = https://github.com/domtronn/all-the-icons
-[submodule "extensions/prescient.el"]
+	url = https://github.com/domtronn/all-the-icons.el
+[submodule "extensions/prescient"]
 	path = extensions/prescient
-	url = https://github.com/raxod502/prescient
+	url = https://github.com/raxod502/prescient.el
 [submodule "extensions/company-box"]
 	path = extensions/company-box
 	url = https://github.com/sebastiencs/company-box
@@ -141,9 +138,6 @@
 [submodule "extensions/math-symbol-lists"]
 	path = extensions/math-symbol-lists
 	url = https://github.com/vspinu/math-symbol-lists
-[submodule "extensions/org-mode"]
-	path = extensions/org-mode
-	url = https://code.orgmode.org/bzg/org-mode
 [submodule "extensions/company-mode"]
 	path = extensions/company-mode
 	url = https://github.com/company-mode/company-mode
@@ -294,9 +288,6 @@
 [submodule "extensions/git-timemachine"]
 	path = extensions/git-timemachine
 	url = https://gitlab.com/pidu/git-timemachine
-[submodule "extensions/sly"]
-	path = extensions/sly
-	url = https://github.com/joaotavora/sly
 [submodule "extensions/aggressive-fill-paragraph-mode"]
 	path = extensions/aggressive-fill-paragraph-mode
 	url = https://github.com/davidshepherd7/aggressive-fill-paragraph-mode
@@ -327,3 +318,15 @@
 [submodule "extensions/annalist"]
 	path = extensions/annalist
 	url = https://github.com/noctuid/annalist.el
+[submodule "extensions/org-mode"]
+	path = extensions/org-mode
+	url = https://code.orgmode.org/bzg/org-mode
+[submodule "extensions/sly"]
+	path = extensions/sly
+	url = https://github.com/joaotavora/sly
+[submodule "extensions/lsp-python-ms"]
+	path = extensions/lsp-python-ms
+	url = https://github.com/emacs-lsp/lsp-python-ms
+[submodule "extensions/xr"]
+	path = extensions/xr
+	url = https://github.com/mattiase/xr
