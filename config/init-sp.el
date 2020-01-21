@@ -10,7 +10,6 @@
          (org-mode . smartparens-mode)
          (comint-mode . smartparens-mode))
   :config
-  (sp-pair "'" nil :actions :rem)
   (sp-with-modes '(c-mode c++-mode python-mode) (sp-local-pair "'" "'")))
 
 (provide 'init-sp)

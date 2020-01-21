@@ -4,12 +4,6 @@
 [submodule "extensions/fd-dired"]
 	path = extensions/fd-dired
 	url = https://github.com/yqrashawn/fd-dired
-[submodule "extensions/sdcv"]
-	path = extensions/sdcv
-	url = https://github.com/manateelazycat/sdcv
-[submodule "extensions/company-english-helper"]
-	path = extensions/company-english-helper
-	url = https://github.com/manateelazycat/company-english-helper
 [submodule "extensions/insert-translated-name"]
 	path = extensions/insert-translated-name
 	url = https://github.com/manateelazycat/insert-translated-name
@@ -87,9 +81,6 @@
 [submodule "extensions/pyimport"]
 	path = extensions/pyimport
 	url = https://github.com/Wilfred/pyimport
-[submodule "extensions/lsp-ui"]
-	path = extensions/lsp-ui
-	url = https://github.com/emacs-lsp/lsp-ui
 [submodule "extensions/lsp-mode"]
 	path = extensions/lsp-mode
 	url = https://github.com/emacs-lsp/lsp-mode
@@ -288,9 +279,6 @@
 [submodule "extensions/git-timemachine"]
 	path = extensions/git-timemachine
 	url = https://gitlab.com/pidu/git-timemachine
-[submodule "extensions/aggressive-fill-paragraph-mode"]
-	path = extensions/aggressive-fill-paragraph-mode
-	url = https://github.com/davidshepherd7/aggressive-fill-paragraph-mode
 [submodule "extensions/major-mode-hydra.el"]
 	path = extensions/major-mode-hydra
 	url = https://github.com/jerrypnz/major-mode-hydra.el

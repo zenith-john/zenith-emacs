@@ -18,7 +18,6 @@
 (require 'init-keyfreq)
 (require 'init-org)
 (require 'init-pyim)
-(require 'init-english)
 ;; (require 'init-awesome-tab)
 (require 'init-auto-save)
 (require 'init-avy)
@@ -38,7 +37,6 @@
 (require 'init-graphviz-dot)
 (require 'init-python)
 (require 'init-lisp)
-(require 'init-haskell)
 (require 'init-cc)
 (require 'init-latex)
 
