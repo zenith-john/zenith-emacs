@@ -1,6 +1,3 @@
-[submodule "extensions/org-noter"]
-	path = extensions/org-noter
-	url = https://github.com/zenith-john/org-noter
 [submodule "extensions/fd-dired"]
 	path = extensions/fd-dired
 	url = https://github.com/yqrashawn/fd-dired
