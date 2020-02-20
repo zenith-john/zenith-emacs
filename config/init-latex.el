@@ -82,6 +82,9 @@
    TeX-show-compilation nil)
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
+
+  (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
+
   (setq font-latex-match-reference-keywords
         '(;; biblatex
           ("printbibliography" "[{")

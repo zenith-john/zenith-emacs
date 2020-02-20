@@ -3,4 +3,5 @@ transient/*
 local/*
 .ignore
 .lsp-python/*
+eaf/*
 session*

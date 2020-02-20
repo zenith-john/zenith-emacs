@@ -10,7 +10,7 @@
 
 (defun zenith/init-font ()
   (add-to-list 'default-frame-alist `(font . ,(font-xlfd-name zenith-font)))
-  (set-fontset-font t nil zenith-unicode-font nil 'append))
+  (set-fontset-font t 'unicode zenith-unicode-font nil 'prepend))
 
 (add-hook 'after-init-hook 'zenith/init-font)
 

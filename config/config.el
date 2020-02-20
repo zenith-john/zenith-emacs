@@ -18,7 +18,7 @@
 (require 'init-keyfreq)
 (require 'init-org)
 (require 'init-pyim)
-;; (require 'init-awesome-tab)
+(require 'init-eaf)
 (require 'init-auto-save)
 (require 'init-avy)
 (require 'init-ace-window)

@@ -1,9 +1,6 @@
 [submodule "extensions/fd-dired"]
 	path = extensions/fd-dired
 	url = https://github.com/yqrashawn/fd-dired
-[submodule "extensions/insert-translated-name"]
-	path = extensions/insert-translated-name
-	url = https://github.com/manateelazycat/insert-translated-name
 [submodule "extensions/awesome-tab"]
 	path = extensions/awesome-tab
 	url = https://github.com/manateelazycat/awesome-tab
@@ -315,3 +312,9 @@
 [submodule "extensions/xr"]
 	path = extensions/xr
 	url = https://github.com/mattiase/xr
+[submodule "extensions/qtermwidget"]
+	path = extensions/qtermwidget
+	url = https://github.com/lxqt/qtermwidget
+[submodule "extensions/emacs-application-framework"]
+	path = extensions/emacs-application-framework
+	url = https://github.com/manateelazycat/emacs-application-framework
