@@ -7,6 +7,7 @@
 
 ;; helpful
 ;; dependencies: dash dash-functional s f elisp-refs
+;; elisp-refs depends on loop
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-key)
   :init

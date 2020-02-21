@@ -1,9 +1,6 @@
 [submodule "extensions/fd-dired"]
 	path = extensions/fd-dired
 	url = https://github.com/yqrashawn/fd-dired
-[submodule "extensions/awesome-tab"]
-	path = extensions/awesome-tab
-	url = https://github.com/manateelazycat/awesome-tab
 [submodule "extensions/keyfreq"]
 	path = extensions/keyfreq
 	url = https://github.com/dacap/keyfreq
@@ -16,9 +13,6 @@
 [submodule "extensions/pyim"]
 	path = extensions/pyim
 	url = https://github.com/tumashu/pyim
-[submodule "extensions/org-ref"]
-	path = extensions/org-ref
-	url = https://github.com/jkitchin/org-ref
 [submodule "extensions/graphviz-dot-mode"]
 	path = extensions/graphviz-dot-mode
 	url = https://github.com/ppareit/graphviz-dot-mode
@@ -144,12 +138,6 @@
 [submodule "extensions/ob-async"]
 	path = extensions/ob-async
 	url = https://github.com/astahlman/ob-async
-[submodule "extensions/pdf-tools"]
-	path = extensions/pdf-tools
-	url = https://github.com/politza/pdf-tools
-[submodule "extensions/tablist"]
-	path = extensions/tablist
-	url = https://github.com/politza/tablist
 [submodule "extensions/emacs-async"]
 	path = extensions/emacs-async
 	url = https://github.com/jwiegley/emacs-async
@@ -183,9 +171,6 @@
 [submodule "extensions/auctex"]
 	path = extensions/auctex
 	url = https://git.savannah.gnu.org/git/auctex.git
-[submodule "extensions/emacs-htmlize"]
-	path = extensions/emacs-htmlize
-	url = https://github.com/hniksic/emacs-htmlize
 [submodule "extensions/auto-compile"]
 	path = extensions/auto-compile
 	url = https://github.com/emacscollective/auto-compile
@@ -261,9 +246,6 @@
 [submodule "extensions/benchmark-init-el"]
 	path = extensions/benchmark-init-el
 	url = https://github.com/dholm/benchmark-init-el
-[submodule "extensions/dired-hacks"]
-	path = extensions/dired-hacks
-	url = https://github.com/Fuco1/dired-hacks
 [submodule "extensions/ws-butler"]
 	path = extensions/ws-butler
 	url = https://github.com/lewang/ws-butler
@@ -282,9 +264,6 @@
 [submodule "extensions/pythonic"]
 	path = extensions/pythonic
 	url = https://github.com/pythonic-emacs/pythonic
-[submodule "extensions/emacs-webkit-katex-render"]
-	path = extensions/emacs-webkit-katex-render
-	url = https://github.com/fuxialexander/emacs-webkit-katex-render
 [submodule "extensions/evil"]
 	path = extensions/evil
 	url = https://github.com/emacs-evil/evil

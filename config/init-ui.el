@@ -26,6 +26,7 @@
 
 ;; doom-modeline
 ;; dependencies: all-the-icons shrink-path dash
+;; all-the-icons depends on emacs-memoize
 (require 'doom-modeline)
 
 ;; Use minimal height to avoid the overlap of org-set-tags-command.
@@ -43,6 +44,7 @@
 
 (global-hl-line-mode 1)
 
+;; goto-line-preview
 (use-package goto-line-preview
   :commands (goto-line-preview)
   :init

@@ -30,7 +30,6 @@
 (require 'init-ivy)
 (require 'init-ui)
 (require 'init-git)
-(require 'init-pdf)
 (require 'init-keybinding)
 (require 'init-flycheck)
 
