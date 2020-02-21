@@ -74,6 +74,7 @@
 
 ;; auctex
 (use-package tex
+  :defer 2
   :init
   (setq TeX-parse-self t ; parse on load
         TeX-auto-save t  ; parse on save
@@ -223,6 +224,7 @@
 
 
 (use-package latex
+  :defer 2
   :init
   (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
         '(LaTeX-section-heading

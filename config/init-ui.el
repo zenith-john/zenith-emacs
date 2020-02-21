@@ -12,7 +12,12 @@
   (add-to-list 'default-frame-alist `(font . ,(font-xlfd-name zenith-font)))
   (set-fontset-font t 'unicode zenith-unicode-font nil 'prepend))
 
-(add-hook 'after-init-hook 'zenith/init-font)
+(zenith/init-font)
+(when (daemonp)
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (select-frame frame)
+              (zenith/init-font))))
 
 ;; darkroom
 (use-package darkroom
