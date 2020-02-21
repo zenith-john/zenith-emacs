@@ -83,9 +83,12 @@ preceded by the opening brace or a comma (disregarding whitespace in between)."
     (sp-with-modes '(c-mode c++-mode objc-mode java-mode)
       (sp-local-pair "/*!" "*/" :post-handlers '(("||\n[i]" "RET") ("[d-1]< | " "SPC"))))))
 
+;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock
   :hook (c++-mode . modern-c++-font-lock-mode))
 
+;; emacs-ccls
+;; dependencies: lsp-mode dash projectile
 (use-package ccls
   :hook ((c-mode c++-mode objc-mode) . (lambda () (require 'ccls) (lsp)))
   :init

@@ -4,6 +4,8 @@
 ;;;
 
 ;;; Code:
+
+;; pyim
 (use-package pyim
   :general ("M-/" 'pyim-convert-string-at-point)
   :init
@@ -11,6 +13,7 @@
         pyim-page-tooltip 'posframe
         default-input-method "pyim")
   :config
+  ;; liberime
   (use-package liberime
     :load-path "~/zenith-emacs/extensions/liberime/build/liberime.so"
     :config

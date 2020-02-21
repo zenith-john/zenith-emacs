@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+;; general
 (require 'general)
 (eval-when-compile (require 'use-package))
 

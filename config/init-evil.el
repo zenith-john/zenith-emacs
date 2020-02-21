@@ -4,7 +4,9 @@
 ;;;
 
 ;;; Code:
-;;;
+
+;; evil
+;; dependencies: undo-tree goto-chg
 (use-package evil
   :init
   (setq evil-want-integration t  ; This is optional since it's already set to t by default.
@@ -20,6 +22,8 @@
   (add-to-list 'evil-emacs-state-modes 'eaf-mode)
   (evil-mode 1))
 
+;; evil-collection
+;; dependencies: evil
 (use-package evil-collection
   :after evil
   :init
@@ -27,6 +31,8 @@
   :config
   (evil-collection-init))
 
+;; evil-matchit
+;; dependencies: evil
 (use-package evil-matchit
   :after evil
   :init

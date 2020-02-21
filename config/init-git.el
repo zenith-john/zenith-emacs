@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+;; magit
+;; dependencies: async dash git-commit transient with-editor
 (use-package magit
   :defer 2
   :commands
@@ -21,9 +23,12 @@
     (interactive)
     (magit-stage-file (buffer-file-name))))
 
+;; emacs-git-gitter
 (use-package git-gutter
   :defer 1
   :config
+  ;; emacs-git-gutter-fringe
+  ;; dependencies: git-gutter fringe-helper
   (require 'git-gutter-fringe)
   ;; Configuration from https://github.com/hlissner/doom-emacs/ git-gutter module
   (fringe-mode '4)
@@ -37,6 +42,8 @@
     nil nil 'bottom)
   (global-git-gutter-mode +1))
 
+;; git-timemachine
+;; dependencies: transient
 (use-package git-timemachine
   :defer 1
   :commands

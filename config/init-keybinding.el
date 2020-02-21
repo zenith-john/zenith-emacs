@@ -4,6 +4,9 @@
 ;;;
 
 ;;; Code:
+
+;; hydra
+;; dependencies: lv
 (use-package hydra)
 
 (general-define-key

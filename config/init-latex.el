@@ -7,6 +7,8 @@
 
 (defvar +latex-company-backends '())
 
+;; helm-bibtex
+;; dependencies: swiper parsebib s dash f biblio
 (use-package ivy-bibtex
   :commands (ivy-bibtex)
   :after ivy
@@ -42,6 +44,8 @@
         bibtex-align-at-equal-sign t
         bibtex-text-indentation 20))
 
+;; company-auctex
+;; dependencies: yasnippet company auctex
 (use-package company-auctex
   :defer 2
   :init
@@ -51,11 +55,15 @@
   (add-to-list '+latex-company-backends 'company-auctex-environments)
   (add-to-list '+latex-company-backends 'company-auctex-macros))
 
+;; company-reftex
+;; dependencies: s company
 (use-package company-reftex
   :init
   (add-to-list '+latex-company-backends 'company-reftex-labels)
   (add-to-list '+latex-company-backends 'company-reftex-citations))
 
+;; company-math
+;; dependencies: company math-symbol-lists
 (use-package company-math
   :init
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
@@ -64,7 +72,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-latex-mode))
 
-
+;; auctex
 (with-eval-after-load 'tex
   (setq TeX-parse-self t ; parse on load
         TeX-auto-save t  ; parse on save

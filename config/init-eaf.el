@@ -4,6 +4,8 @@
 ;;;
 
 ;;; Code:
+
+;; emacs-application-framework
 (use-package eaf
   :custom
   (eaf-find-alternate-file-in-dired t))

@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+;; keyfreq
 (use-package keyfreq
   :commands (keyfreq-mode keyfreq-show keyfreq-reset)
   :config

@@ -1,5 +1,7 @@
 ;;; init-ace-window.el --- ace-window configuration -*- lexical-binding: t; -*-
 
+;; ace-window
+;; dependencies: avy
 (use-package ace-window
   :commands (ace-window)
   :init

@@ -4,6 +4,8 @@
 ;;;
 
 ;;; Code:
+
+;; yasnippet
 (use-package yasnippet
   :init
   (setq yas-snippet-dirs `(,(concat zenith-emacs-extension-dir "snippets/")))

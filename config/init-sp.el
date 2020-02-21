@@ -4,6 +4,8 @@
 ;;;
 
 ;;; Code:
+
+;; smartparens
 (use-package smartparens-config
   :hook ((prog-mode . smartparens-mode)
          (LaTeX-mode . smartparens-mode)

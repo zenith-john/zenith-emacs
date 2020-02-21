@@ -14,14 +14,18 @@
 
 (add-hook 'after-init-hook 'zenith/init-font)
 
+;; darkroom
 (use-package darkroom
   :commands (darkroom-mode darkroom-tentative-mode)
   :init
   (setq darkroom-text-scale-increase 1))
 
+;; doom-themes
 (require 'doom-themes)
 (load-theme 'doom-one t)
 
+;; doom-modeline
+;; dependencies: all-the-icons shrink-path dash
 (require 'doom-modeline)
 
 ;; Use minimal height to avoid the overlap of org-set-tags-command.

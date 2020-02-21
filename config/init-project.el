@@ -4,6 +4,9 @@
 ;;;
 
 ;;; Code:
+
+;; projectile
+;; dependencies: pkg-info
 (use-package projectile
   :commands (projectile-project-root
              projectile-project-name

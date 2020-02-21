@@ -4,6 +4,8 @@
 ;;;
 
 ;;; Code:
+
+;; company-mode
 (use-package company
   :commands (company-complete-common company-manual-begin company-grab-line)
   :init
@@ -25,12 +27,15 @@
   :config
   (global-company-mode +1))
 
+;; prescient
 (use-package company-prescient
   :hook (company-mode . company-prescient-mode)
   :config
   (setq prescient-save-file (concat zenith-emacs-root-dir "local/prescient-save.el"))
   (prescient-persist-mode +1))
 
+;; company-box
+;; dependencies: dash dash-functional company
 (use-package company-box
   :hook (company-mode . company-box-mode)
   :config

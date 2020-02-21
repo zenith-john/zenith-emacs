@@ -4,9 +4,11 @@
 (setq auto-compile-display-buffer nil
       auto-compile-use-mode-line nil)
 
+;; macrostep
 (use-package macrostep
   :commands (macrostep-expand))
 
+;; sly-el-indent
 (defun zenith/load-sly-el-indent ()
   (require 'sly-el-indent)
   (sly-el-indent-setup))
@@ -61,7 +63,7 @@ library/userland functions"
          ;; highlight defined, special variables & functions
          `((+emacs-lisp-highlight-vars-and-faces . +emacs-lisp--face))))
 
-
+;; rainbow-delimiters
 (use-package rainbow-delimiters
   :hook
   (emacs-lisp-mode . rainbow-delimiters-mode)

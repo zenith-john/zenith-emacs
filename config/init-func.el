@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+;; fd-dired
 (use-package fd-dired
   :commands (fd-dired)
   :after (evil)

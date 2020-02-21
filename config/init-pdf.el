@@ -4,6 +4,9 @@
 ;;;
 
 ;;; Code:
+
+;; pdf-tools
+;; dependencies: tablist let-alist
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :config

@@ -4,6 +4,8 @@
 ;;;
 
 ;;; Code:
+
+;; emacs-which-key
 (use-package which-key
   :defer 1
   :init

@@ -4,6 +4,10 @@
 ;;;
 
 ;;; Code:
+
+;; lsp-mode
+;; dependencies: dash dash-functional f ht spinner markdown-mode lv
+
 ;;; From https://github.com/hlissner/doom-emacs lsp module
 (setq lsp-session-file (concat zenith-emacs-root-dir "local/lsp-session")
       lsp-auto-guess-root t
@@ -16,6 +20,8 @@
   ;; Don't prompt to restart LSP servers while quitting Emacs
   (add-hook 'kill-emacs-hook (lambda ()(setq lsp-restart 'ignore))))
 
+;; company-lsp
+;; dependencies: lsp-mode company s dash
 (use-package company-lsp
   :after lsp-mode)
 

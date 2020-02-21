@@ -1,5 +1,6 @@
 ;;; init-avy.el --- redefine evil s key -*- lexical-binding: t; -*-
 
+;; avy
 (use-package avy
   :init
   (setq avy-background t

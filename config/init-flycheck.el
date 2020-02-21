@@ -4,6 +4,9 @@
 ;;;
 
 ;;; Code:
+
+;; flycheck
+;; dependencies: pkg-info let-alist seq
 (use-package flycheck
   :hook ((python-mode . flycheck-mode)
          (c++-mode . flycheck-mode)

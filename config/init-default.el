@@ -124,6 +124,8 @@
 (general-def isearch-mode-map [escape] #'isearch-abort)
 (general-define-key [remap list-buffers] #'ibuffer)
 
+;; ibuffer-projectile
+;; dependencies: projectile
 (use-package ibuffer-projectile
   :defer 1
   :init
@@ -147,16 +149,13 @@
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
+;; ws-butler
 (use-package ws-butler
   :defer 1
   :config
   (ws-butler-global-mode 1))
 
-(use-package aggressive-fill-paragraph
-  :defer 1
-  :hook
-  (org-mode . aggressive-fill-paragraph-mode))
-
+;; markdown-mode
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode)))

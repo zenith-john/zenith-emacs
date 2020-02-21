@@ -6,6 +6,8 @@
 ;; Changed org defaults (should be set before org loads)
 
 ;; Code:
+
+;; org-mode
 (defvar org-directory "~/Dropbox/")
 (defvar org-agenda-files '("~/Dropbox/"))
 (defvar org-modules
@@ -256,6 +258,8 @@
           ("" "amssymb" t)
           "\\tolerance=1000"))
 
+  ;; ob-async
+  ;; dependencies: org async dash
   (require 'ob-async)
 
   (org-babel-do-load-languages
@@ -291,6 +295,7 @@
 
   (general-define-key "C-c C-a" #'zenith/my-org-agenda))
 
+;; org-bullets
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode))
 
@@ -316,6 +321,8 @@
 ;;   (add-hook 'org-noter-doc-mode-hook #'zenith/org-noter-doc-hook)
 ;;   (add-hook 'org-noter-notes-mode-hook #'zenith/org-noter-notes-hook))
 
+;; org-ref
+;; dependencies: htmlize helm helm-bibtex ivy hydra key-chord s f pdf-tools
 (use-package org-ref
   :after (org)
   :defer 2

@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Package
-;;
+;; swiper
 (use-package ivy
   :config
   (setq ivy-height 15
@@ -55,6 +55,8 @@
     ;; ivy-hydra rebinds this, so we have to do so again
     (define-key ivy-minibuffer-map (kbd "M-o") #'hydra-ivy/body)))
 
+;; ivy-rich
+;; dependencies: ivy
 (use-package ivy-rich
   :after ivy
   :config
@@ -72,7 +74,8 @@
   ;; Reload ivy which so changes to `ivy-rich-display-transformers-list' work
   (ivy-rich-mode +1))
 
-
+;; all-the-icons-ivy
+;; dependencies: ivy all-the-icons
 (use-package all-the-icons-ivy
   :after ivy
   :config
@@ -155,7 +158,8 @@
    'counsel-ag ; also applies to `counsel-rg' & `counsel-pt'
    '(("O" +ivy-git-grep-other-window-action "open in other window"))))
 
-
+;; counsel-projectile:
+;; dependencies: counsel projectile
 (use-package counsel-projectile
   :commands (counsel-projectile-find-file
              counsel-projectile-find-dir
@@ -174,12 +178,12 @@
   ;; no highlighting visited files; slows down the filtering
   (ivy-set-display-transformer #'counsel-projectile-find-file nil))
 
-
+;; emacs-wgrep
 (use-package wgrep
   :commands wgrep-change-to-wgrep-mode
   :config (setq wgrep-auto-save-buffer t))
 
-
+;; flx
 (use-package flx
   :defer t  ; is loaded by ivy
   :init
