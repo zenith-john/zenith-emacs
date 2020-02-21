@@ -63,9 +63,6 @@
 [submodule "extensions/pip-requirements.el"]
 	path = extensions/pip-requirements
 	url = https://github.com/Wilfred/pip-requirements.el
-[submodule "extensions/auto-save"]
-	path = extensions/auto-save
-	url = https://github.com/manateelazycat/auto-save
 [submodule "extensions/emacs-python-pytest"]
 	path = extensions/emacs-python-pytest
 	url = https://github.com/wbolster/emacs-python-pytest

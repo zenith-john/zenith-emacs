@@ -5,20 +5,21 @@
 
 ;;; Code:
 
-(require 'auto-save)
+;; The code is adjusted from https://github.com/manateelazycat/auto-save. The
+;; problem of the original code is that it calls buffer-modified-p which makes
+;; ws-butler unhappy.
+(setq auto-save-idle 2)
 
-(setq auto-save-idle 2
-      auto-save-silent t
-      auto-save-delete-trailing-whitespace nil)
-
-;; The following code makes auto-save.el work with ws-butler. The save-excursion
-;; in auto-save.el automatically change the cursor position even if the virtual
-;; space is reserved by ws-butler.
 (defun zenith/auto-save-buffers ()
   (interactive)
-  (auto-save-buffers)
-  (when ws-butler-mode
-    (ws-butler-after-save)))
+  (when (and
+         (or (not (boundp 'yas--active-snippets))
+             (not yas--active-snippets))
+         (or (not (boundp 'company-candidates))
+             (not company-candidates)))
+    (with-temp-message ""
+      (let ((inhibit-message t))
+        (evil-write-all nil)))))
 
 (defun zenith/auto-save-enable ()
   (interactive)
