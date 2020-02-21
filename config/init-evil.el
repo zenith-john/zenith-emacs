@@ -27,5 +27,12 @@
   :config
   (evil-collection-init))
 
+(use-package evil-matchit
+  :after evil
+  :init
+  (setq evilmi-may-jump-by-percentage nil)
+  :config
+  (global-evil-matchit-mode 1))
+
 (provide 'init-evil)
 ;;; init-evil.el ends here
