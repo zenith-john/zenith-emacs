@@ -36,7 +36,6 @@
 (require 'init-emacs-lisp)
 (require 'init-graphviz-dot)
 (require 'init-python)
-(require 'init-lisp)
 (require 'init-cc)
 (require 'init-latex)
 

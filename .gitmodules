@@ -270,9 +270,6 @@
 [submodule "extensions/git-timemachine"]
 	path = extensions/git-timemachine
 	url = https://gitlab.com/pidu/git-timemachine
-[submodule "extensions/major-mode-hydra.el"]
-	path = extensions/major-mode-hydra
-	url = https://github.com/jerrypnz/major-mode-hydra.el
 [submodule "extensions/sly-el-indent"]
 	path = extensions/sly-el-indent
 	url = https://github.com/cireu/sly-el-indent
@@ -300,9 +297,6 @@
 [submodule "extensions/org-mode"]
 	path = extensions/org-mode
 	url = https://code.orgmode.org/bzg/org-mode
-[submodule "extensions/sly"]
-	path = extensions/sly
-	url = https://github.com/joaotavora/sly
 [submodule "extensions/lsp-python-ms"]
 	path = extensions/lsp-python-ms
 	url = https://github.com/emacs-lsp/lsp-python-ms
