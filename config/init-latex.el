@@ -73,7 +73,8 @@
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-latex-mode))
 
 ;; auctex
-(with-eval-after-load 'tex
+(use-package tex
+  :init
   (setq TeX-parse-self t ; parse on load
         TeX-auto-save t  ; parse on save
         ;; use hidden dirs for auctex files
@@ -90,8 +91,6 @@
    TeX-show-compilation nil)
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
-
-  (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
 
   (setq font-latex-match-reference-keywords
         '(;; biblatex
@@ -181,6 +180,9 @@
 
   ;; prompt for master
   (setq-default TeX-master nil)
+  :config
+  ;; set default pdf viewer
+  (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
   ;; set-up chktex
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s")
   ;; tell emacs how to parse tex files
@@ -220,19 +222,18 @@
   (general-def LaTeX-mode-map "C-*" 'LaTeX-star-environment-dwim))
 
 
-(with-eval-after-load 'latex
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+(use-package latex
+  :init
   (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
         '(LaTeX-section-heading
           LaTeX-section-title
           LaTeX-section-section)
         LaTeX-fill-break-at-separators nil
-        LaTeX-item-indent 0))
-
-;; (use-package webkit-katex-render
-;;   :hook ((org-mode . webkit-katex-render-mode)
-;;          (LaTeX-mode . webkit-katex-render-mode)))
+        LaTeX-item-indent 0)
+  :config
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+  (add-hook 'LaTeX-mode-hook 'auto-fill-mode))
 
 (provide 'init-latex)
 ;;; init-latex.el ends here
