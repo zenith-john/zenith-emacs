@@ -14,6 +14,7 @@
         evil-disable-insert-state-bindings t ; Use emacs's binding in insert state
         evil-want-C-d-scroll nil ; Use emacs's C-d
         evil-want-C-u-scroll nil ; Use emacs's C-u
+        evil-want-C-i-jump nil ; Use emacs's C-i
         evil-want-fine-undo t  ; Don not aggregate changes when exiting insert state
         evil-want-C-w-delete t ; Use emacs's C-w
         evil-toggle-key "" ; C-z not entering emacs state
