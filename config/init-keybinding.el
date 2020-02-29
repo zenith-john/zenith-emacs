@@ -10,12 +10,12 @@
 (use-package hydra)
 
 (general-define-key
- :keymaps 'normal
+ :keymaps '(normal)
  :prefix ","
- "," 'switch-to-buffer
+ "," 'snails
  "." 'find-file
- "S" 'magit-stash-both
- "s" 'magit-stage-this-file)
+ "g" 'magit-status
+ "r" 'counsel-rg)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

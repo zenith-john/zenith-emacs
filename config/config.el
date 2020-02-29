@@ -28,6 +28,7 @@
 (require 'init-company)
 (require 'init-yasnippet)
 (require 'init-ivy)
+(require 'init-snails)
 (require 'init-ui)
 (require 'init-git)
 (require 'init-keybinding)

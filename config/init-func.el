@@ -8,8 +8,17 @@
 ;; fd-dired
 (use-package fd-dired
   :commands (fd-dired)
-  :after (evil)
   :if (executable-find "fd"))
+
+(use-package expand-region
+  :commands (er/expand-region)
+  :after evil
+  :init
+  (general-define-key
+   "C-=" 'er/expand-region)
+  (general-define-key
+   :keymaps 'normal
+   "=" 'er/expand-region))
 
 (defun +clear-image-cache ()
   "Remove image cache to redisplay the image."

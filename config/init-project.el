@@ -24,9 +24,7 @@
         projectile-files-cache-expire 604800) ; expire after a week
   :config
   (add-hook 'dired-before-readin-hook #'projectile-track-known-projects-find-file-hook)
-  (projectile-mode +1)
-
-  (push (abbreviate-file-name zenith-emacs-local-dir) projectile-globally-ignored-directories))
+  (projectile-mode +1))
 
 (provide 'init-project)
 ;;; init-project.el ends here

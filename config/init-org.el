@@ -96,17 +96,7 @@
 
    ;; Scale up LaTeX previews a bit (default is too small)
    org-preview-latex-image-directory (concat zenith-emacs-local-dir "org-latex/")
-   org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
-
-   org-todo-state-tags-triggers
-   '(("CANCELLED" ("CANCELLED" . t))
-     ("WAITING" ("WAITING" . t))
-     ("NEXT" ("WAITING" . nil) ("SOMEDAY" . nil))
-     (done ("WAITING" . nil))
-     ("PAUSE" ("WAITING" . nil) ("CANCELLED" . nil))
-     ("TODO" ("WAITING" . nil) ("CANCELLED" . nil) ("SOMEDAY" . nil))
-     ("DONE" ("WAITING" . nil) ("TODO" . nil) ("SOMEDAY" . nil))
-     ("SOMEDAY" ("TODO" . nil))))
+   org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
   (setq-default
    org-format-latex-options
@@ -180,11 +170,12 @@
         org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
-        org-agenda-span 14
+        org-agenda-span 7
         org-agenda-compact-blocks t
         org-agenda-show-all-dates nil
         org-deadline-warning-days 365
-        org-agenda-show-future-repeats nil)
+        org-agenda-show-future-repeats t
+        org-agenda-window-setup 'only-window)
 
 
   (setq org-agenda-custom-commands
@@ -252,6 +243,18 @@
         org-src-window-setup 'current-window
         org-confirm-babel-evaluate nil)
 
+  ;; Org-agenda export to icalendar
+  (require 'ox-icalendar)
+  (setq org-icalendar-combined-agenda-file (expand-file-name "~/Dropbox/agenda.ics")
+        org-icalendar-include-todo t
+        org-icalendar-use-deadline '(event-if-not-todo todo-due)
+        org-icalendar-use-scheduled '(event-if-not-todo todo-start)
+        org-icalendar-alarm-time 15
+        org-icalendar-store-UID t
+        org-agenda-default-appointment-duration 90)
+
+  (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
+
   ;; I prefer C-c C-c over C-c ' (more consistent)
   (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit)
 
@@ -269,7 +272,11 @@
     (interactive)
     (org-agenda 0 "b"))
 
-  (general-define-key "C-c C-a" #'zenith/my-org-agenda))
+  (general-define-key
+   :keymaps 'normal
+   :prefix ","
+   "a" 'org-agenda
+   "A" 'zenith/my-org-agenda))
 
 ;; org-bullets
 (use-package org-bullets
@@ -294,6 +301,14 @@
           "biber %b"
           "%latex -interaction nonstopmode -output-directory %o %f"
           "%latex -interaction nonstopmode -output-directory %o %f")))
+
+(use-package evil-org
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (evil-org-set-key-theme)
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
 (provide 'init-org)
 ;;; init-org.el ends here

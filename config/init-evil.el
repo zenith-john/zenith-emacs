@@ -21,6 +21,7 @@
         )
   :config
   (add-to-list 'evil-emacs-state-modes 'eaf-mode)
+  (add-to-list 'evil-emacs-state-modes 'snails-mode)
   (evil-mode 1))
 
 ;; evil-collection

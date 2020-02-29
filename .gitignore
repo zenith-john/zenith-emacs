@@ -7,3 +7,4 @@ eaf/*
 session*
 /.auctex-auto/
 *.tex
+/.org-id-locations

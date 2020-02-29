@@ -20,7 +20,7 @@
         ;; enable magic slash on non-match
         ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected
         ;; don't show recent files in switch-buffer
-        ivy-use-virtual-buffers nil
+        ivy-use-virtual-buffers t
         ;; ...but if that ever changes, show their full path
         ivy-virtual-abbreviate 'full
         ;; don't quit minibuffer on delete-error
@@ -43,17 +43,7 @@
     :after ivy
     :config
     (setq ivy-prescient-retain-classic-highlighting t)
-    (ivy-prescient-mode))
-
-  (use-package ivy-hydra
-    :commands (ivy-dispatching-done-hydra ivy--matcher-desc ivy-hydra/body)
-    :init
-    (general-def ivy-minibuffer-map
-      "C-o" #'ivy-dispatching-done-hydra
-      "M-o" #'hydra-ivy/body)
-    :config
-    ;; ivy-hydra rebinds this, so we have to do so again
-    (define-key ivy-minibuffer-map (kbd "M-o") #'hydra-ivy/body)))
+    (ivy-prescient-mode)))
 
 ;; ivy-rich
 ;; dependencies: ivy
@@ -165,14 +155,14 @@
              counsel-projectile-find-dir
              counsel-projectile-switch-to-buffer
              counsel-projectile-grep
-             counsel-projectile-ag
+             counsel-projectile-rg
              counsel-projectile-switch-project)
   :init
   (general-def
     [remap projectile-find-dir]         #'counsel-projectile-find-dir
     [remap projectile-switch-to-buffer] #'counsel-projectile-switch-to-buffer
     [remap projectile-grep]             #'counsel-projectile-grep
-    [remap projectile-ag]               #'counsel-projectile-ag
+    [remap projectile-rg]               #'counsel-projectile-rg
     [remap projectile-switch-project]   #'counsel-projectile-switch-project)
   :config
   ;; no highlighting visited files; slows down the filtering

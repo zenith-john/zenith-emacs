@@ -13,6 +13,7 @@
 (defun zenith/auto-save-buffers ()
   (interactive)
   (when (and
+         (not (minibufferp))
          (or (not (boundp 'yas--active-snippets))
              (not yas--active-snippets))
          (or (not (boundp 'company-candidates))
