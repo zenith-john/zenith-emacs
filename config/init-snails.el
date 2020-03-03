@@ -27,6 +27,29 @@
  :keymaps 'ivy-mode-map
  [escape] nil)
 
+(defvar zenith/snails-project-root nil "The root of the current project")
+(defun zenith/snails-backend-projectile-root ()
+  "Find projectile root."
+  (projectile-project-root (snails-start-buffer-dir)))
+
+(defun zenith/snails-backend-projectile-candidates ()
+  "List project files."
+  (when (featurep 'projectile)
+    (let ((project-root (zenith/snails-backend-projectile-root)))
+      (when project-root
+        (setq zenith/snails-project-root project-root)
+        (projectile-project-files project-root)))))
+
+(defun zenith/snails-backend-project-root-dir ()
+  "Return the project root if exist"
+  (if zenith/snails-project-root
+      zenith/snails-project-root
+    (let* ((buffer (current-buffer))
+           (file (buffer-file-name buffer)))
+      (if file
+          (file-name-directory file)
+        (expand-file-name "~")))))
+
 ;; If the project contains too much files, the snails will freeze, so limit the
 ;; file number to 50 in search result.
 (snails-create-sync-backend
@@ -36,7 +59,7 @@
  :candidate-filter
  (lambda (input)
    (let ((candidates)
-         (project-files (snails-backend-projectile-candidates))
+         (project-files (zenith/snails-backend-projectile-candidates))
          (count 0))
      (when project-files
        (dolist (file project-files)
@@ -51,8 +74,9 @@
 
  :candiate-do
  (lambda (candidate)
-   (let ((project-root (snails-backend-projectile-project-root)))
-     (find-file (expand-file-name candidate project-root)))))
+   (let ((project-root (zenith/snails-backend-project-root-dir)))
+     (find-file (expand-file-name candidate project-root))
+     (setq zenith/snails-project-root nil))))
 
 ;; Don not show misc buffer in snails
 (setq snails-backend-buffer-blacklist

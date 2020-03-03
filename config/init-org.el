@@ -150,7 +150,7 @@
           ("h" "Homework" entry (file+headline "~/Dropbox/task.org"  "Homework")
            "* TODO %? :Homework:\n")
           ("s" "Schedule" entry (file+headline "~/Dropbox/task.org" "Schedule")
-           "* TODO %?\n")
+           "* %?\n")
           ("r" "Project" entry (file+headline "~/Dropbox/task.org" "Project")
            "* TODO %?\n")
           ("q" "Question" entry (file+headline "~/Dropbox/task.org" "Question")
