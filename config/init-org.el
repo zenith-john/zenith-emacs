@@ -179,30 +179,42 @@
 
 
   (setq org-agenda-custom-commands
-        '(("b" "My Agenda View" ((tags-todo "Question/!-Waiting/!-Pause"
-                                            ((org-agenda-overriding-header "Unsolved Questions:")))
-                                 (tags "AGENDAHEADER" ((org-agenda-overriding-header "========================================\nToday's Schedule:")))
-                                 (agenda ""
-                                         ((org-agenda-show-all-dates t)
-                                          (org-agenda-span 'day)
-                                          (org-deadline-warning-days 0)
-                                          (org-agenda-start-day "+0d")))
-                                 (todo "NEXT"
-                                       ((org-agenda-overriding-header "========================================\nNext Tasks:")))
-                                 (tags "BEFOREWEEKGLANCE" ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
-                                 (agenda ""
-                                         ((org-agenda-show-all-dates t)
-                                          (org-agenda-span 6)
-                                          (org-agenda-start-day "+1d")))
-                                 (tags-todo "Improvement/!-NEXT" ((org-agenda-overriding-header "========================================\nImprove Yourself:")))
-                                 (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\"" ((org-agenda-overriding-header "\nPersonal Project:")))
-                                 (tags "BEFOREDEADLINE" ((org-agenda-overriding-header "========================================\nFar Away Tasks:")))
-                                 (agenda ""
-                                         ((org-agenda-span 180)
-                                          (org-agenda-time-grid nil)
-                                          (org-agenda-show-all-dates nil)
-                                          (org-agenda-entry-types '(:deadline :scheduled))
-                                          (org-agenda-start-day "+7d")))))))
+        '(("b" "Agenda View" ((tags-todo "Question/!-Waiting/!-Pause"
+                               ((org-agenda-overriding-header "Unsolved Questions:")))
+                              (tags "AGENDAHEADER"
+                               ((org-agenda-overriding-header "========================================\nToday's Schedule:")))
+                              (agenda ""
+                               ((org-agenda-show-all-dates t)
+                                (org-agenda-span 'day)
+                                (org-deadline-warning-days 0)
+                                (org-agenda-start-day "+0d")))
+                              (todo "NEXT"
+                               ((org-agenda-overriding-header "========================================\nNext Tasks:")))
+                              (tags-todo "Homework/!-NEXT"
+                               ((org-agenda-overriding-header "========================================\nMust Do:")))
+                              (tags "BEFOREWEEKGLANCE"
+                               ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
+                              (agenda ""
+                               ((org-agenda-show-all-dates t)
+                                (org-agenda-span 6)
+                                (org-agenda-start-day "+1d")))
+                              (tags-todo "Improvement/!-NEXT"
+                               ((org-agenda-overriding-header "========================================\nImprove Yourself:")))
+                              (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
+                               ((org-agenda-overriding-header "\nPersonal Project:")))
+                              (tags "BEFOREDEADLINE"
+                               ((org-agenda-overriding-header "========================================\nFar Away Tasks:")))
+                              (agenda ""
+                               ((org-agenda-span 180)
+                                (org-agenda-time-grid nil)
+                                (org-agenda-show-all-dates nil)
+                                (org-agenda-entry-types '(:deadline :scheduled))
+                                (org-agenda-start-day "+7d")))))
+          ("i" "Improvement" ((tags-todo "Question"
+                               ((org-agenda-overriding-header "Unsolved Questions:")))
+                              (tags-todo "Improvement" ((org-agenda-overriding-header "\n\nImprovment:")))
+                              (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
+                               ((org-agenda-overriding-header "\n\nPersonal Project:")))))))
 
   ;; Org latex export
   (setq org-latex-with-hyperref t)
@@ -260,13 +272,13 @@
 
   (eval-after-load 'ox-latex
     '(add-to-list 'org-latex-classes
-                  '("ctexart"
-                    "\\documentclass{ctexart}"
-                    ("\\section{%s}" . "\\section*{%s}")
-                    ("\\subsection{%s}" . "\\subsection*{%s}")
-                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+      '("ctexart"
+        "\\documentclass{ctexart}"
+        ("\\section{%s}" . "\\section*{%s}")
+        ("\\subsection{%s}" . "\\subsection*{%s}")
+        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+        ("\\paragraph{%s}" . "\\paragraph*{%s}")
+        ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
   (defun zenith/my-org-agenda ()
     (interactive)

@@ -9,13 +9,21 @@
 ;; dependencies: lv
 (use-package hydra)
 
+;; unset ',' keybinding for motion state.
+(define-key evil-motion-state-map "," nil)
+
 (general-define-key
- :keymaps '(normal)
+ :states '(normal motion)
  :prefix ","
- "," 'snails
+ "," 'switch-to-buffer
  "." 'find-file
  "g" 'magit-status
- "r" 'counsel-rg)
+ "r" 'counsel-rg
+ "s" 'snails)
+
+(general-define-key
+ :keymaps '(normal)
+ "M-." 'xref-find-definitions)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here
