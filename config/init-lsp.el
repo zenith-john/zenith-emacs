@@ -20,8 +20,8 @@
 
 ;; company-lsp
 ;; dependencies: lsp-mode company s dash
-(use-package company-lsp
-  :after lsp-mode)
+(add-hook 'lsp-mode-hook (lambda ()
+                           (require 'company-lsp)))
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

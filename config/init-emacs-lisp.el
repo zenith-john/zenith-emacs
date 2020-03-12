@@ -8,12 +8,6 @@
 ;; macrostep
 (autoload 'macrostep-expand "macro-expand")
 
-;; sly-el-indent
-(defun zenith/load-sly-el-indent ()
-  (require 'sly-el-indent)
-  (sly-el-indent-setup))
-(add-hook 'emacs-lisp-mode-hook #'zenith/load-sly-el-indent)
-
 ;; From doom-emacs
 (defvar +emacs-lisp--face nil)
 ;;;###autoload
