@@ -6,8 +6,7 @@
       auto-compile-use-mode-line nil)
 
 ;; macrostep
-(use-package macrostep
-  :commands (macrostep-expand))
+(autoload 'macrostep-expand "macro-expand")
 
 ;; sly-el-indent
 (defun zenith/load-sly-el-indent ()
@@ -65,10 +64,8 @@ library/userland functions"
          `((+emacs-lisp-highlight-vars-and-faces . +emacs-lisp--face))))
 
 ;; rainbow-delimiters
-(use-package rainbow-delimiters
-  :hook
-  (emacs-lisp-mode . rainbow-delimiters-mode)
-  (lisp-mode . rainbow-delimiters-mode))
+(autoload 'rainbow-delimiters-mode "rainbow-delimiters")
+(zenith/add-hook '(lisp-mode-hook emacs-lisp-mode-hook) 'rainbow-delimiters-mode)
 
 (provide 'init-emacs-lisp)
 ;;; init-emacs-lisp.el ends here

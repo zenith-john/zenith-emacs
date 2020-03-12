@@ -20,10 +20,14 @@
   (interactive)
   (clear-image-cache))
 
-(defun zenith/autoload (list file)
+(defun zenith/autoload (command-list file)
   "Autoload multiple function of the file at once"
-  (dolist (elt list)
-    (autoload elt file)))
+  (dolist (command command-list)
+    (autoload command file)))
+
+(defun zenith/add-hook (hook-list func)
+  (dolist (hook hook-list)
+    (add-hook hook func)))
 
 (provide 'init-func)
 ;;; init-func.el ends here

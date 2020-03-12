@@ -7,11 +7,11 @@
 
 ;; smartparens
 (require 'smartparens)
-(dolist
-    (elt '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook))
-  (add-hook elt 'smartparens-mode))
+(zenith/add-hook '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook) 'smartparens-mode)
 
-(sp-with-modes '(c-mode c++-mode python-mode) (sp-local-pair "'" "'"))
+;; Do not close ' in lisp-mode
+(sp-pair "'" nil :actions :rem)
+(sp-local-pair sp-c-modes "'" "'")
 
 (provide 'init-sp)
 ;;; init-sp.el ends here
