@@ -93,72 +93,60 @@
 
 (put 'dired-find-alternate-file 'disabled nil)
 
-(use-package paren
-  :config
-  (show-paren-mode 1))
+(show-paren-mode 1)
 
-(use-package recentf
-  :commands recentf-open-files
-  :defer 1
-  :config
-  (setq recentf-save-file (concat zenith-emacs-local-dir "recentf")
-        recentf-auto-cleanup 'never
-        recentf-max-menu-items 0
-        recentf-max-saved-items 300
-        recentf-filename-handlers '(file-truename abbreviate-file-name)
-        recentf-exclude
-        (list #'file-remote-p "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
-              "^/tmp/" "^/ssh:" "\\.?ido\\.last$" "\\.revive$" "/TAGS$"
-              "^/var/folders/.+$"
-              ;; ignore private DOOM temp files (but not all of them)
-              (lambda (file) (file-in-directory-p file zenith-emacs-local-dir))))
-  (unless noninteractive
-    (add-hook 'kill-emacs-hook #'recentf-cleanup)
-    (recentf-mode +1)))
+(setq recentf-save-file (concat zenith-emacs-local-dir "recentf")
+      recentf-auto-cleanup 'never
+      recentf-max-menu-items 0
+      recentf-max-saved-items 300
+      recentf-filename-handlers '(file-truename abbreviate-file-name)
+      recentf-exclude
+      (list #'file-remote-p "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
+            "^/tmp/" "^/ssh:" "\\.?ido\\.last$" "\\.revive$" "/TAGS$"
+            "^/var/folders/.+$"
+            ;; ignore private DOOM temp files (but not all of them)
+            (lambda (file) (file-in-directory-p file zenith-emacs-local-dir))))
+(unless noninteractive
+  (add-hook 'kill-emacs-hook #'recentf-cleanup)
+  (recentf-mode +1))
 
-(use-package autorevert
-  :defer 1
-  :config
-  (global-auto-revert-mode 1))
+(global-auto-revert-mode 1)
 
 (general-def isearch-mode-map [escape] #'isearch-abort)
 (general-define-key [remap list-buffers] #'ibuffer)
 
 ;; ibuffer-projectile
 ;; dependencies: projectile
-(use-package ibuffer-projectile
-  :defer 1
-  :init
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-projectile-set-filter-groups)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic))))
-  :config
-  (setq ibuffer-formats
-        '((mark modified read-only " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " "
-                project-relative-file))))
+(add-hook 'ibuffer-hook
+          (lambda ()
+            (require 'ibuffer-projectile)
+            (ibuffer-projectile-set-filter-groups)
+            (unless (eq ibuffer-sorting-mode 'alphabetic)
+              (ibuffer-do-sort-by-alphabetic))
+            (setq-default ibuffer-formats
+                          '((mark modified read-only " "
+                             (name 18 18 :left :elide)
+                             " "
+                             (size 9 -1 :right)
+                             " "
+                             (mode 16 16 :left :elide)
+                             " "
+                             project-relative-file)))))
 
 (cua-mode 1)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; ws-butler
-(use-package ws-butler
-  :defer 1
-  :config
-  (ws-butler-global-mode 1))
+(require 'ws-butler)
+(ws-butler-global-mode 1)
 
-;; markdown-mode
-(use-package markdown-mode
-  :mode (("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode)))
+;; Mode load
+(dolist (elt '(("\\.md\\'" . markdown-mode)
+               ("\\.markdown\\'" . markdown-mode)))
+  (add-to-list 'auto-mode-alist elt))
+
+(autoload 'markdown-mode "markdown-mode")
 
 (provide 'init-default)
 ;;; init-default.el ends here
