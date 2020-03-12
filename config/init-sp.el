@@ -6,13 +6,12 @@
 ;;; Code:
 
 ;; smartparens
-(use-package smartparens-config
-  :hook ((prog-mode . smartparens-mode)
-         (LaTeX-mode . smartparens-mode)
-         (org-mode . smartparens-mode)
-         (comint-mode . smartparens-mode))
-  :config
-  (sp-with-modes '(c-mode c++-mode python-mode) (sp-local-pair "'" "'")))
+(require 'smartparens)
+(dolist
+    (elt '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook))
+  (add-hook elt 'smartparens-mode))
+
+(sp-with-modes '(c-mode c++-mode python-mode) (sp-local-pair "'" "'"))
 
 (provide 'init-sp)
 ;;; init-sp.el ends here
