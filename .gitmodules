@@ -39,9 +39,6 @@
 [submodule "extensions/magit"]
 	path = extensions/magit
 	url = https://github.com/magit/magit
-[submodule "extensions/use-package"]
-	path = extensions/use-package
-	url = https://github.com/jwiegley/use-package
 [submodule "extensions/general.el"]
 	path = extensions/general
 	url = https://github.com/noctuid/general.el

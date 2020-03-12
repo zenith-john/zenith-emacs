@@ -7,7 +7,6 @@
 
 ;; hydra
 ;; dependencies: lv
-(use-package hydra)
 
 ;; unset ',' keybinding for motion state.
 (define-key evil-motion-state-map "," nil)

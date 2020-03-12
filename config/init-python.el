@@ -16,18 +16,15 @@
 
 ;; pipenv
 ;; dependencies: pyvenv s f
-(use-package pipenv
-  :hook (python-mode . pipenv-mode)
-  :init
+(autoload 'pipenv-mode "pipenv-mode")
+  (add-hook 'python-mode-hook 'pipenv-mode)
   (setq
    pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
+   #'pipenv-projectile-after-switch-extended)
 
 ;; emacs-python-pytest
 ;; dependencies: dash dash-functional magit-popup projectile s
-(use-package python-pytest
-  :commands
-  (
+(zenith/autoload '(
    python-pytest
    python-pytest-file
    python-pytest-file-dwim
@@ -36,31 +33,29 @@
    python-pytest-last-failed
    python-pytest-repeat
    python-pytest-popup
-   ))
+   ) "python-pytest")
 
 ;; pyvenv
-(use-package pyvenv
-  :commands (pyvenv-activate
-             pyvenv-workon))
+(zenith/autoload
+ '(pyvenv-activate
+   pyvenv-workon) "pyvenv")
 
 ;; py-isort
-(use-package py-isort
-  :commands (py-isort-buffer))
+(autoload 'py-isort-buffer "py-isort")
 
 ;; pyimport
 ;; depedencies: s shut-up
-(use-package pyimport
-  :commands (pyimport-remove-unused pyimport-insert-missing))
+(zenith/autoload
+ '(pyimport-remove-unused pyimport-insert-missing) "pyimport")
 
 ;; yapfify
-(use-package yapfify
-  :commands (yapfify-region yapfify-buffer))
+(zenith/autoload
+  '(yapfify-region yapfify-buffer) "yapfify")
 
 ;; conda
 ;; dependencies: pythonic dash s f
-(use-package conda
-  :init (setq conda-anaconda-home (expand-file-name "~/anaconda3/"))
-  :commands (conda-env-activate conda-env-deactivate))
+(setq conda-anaconda-home (expand-file-name "~/anaconda3/"))
+(zenith/autoload '(conda-env-activate conda-env-deactivate) "conda")
 
 (provide 'init-python)
 ;;; init-python.el ends here

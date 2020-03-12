@@ -32,6 +32,7 @@
   (add-subdirs-to-load-path zenith-emacs-extension-dir)
 
   (require 'benchmark-init)
+  (require 'benchmark-init-modes)
   (benchmark-init/activate)
   (add-hook 'after-init-hook 'benchmark-init/deactivate)
   (require 'config))

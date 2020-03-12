@@ -20,10 +20,8 @@
               (zenith/init-font))))
 
 ;; darkroom
-(use-package darkroom
-  :commands (darkroom-mode darkroom-tentative-mode)
-  :init
-  (setq darkroom-text-scale-increase 1))
+(zenith/autoload '(darkroom-mode darkroom-tentative-mode) "darkroom")
+(setq darkroom-text-scale-increase 1)
 
 ;; doom-themes
 (require 'doom-themes)
@@ -50,10 +48,8 @@
 (global-hl-line-mode 1)
 
 ;; goto-line-preview
-(use-package goto-line-preview
-  :commands (goto-line-preview)
-  :init
-  (general-def [remap goto-line] 'goto-line-preview))
+(autoload 'goto-line-preview "goto-line-preview")
+(general-def [remap goto-line] 'goto-line-preview)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

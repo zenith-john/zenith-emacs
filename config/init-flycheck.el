@@ -7,10 +7,11 @@
 
 ;; flycheck
 ;; dependencies: pkg-info let-alist seq
-(use-package flycheck
-  :hook ((python-mode . flycheck-mode)
-         (c++-mode . flycheck-mode)
-         (c-mode . flycheck-mode)))
+(autoload 'flycheck-mode "flycheck")
+(zenith/add-hook
+ '(python-mode-hook
+   c++-mode-hook
+   c-mode-hook) 'flycheck-mode)
 
 (provide 'init-flycheck)
 ;;; init-flycheck.el ends here

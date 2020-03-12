@@ -26,11 +26,10 @@
 (global-company-mode +1)
 
 ;; prescient
-(use-package company-prescient
-  :hook (company-mode . company-prescient-mode)
-  :config
-  (setq prescient-save-file (concat zenith-emacs-root-dir "local/prescient-save.el"))
-  (prescient-persist-mode +1))
+(require 'company-prescient)
+(add-hook 'company-mode 'company-prescient-mode)
+(setq prescient-save-file (concat zenith-emacs-root-dir "local/prescient-save.el"))
+(prescient-persist-mode +1)
 
 ;; company-box
 ;; dependencies: dash dash-functional company

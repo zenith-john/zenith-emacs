@@ -9,34 +9,31 @@
 
 ;; helm-bibtex
 ;; dependencies: swiper parsebib s dash f biblio
-(use-package ivy-bibtex
-  :commands (ivy-bibtex)
-  :after ivy
-  :init
-  (add-to-list 'ivy-re-builders-alist '(ivy-bibtex . ivy--regex-ignore-order))
-  (setq bibtex-completion-bibliography (expand-file-name "~/Dropbox/Library.bib")
-        bibtex-completion-additional-search-fields '("abstract")))
+(autoload 'ivy-bibtex "ivy-bibtex")
+(add-to-list 'ivy-re-builders-alist '(ivy-bibtex . ivy--regex-ignore-order))
+(setq bibtex-completion-bibliography (expand-file-name "~/Dropbox/Library.bib")
+      bibtex-completion-additional-search-fields '("abstract"))
 
-(use-package reftex
-  :hook (LaTeX-mode . reftex-mode)
-  :config
-  ;; Get ReTeX working with biblatex
-  ;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992
-  (setq reftex-cite-format
-        '((?a . "\\autocite[]{%l}")
-          (?b . "\\blockcquote[]{%l}{}")
-          (?c . "\\cite[]{%l}")
-          (?f . "\\footcite[]{%l}")
-          (?n . "\\nocite{%l}")
-          (?p . "\\parencite[]{%l}")
-          (?s . "\\smartcite[]{%l}")
-          (?t . "\\textcite[]{%l}"))
-        reftex-plug-into-AUCTeX t
-        reftex-toc-split-windows-fraction 0.3
-	    reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
-	    reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
-  (add-hook 'reftex-toc-mode-hook
-	        (lambda () (reftex-toc-rescan))))
+
+(autoload 'reftex-mode "reftex")
+(add-hook 'LaTeX-mode 'reftex-mode)
+;; Get ReTeX working with biblatex
+;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992
+(setq reftex-cite-format
+      '((?a . "\\autocite[]{%l}")
+        (?b . "\\blockcquote[]{%l}{}")
+        (?c . "\\cite[]{%l}")
+        (?f . "\\footcite[]{%l}")
+        (?n . "\\nocite{%l}")
+        (?p . "\\parencite[]{%l}")
+        (?s . "\\smartcite[]{%l}")
+        (?t . "\\textcite[]{%l}"))
+      reftex-plug-into-AUCTeX t
+      reftex-toc-split-windows-fraction 0.3
+	  reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
+	  reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
+(add-hook 'reftex-toc-mode-hook
+	      (lambda () (reftex-toc-rescan)))
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
@@ -44,38 +41,40 @@
         bibtex-align-at-equal-sign t
         bibtex-text-indentation 20))
 
-;; company-auctex
-;; dependencies: yasnippet company auctex
-(use-package company-auctex
-  :defer 2
-  :init
+(defun zenith/latex-company-backends ()
+  "Initialize company-backends for company-mode"
+  ;; company-auctex
+  ;; dependencies: yasnippet company auctex
+  (require 'company-auctex)
   (add-to-list '+latex-company-backends 'company-auctex-bibs)
   (add-to-list '+latex-company-backends 'company-auctex-labels)
   (add-to-list '+latex-company-backends 'company-auctex-symbols)
   (add-to-list '+latex-company-backends 'company-auctex-environments)
-  (add-to-list '+latex-company-backends 'company-auctex-macros))
+  (add-to-list '+latex-company-backends 'company-auctex-macros)
 
-;; company-reftex
-;; dependencies: s company
-(use-package company-reftex
-  :init
+  ;; company-reftex
+  ;; dependencies: s company
+  (require 'company-reftex)
   (add-to-list '+latex-company-backends 'company-reftex-labels)
-  (add-to-list '+latex-company-backends 'company-reftex-citations))
+  (add-to-list '+latex-company-backends 'company-reftex-citations)
 
-;; company-math
-;; dependencies: company math-symbol-lists
-(use-package company-math
-  :init
+  ;; company-math
+  ;; dependencies: company math-symbol-lists
+  (require 'company-math)
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
-  (add-to-list '+latex-company-backends 'company-latex-commands))
+  (add-to-list '+latex-company-backends 'company-latex-commands)
 
+  (make-local-variable 'company-backends)
+  (add-to-list 'company-backends +latex-company-backends))
 
+(autoload 'TeX-latex-mode "latex")
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-latex-mode))
 
+(add-hook 'LaTeX-mode-hook 'zenith/latex-company-backends)
+
 ;; auctex
-(use-package tex
-  :defer 2
-  :init
+(defun zenith/auctex-setup ()
+  "Set up variable for auctex"
   (setq TeX-parse-self t ; parse on load
         TeX-auto-save t  ; parse on save
         ;; use hidden dirs for auctex files
@@ -181,61 +180,54 @@
 
   ;; prompt for master
   (setq-default TeX-master nil)
-  :config
   ;; set default pdf viewer
   (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
   ;; set-up chktex
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s")
-  ;; tell emacs how to parse tex files
-  (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
-  ;; Add company-backends
-  (add-hook 'TeX-mode-hook (lambda ()
-                             (make-local-variable 'company-backends)
-                             (add-to-list 'company-backends +latex-company-backends)))
-  ;; Fold TeX macros
-  (add-hook 'TeX-mode-hook #'TeX-fold-mode)
-  ;; Enable rainbow mode after applying styles to the buffer
-  (add-hook 'TeX-mode-hook #'rainbow-delimiters-mode)
-  ;; Do not prompt for Master files, this allows auto-insert to add templates to
-  ;; .tex files
-  (add-hook 'TeX-mode-hook
-	        ;; Necessary because it is added as an anonymous, byte-compiled function
-	        (lambda ()
-              (remove-hook 'find-file-hook
-			               (cl-find-if #'byte-code-function-p find-file-hook)
-			               'local)))
-  
+
   (add-to-list 'TeX-command-list
-               '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
-                 TeX-run-command t t :help "Run xelatex") t)
+             '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
+               TeX-run-command t t :help "Run xelatex") t))
 
-  (defun LaTeX-star-environment-dwim ()
-    "Convert between the starred and the not starred version of the current environment."
-    (interactive)
-    ;; If the current environment is starred.
-    (if (string-match "\*$" (LaTeX-current-environment))
-        ;; Remove the star from the current environment.
-        (LaTeX-modify-environment (substring (LaTeX-current-environment) 0 -1))
-      ;; Else add a star to the current environment.
-      (LaTeX-modify-environment (concat (LaTeX-current-environment) "*"))))
+(add-hook 'TeX-mode-hook 'zenith/auctex-setup)
+;; tell emacs how to parse tex files
+(add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
+;; Fold TeX macros
+(add-hook 'TeX-mode-hook #'TeX-fold-mode)
+;; Enable rainbow mode after applying styles to the buffer
+(add-hook 'TeX-mode-hook #'rainbow-delimiters-mode)
+;; Do not prompt for Master files, this allows auto-insert to add templates to
+;; .tex files
+(add-hook 'TeX-mode-hook
+	      ;; Necessary because it is added as an anonymous, byte-compiled function
+	      (lambda ()
+            (remove-hook 'find-file-hook
+			             (cl-find-if #'byte-code-function-p find-file-hook)
+			             'local)))
 
-  (general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\)))
-  (general-def LaTeX-mode-map "C-*" 'LaTeX-star-environment-dwim))
+(defun LaTeX-star-environment-dwim ()
+  "Convert between the starred and the not starred version of the current environment."
+  (interactive)
+  ;; If the current environment is starred.
+  (if (string-match "\*$" (LaTeX-current-environment))
+      ;; Remove the star from the current environment.
+      (LaTeX-modify-environment (substring (LaTeX-current-environment) 0 -1))
+    ;; Else add a star to the current environment.
+    (LaTeX-modify-environment (concat (LaTeX-current-environment) "*"))))
+
+(general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\)))
+(general-def LaTeX-mode-map "C-*" 'LaTeX-star-environment-dwim)
 
 
-(use-package latex
-  :defer 2
-  :init
-  (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
-        '(LaTeX-section-heading
-          LaTeX-section-title
-          LaTeX-section-section)
-        LaTeX-fill-break-at-separators nil
-        LaTeX-item-indent 0)
-  :config
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
-  (add-hook 'LaTeX-mode-hook 'auto-fill-mode))
+(setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
+      '(LaTeX-section-heading
+        LaTeX-section-title
+        LaTeX-section-section)
+      LaTeX-fill-break-at-separators nil
+      LaTeX-item-indent 0)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
 
 (provide 'init-latex)
 ;;; init-latex.el ends here
