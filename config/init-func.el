@@ -20,5 +20,10 @@
   (interactive)
   (clear-image-cache))
 
+(defun zenith/autoload (list file)
+  "Autoload multiple function of the file at once"
+  (dolist (elt list)
+    (autoload elt file)))
+
 (provide 'init-func)
 ;;; init-func.el ends here
