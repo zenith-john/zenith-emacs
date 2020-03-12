@@ -12,6 +12,7 @@
 (defvar zenith-file-name-handler-alist file-name-handler-alist "Remember the origin value of file-name-handler-alist")
 
 (setq file-name-handler-alist nil)
+(setq frame-inhibit-implied-resize nil)
 
 (require 'cl-lib)
 ;; From https://emacs-china.org/t/topic/3931/2
@@ -47,8 +48,9 @@
 (add-hook 'after-init-hook 'benchmark-init/deactivate)
 (require 'config)
 
-(add-hook 'after-init-hook (lambda ()(setq file-name-handler-alist zenith-file-name-handler-alist)))
-(add-hook 'after-init-hook (lambda ()(setq gc-cons-threshold 16777216)))
+(add-hook 'after-init-hook (lambda ()(setq file-name-handler-alist zenith-file-name-handler-alist
+                                           gc-cons-threshold 16777216
+                                           gc-cons-percentage 0.6)))
 
 (require 'server)
 (unless (server-running-p)

@@ -16,6 +16,7 @@
 \usepackage{indentfirst}
 \usepackage{mathrsfs}
 \usepackage{xspace}
+\usepackage{tikz-cd}
 \setlength{\parindent}{2em}
 \usepackage[backend=biber,style=gb7714-2015]{biblatex}
 \addbibresource[location=local]{~/Dropbox/Library.bib}

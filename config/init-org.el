@@ -69,6 +69,7 @@
    org-image-actual-width nil
    org-indent-indentation-per-level 2
    org-indent-mode-turns-on-hiding-stars t
+   org-insert-heading-respect-content t
    org-list-description-max-indent 4
    org-pretty-entities nil
    org-pretty-entities-include-sub-superscripts t
@@ -160,8 +161,16 @@
 
   ;; Org tag
   (setq org-tag-alist
-        '(("Improvement" . ?i) ("Homework" . ?h) ("Personal" . ?p) ("Question" . ?q) ("Idea" . ?d)))
-
+        '(("Improvement" . ?i)
+          (:startgrouptag)
+          ("Must")
+          (:grouptags)
+          ("Homework" . ?h)
+          ("Job" . ?j)
+          (:endgrouptag)
+          ("Personal" . ?p)
+          ("Question" . ?q)
+          ("Idea" . ?d)))
 
   ;; Org agenda settings
   (setq org-enable-table-editor 'optimized
@@ -179,10 +188,8 @@
 
 
   (setq org-agenda-custom-commands
-        '(("b" "Agenda View" ((tags-todo "Question/!-Waiting/!-Pause"
-                               ((org-agenda-overriding-header "Unsolved Questions:")))
-                              (tags "AGENDAHEADER"
-                               ((org-agenda-overriding-header "========================================\nToday's Schedule:")))
+        '(("b" "Agenda View" ((tags "AGENDAHEADER"
+                               ((org-agenda-overriding-header "Today's Schedule:")))
                               (agenda ""
                                ((org-agenda-show-all-dates t)
                                 (org-agenda-span 'day)
@@ -190,7 +197,7 @@
                                 (org-agenda-start-day "+0d")))
                               (todo "NEXT"
                                ((org-agenda-overriding-header "========================================\nNext Tasks:")))
-                              (tags-todo "Homework/!-NEXT"
+                              (tags-todo "Must/!-NEXT"
                                ((org-agenda-overriding-header "========================================\nMust Do:")))
                               (tags "BEFOREWEEKGLANCE"
                                ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
@@ -198,10 +205,6 @@
                                ((org-agenda-show-all-dates t)
                                 (org-agenda-span 6)
                                 (org-agenda-start-day "+1d")))
-                              (tags-todo "Improvement/!-NEXT"
-                               ((org-agenda-overriding-header "========================================\nImprove Yourself:")))
-                              (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
-                               ((org-agenda-overriding-header "\nPersonal Project:")))
                               (tags "BEFOREDEADLINE"
                                ((org-agenda-overriding-header "========================================\nFar Away Tasks:")))
                               (agenda ""
@@ -216,44 +219,9 @@
                               (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
                                ((org-agenda-overriding-header "\n\nPersonal Project:")))))))
 
-  ;; Org latex export
-  (setq org-latex-with-hyperref t)
-  (setq org-latex-compiler "xelatex")
-  (setq org-latex-default-packages-alist
-        '(("" "hyperref" nil)
-          ("AUTO" "inputenc" t)
-          ("" "fixltx2e" nil)
-          ("" "graphicx" t)
-          ("" "longtable" nil)
-          ("" "float" nil)
-          ("" "wrapfig" nil)
-          ("" "rotating" nil)
-          ("normalem" "ulem" t)
-          ("" "amsmath" t)
-          ("" "textcomp" t)
-          ("" "marvosym" t)
-          ("" "wasysym" t)
-          ("" "multicol" t)
-          ("" "amssymb" t)
-          "\\tolerance=1000"))
-
-  ;; ob-async
-  ;; dependencies: org async dash
-  (require 'ob-async)
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (latex . t)
-     (python . t)
-     (shell . t)
-     (dot . t)))
-
-  (setq org-src-fontify-natively t      ; make code pretty
-        org-src-preserve-indentation t  ; use native major-mode indentation
-        org-src-tab-acts-natively t
-        org-src-window-setup 'current-window
-        org-confirm-babel-evaluate nil)
+  ;; Org attach
+  (require 'org-attach)
+  (setq org-attach-method 'lns)
 
   ;; Org-agenda export to icalendar
   (require 'ox-icalendar)
@@ -320,7 +288,25 @@
   (add-hook 'org-mode-hook 'evil-org-mode)
   (evil-org-set-key-theme)
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  (defun org-agenda-attach-open ()
+    "Open attachment with one-key stroke."
+    (interactive)
+    (unless (eq major-mode 'org-agenda-mode)
+      (let ((debug-on-quit nil))
+        (signal 'quit '("This was written expressly for `*Org Agenda*`."))))
+    (let ((marker (or (get-text-property (point) 'org-hd-marker)
+                      (get-text-property (point) 'org-marker))))
+      (if marker
+          (save-excursion
+            (set-buffer (marker-buffer marker))
+            (goto-char marker)
+            (org-back-to-heading t)
+            (call-interactively 'org-attach-open))
+        (error "No task in current line"))))
+  (evil-define-key 'motion org-agenda-mode-map
+    "a" 'org-attach
+    "o" 'org-agenda-attach-open))
 
 (provide 'init-org)
 ;;; init-org.el ends here
