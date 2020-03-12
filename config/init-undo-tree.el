@@ -6,9 +6,8 @@
 ;;; Code:
 
 ;; undo-tree
-(use-package undo-tree
-  :config
-  (global-undo-tree-mode 1))
+(require 'global-undo-tree)
+(global-undo-tree-mode 1)
 
 (provide 'init-undo-tree)
 ;;; init-undo-tree.el ends here

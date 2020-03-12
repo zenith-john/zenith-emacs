@@ -6,19 +6,14 @@
 ;;; Code:
 
 ;; fd-dired
-(use-package fd-dired
-  :commands (fd-dired)
-  :if (executable-find "fd"))
+(autoload 'fd-dired "fd-dired")
 
-(use-package expand-region
-  :commands (er/expand-region)
-  :after evil
-  :init
-  (general-define-key
-   "C-=" 'er/expand-region)
-  (general-define-key
-   :keymaps 'normal
-   "=" 'er/expand-region))
+(autoload 'er/expand-region "expand-region")
+(general-define-key
+ "C-=" 'er/expand-region)
+(general-define-key
+ :keymaps 'normal
+ "=" 'er/expand-region)
 
 (defun +clear-image-cache ()
   "Remove image cache to redisplay the image."
