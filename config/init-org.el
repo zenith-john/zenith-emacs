@@ -31,10 +31,6 @@
   (setq-local company-idle-delay nil)
   (display-line-numbers-mode 0)
   (org-cdlatex-mode 1)
-  ;; org-edit-latex
-  ;; dependencies: auctex
-  (require 'org-edit-latex)
-  (org-edit-latex-mode 1)
   ;; ox-hugo
   ;; dependencies: org
   (require 'ox-hugo)
@@ -44,7 +40,6 @@
   ;; Org-agenda export to icalendar
   (require 'ox-icalendar))
 
-(add-hook 'org-mode-hook 'org-setup-hook)
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
 (with-eval-after-load 'org
@@ -185,11 +180,10 @@
                               (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
                                          ((org-agenda-overriding-header "\n\nPersonal Project:")))))))
 
-  (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files))
+  (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
 
-;; I prefer C-c C-c over C-c ' (more consistent)
-(eval-after-load 'org
-  '(define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit))
+  ;; I prefer C-c C-c over C-c ' (more consistent)
+  (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit))
 
 (eval-after-load 'ox-latex
   '(add-to-list 'org-latex-classes
@@ -210,35 +204,23 @@
         org-icalendar-store-UID t
         org-agenda-default-appointment-duration 90))
 
-(defun zenith/my-org-agenda ()
-  (interactive)
-  (org-agenda 0 "b"))
-
-(general-define-key
- :keymaps 'normal
- :prefix ","
- "a" 'org-agenda
- "A" 'zenith/my-org-agenda)
-
-(add-hook 'org-mode-hook 'zenith/evil-org-setup)
-
-(defun zenith/evil-org-setup ()
-  "Org mode hook for evil-org-mode"
+(with-eval-after-load 'org
   (require 'evil-org)
   (evil-org-set-key-theme)
   (evil-org-mode 1))
 
-(add-hook 'org-agenda-mode-hook 'zenith/evil-org-agenda-setup)
-
-(defun zenith/evil-org-agenda-setup ()
-  "Org agenda mode hook"
+(with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  (evil-define-key 'motion org-agenda-mode-map
+    "a" 'org-attach
+    "o" 'org-agenda-attach-open))
 
 ;; Org attach
 (setq org-attach-method 'lns)
 
 (zenith/autoload '(org-attach org-attach-open) "org-attach")
+
 (defun org-agenda-attach-open ()
   "Open attachment with one-key stroke."
   (interactive)
@@ -254,9 +236,18 @@
           (org-back-to-heading t)
           (call-interactively 'org-attach-open))
       (error "No task in current line"))))
-(evil-define-key 'motion org-agenda-mode-map
-  "a" 'org-attach
-  "o" 'org-agenda-attach-open)
+
+;; Global settings
+(defun zenith/my-org-agenda ()
+  (interactive)
+  (org-agenda 0 "b"))
+
+(general-define-key
+ :keymaps 'normal
+ :prefix ","
+ "a" 'org-agenda
+ "A" 'zenith/my-org-agenda)
+
 
 (provide 'init-org)
 ;;; init-org.el ends here

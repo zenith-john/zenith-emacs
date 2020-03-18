@@ -9,14 +9,12 @@
 
 ;; helm-bibtex
 ;; dependencies: swiper parsebib s dash f biblio
-(autoload 'ivy-bibtex "ivy-bibtex")
+(autoload 'ivy-bibtex "ivy-bibtex" "" t)
 (add-to-list 'ivy-re-builders-alist '(ivy-bibtex . ivy--regex-ignore-order))
 (setq bibtex-completion-bibliography (expand-file-name "~/Dropbox/Library.bib")
       bibtex-completion-additional-search-fields '("abstract"))
 
-
-(autoload 'reftex-mode "reftex")
-(add-hook 'LaTeX-mode 'reftex-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; Get ReTeX working with biblatex
 ;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992
 (setq reftex-cite-format
@@ -41,8 +39,7 @@
         bibtex-align-at-equal-sign t
         bibtex-text-indentation 20))
 
-(defun zenith/latex-company-backends ()
-  "Initialize company-backends for company-mode"
+(with-eval-after-load 'tex
   ;; company-auctex
   ;; dependencies: yasnippet company auctex
   (require 'company-auctex)
@@ -62,19 +59,21 @@
   ;; dependencies: company math-symbol-lists
   (require 'company-math)
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
-  (add-to-list '+latex-company-backends 'company-latex-commands)
+  (add-to-list '+latex-company-backends 'company-latex-commands))
 
-  (make-local-variable 'company-backends)
-  (add-to-list 'company-backends +latex-company-backends))
+(defun zenith/latex-company-setup ()
+  "Setup company backends for latex editing."
+   (make-local-variable 'company-backends)
+   (add-to-list 'company-backends +latex-company-backends))
 
-(autoload 'TeX-latex-mode "latex")
-(add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-latex-mode))
+(add-hook 'LaTeX-mode-hook 'zenith/latex-company-setup)
 
-(add-hook 'LaTeX-mode-hook 'zenith/latex-company-backends)
+
+(autoload 'TeX-latex-mode "tex-site" "" t)
+(add-hook 'latex-mode-hook 'TeX-latex-mode)
 
 ;; auctex
-(defun zenith/auctex-setup ()
-  "Set up variable for auctex"
+(with-eval-after-load 'tex
   (setq TeX-parse-self t ; parse on load
         TeX-auto-save t  ; parse on save
         ;; use hidden dirs for auctex files
@@ -189,7 +188,6 @@
              '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
                TeX-run-command t t :help "Run xelatex") t))
 
-(add-hook 'TeX-mode-hook 'zenith/auctex-setup)
 ;; tell emacs how to parse tex files
 (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
 ;; Fold TeX macros
@@ -215,9 +213,14 @@
     ;; Else add a star to the current environment.
     (LaTeX-modify-environment (concat (LaTeX-current-environment) "*"))))
 
-(general-def LaTeX-mode-map "、" (lambda ()(interactive)(self-insert-command 1 ?\\)))
-(general-def LaTeX-mode-map "C-*" 'LaTeX-star-environment-dwim)
-
+;; Exchange position of { and [ in latex mode to reduce the injury of the finger
+(general-define-key
+ :keymaps 'LaTeX-mode-map
+ "、" (lambda ()(interactive)(self-insert-command 1 ?\\))
+ "C-*" 'LaTeX-star-environment-dwim
+ "[" (lambda ()(interactive)(self-insert-command 1 ?{))
+ "{" (lambda ()(interactive)(self-insert-command 1 ?\[))
+ )
 
 (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
       '(LaTeX-section-heading

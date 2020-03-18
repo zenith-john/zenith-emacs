@@ -23,18 +23,17 @@
 
 (require 'company)
 (general-define-key "C-x C-j" #'company-complete-common)
-(global-company-mode +1)
 
 ;; prescient
 (require 'company-prescient)
-(add-hook 'company-mode 'company-prescient-mode)
+(add-hook 'company-mode-hook 'company-prescient-mode)
 (setq prescient-save-file (concat zenith-emacs-root-dir "local/prescient-save.el"))
 (prescient-persist-mode +1)
 
 ;; company-box
 ;; dependencies: dash dash-functional company
 (require 'company-box)
-(add-hook 'company-mode 'company-box-mode)
+(add-hook 'company-mode-hook 'company-box-mode)
 (setq company-box-show-single-candidate t
       company-box-backends-colors nil
       company-box-max-candidates 50
@@ -86,6 +85,8 @@
             ((boundp sym)   'ElispVariable)
             ((featurep sym) 'ElispFeature)
             ((facep sym)    'ElispFace)))))
+
+(global-company-mode +1)
 
 (provide 'init-company)
 ;;; init-company.el ends here

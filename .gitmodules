@@ -20,9 +20,6 @@
 	path = extensions/python-language-server
 	url = https://github.com/microsoft/python-language-server
 	ignore = dirty
-[submodule "extensions/org-edit-latex"]
-	path = extensions/org-edit-latex
-	url = https://github.com/et2010/org-edit-latex
 [submodule "extensions/helm-bibtex"]
 	path = extensions/helm-bibtex
 	url = https://github.com/tmalsburg/helm-bibtex
