@@ -11,21 +11,20 @@
 
 (general-define-key "M-/" 'pyim-convert-string-at-point)
 
-(add-hook 'pyim-active-hook 'zenith/pyim-setup)
-
-(defun zenith/pyim-setup ()
-  "Initialize for pyim"
+(with-eval-after-load 'pyim
   ;; liberime
   (load-file (expand-file-name "liberime/build/liberime.so" zenith-emacs-extension-dir))
   (liberime-start (expand-file-name "/usr/share/rime-data/")
-                  (concat zenith-emacs-root-dir "local/pyim/rime/"))
+                  (concat zenith-emacs-root-dir "pyim/rime/"))
+  (liberime-sync-user-data)
   (liberime-select-schema "luna_pinyin_simp")
   (pyim-isearch-mode 1)
   (add-to-list 'pyim-punctuation-dict '("\\" "、")))
 
 (setq pyim-dcache-directory (concat zenith-emacs-local-dir "pyim/dcache/")
       pyim-page-tooltip 'posframe
-      default-input-method "pyim")
+      default-input-method "pyim"
+      pyim-liberime-search-limit 100)
 
 (setq pyim-default-scheme 'rime)
 
