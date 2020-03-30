@@ -9,7 +9,7 @@
 ;; swiper
 (require 'ivy)
 
-(setq ivy-height 15
+(setq ivy-height 20
       ivy-wrap t
       ivy-fixed-height-minibuffer t
       projectile-completion-system 'ivy
@@ -43,6 +43,12 @@
 (require 'ivy-prescient)
 (setq ivy-prescient-retain-classic-highlighting t)
 (ivy-prescient-mode)
+
+;; ivy-posframe
+;; dependencies: ivy posframe
+(require 'ivy-posframe)
+(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+(ivy-posframe-mode 1)
 
 ;; ivy-rich
 ;; dependencies: ivy

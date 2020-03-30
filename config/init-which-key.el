@@ -18,5 +18,10 @@
 
 (which-key-mode +1)
 
+;; which-key-posframe
+;; dependencies: which-key posframe
+(require 'which-key-posframe)
+(which-key-posframe-mode)
+
 (provide 'init-which-key)
 ;;; init-which-key.el ends here

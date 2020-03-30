@@ -288,3 +288,12 @@
 [submodule "extensions/awesome-tray"]
 	path = extensions/awesome-tray
 	url = https://github.com/manateelazycat/awesome-tray
+[submodule "extensions/flycheck-posframe"]
+	path = extensions/flycheck-posframe
+	url = https://github.com/alexmurray/flycheck-posframe
+[submodule "extensions/which-key-posframe"]
+	path = extensions/which-key-posframe
+	url = https://github.com/yanghaoxie/which-key-posframe
+[submodule "extensions/ivy-posframe"]
+	path = extensions/ivy-posframe
+	url = https://github.com/tumashu/ivy-posframe
