@@ -149,6 +149,9 @@
 ;; ;; dependencies: fuz ivy
 (require 'ivy-fuz)
 
+;; Less sort limit for better performance as the sort process is the bottleneck
+;; of fuz matching.
+(setq ivy-fuz-sort-limit 100)
 (setq ivy-sort-matches-functions-alist '((helpful-variable)
                                          (helpful-callable)
                                          (t . ivy-fuz-sort-fn))
