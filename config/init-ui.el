@@ -13,11 +13,6 @@
   (set-fontset-font t 'unicode zenith-unicode-font nil 'prepend))
 
 (zenith/init-font)
-(when (daemonp)
-  (add-hook 'after-make-frame-functions
-            (lambda (frame)
-              (select-frame frame)
-              (zenith/init-font))))
 
 ;; darkroom
 (zenith/autoload '(darkroom-mode darkroom-tentative-mode) "darkroom")

@@ -1,4 +1,4 @@
-;;; init.el --- init file -*- lexical-binding: t; -*-
+;; init.el --- init file -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;;

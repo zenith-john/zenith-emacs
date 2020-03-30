@@ -290,4 +290,4 @@
 	url = https://github.com/Somelauw/evil-org-mode
 [submodule "extensions/snails"]
 	path = extensions/snails
-	url = https://github.com/zenith-john/snails
+	url = https://github.com/manateelazycat/snails
