@@ -22,23 +22,11 @@
 (require 'doom-themes)
 (load-theme 'doom-one t)
 
-;; doom-modeline
-;; dependencies: all-the-icons shrink-path dash
-;; all-the-icons depends on emacs-memoize
-(require 'doom-modeline)
-
-;; Use minimal height to avoid the overlap of org-set-tags-command.
-(setq doom-modeline-height 1)
-
-;; Redefine doom-modeline--font-heigth
-(defun doom-modeline--font-height ()
-  "Calculate the actual char height of the mode-line."
-  (let ((height (face-attribute 'mode-line :height)))
-    (round (cond ((integerp height) (/ height 10))
-                         ((floatp height) (* height (frame-char-height)))
-                         (t (frame-char-height))))))
-
-(doom-modeline-mode 1)
+;; awesome-tray
+(require 'awesome-tray)
+(awesome-tray-mode 1)
+(setq awesome-tray-active-modules
+     '("evil" "location" "parent-dir" "buffer-name" "mode-name"))
 
 (global-hl-line-mode 1)
 
