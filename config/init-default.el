@@ -141,6 +141,10 @@
 (require 'ws-butler)
 (ws-butler-global-mode 1)
 
+;; emacs-wgrep
+(autoload 'wgrep-change-to-wgrep-mode "wgrep")
+(setq wgrep-auto-save-buffer t)
+
 ;; Mode load
 (dolist (elt '(("\\.md\\'" . markdown-mode)
                ("\\.markdown\\'" . markdown-mode)))

@@ -146,40 +146,17 @@
  'counsel-ag ; also applies to `counsel-rg' & `counsel-pt'
  '(("O" +ivy-git-grep-other-window-action "open in other window")))
 
-;; counsel-projectile:
-;; dependencies: counsel projectile
+;; fuz.el
+(require 'fuz)
+(unless (require 'fuz-core nil t)
+  (fuz-build-and-load-dymod))
 
-(zenith/autoload '(counsel-projectile-find-file
-                   counsel-projectile-find-dir
-                   counsel-projectile-switch-to-buffer
-                   counsel-projectile-grep
-                   counsel-projectile-rg
-                   counsel-projectile-switch-project) "counsel-projectile")
-(general-def
-  [remap projectile-find-dir]         #'counsel-projectile-find-dir
-  [remap projectile-switch-to-buffer] #'counsel-projectile-switch-to-buffer
-  [remap projectile-grep]             #'counsel-projectile-grep
-  [remap projectile-rg]               #'counsel-projectile-rg
-  [remap projectile-switch-project]   #'counsel-projectile-switch-project)
-
-;; no highlighting visited files; slows down the filtering
-(ivy-set-display-transformer #'counsel-projectile-find-file nil)
-
-;; emacs-wgrep
-(autoload 'wgrep-change-to-wgrep-mode "wgrep")
-(setq wgrep-auto-save-buffer t)
-
-;; flx
-
-(require 'flx)
-(setq ivy-re-builders-alist
-      '((counsel-ag . ivy--regex-plus)
-        (counsel-rg . ivy--regex-plus)
-        (counsel-grep . ivy--regex-plus)
-        (swiper . ivy--regex-plus)
-        (swiper-isearch . ivy--regex-plus)
-        (t . ivy--regex-fuzzy))
-      ivy-initial-inputs-alist nil)
+;; ivy-fuz.el
+;; dependencies: fuz ivy
+(require 'ivy-fuz)
+(setq ivy-sort-matches-functions-alist '((t . ivy-fuz-sort-fn))
+      ivy-re-builders-alist '((t . ivy-fuz-regex-fuzzy)))
+(add-to-list 'ivy-highlight-functions-alist '(ivy-fuz-regex-fuzzy . ivy-fuz-highlight-fn))
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

@@ -192,9 +192,6 @@
 [submodule "extensions/projectile"]
 	path = extensions/projectile
 	url = https://github.com/bbatsov/projectile
-[submodule "extensions/counsel-projectile"]
-	path = extensions/counsel-projectile
-	url = https://github.com/ericdanan/counsel-projectile
 [submodule "extensions/helpful"]
 	path = extensions/helpful
 	url = https://github.com/Wilfred/helpful
@@ -297,3 +294,9 @@
 [submodule "extensions/ivy-posframe"]
 	path = extensions/ivy-posframe
 	url = https://github.com/tumashu/ivy-posframe
+[submodule "extensions/fuz.el"]
+	path = extensions/fuz
+	url = https://github.com/rustify-emacs/fuz.el
+[submodule "extensions/ivy-fuz.el"]
+	path = extensions/ivy-fuz
+	url = https://github.com/Silex/ivy-fuz.el
