@@ -183,9 +183,6 @@
 [submodule "extensions/all-the-icons-ivy"]
 	path = extensions/all-the-icons-ivy
 	url = https://github.com/asok/all-the-icons-ivy
-[submodule "extensions/ivy-rich"]
-	path = extensions/ivy-rich
-	url = https://github.com/Yevgnen/ivy-rich
 [submodule "extensions/emacs-wgrep"]
 	path = extensions/emacs-wgrep
 	url = https://github.com/mhayashi1120/Emacs-wgrep

@@ -9,7 +9,7 @@
 ;; swiper
 (require 'ivy)
 
-(setq ivy-height 20
+(setq ivy-height 15
       ivy-wrap t
       ivy-fixed-height-minibuffer t
       projectile-completion-system 'ivy
@@ -47,40 +47,34 @@
 ;; ivy-posframe
 ;; dependencies: ivy posframe
 (require 'ivy-posframe)
-(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-(ivy-posframe-mode 1)
 
-;; ivy-rich
-;; dependencies: ivy
-(require 'ivy-rich)
-;; Remove built-in coloring of buffer list; we do our own
-(setq ivy-switch-buffer-faces-alist nil)
-(ivy-set-display-transformer 'internal-complete-buffer nil)
+(defun zenith/ivy-posframe-get-size ()
+  "Set size of by the posframe"
+  (list
+   :height ivy-posframe-height
+   :width (round (* 0.5 (frame-width)))
+   :min-height ivy-posframe-height
+   :min-width 80))
 
-;; Allow these transformers to apply to more switch-buffer commands
-(let ((ivy-switch-buffer-transformer (plist-get ivy-rich-display-transformers-list 'ivy-switch-buffer)))
-  (dolist (cmd '(counsel-projectile-switch-to-buffer))
-    (setq ivy-rich-display-transformers-list
-          (plist-put ivy-rich-display-transformers-list
-                     cmd ivy-switch-buffer-transformer))))
-
-;; Reload ivy which so changes to `ivy-rich-display-transformers-list' work
-(ivy-rich-mode +1)
+(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
+      ivy-posframe-size-function #'zenith/ivy-posframe-get-size
+      ivy-posframe-height 20)
+(ivy-posframe-mode)
+(with-current-buffer (get-buffer ivy-posframe-buffer)
+  (setq-local truncate-lines t))
 
 ;; all-the-icons-ivy
 ;; dependencies: ivy all-the-icons
 (require 'all-the-icons-ivy)
-;; `all-the-icons-ivy' is incompatible with ivy-rich's switch-buffer
-;; modifications, so we disable them and merge them ourselves
-(setq all-the-icons-ivy-buffer-commands nil)
 
 (all-the-icons-ivy-setup)
 (with-eval-after-load 'counsel-projectile
   (let ((all-the-icons-ivy-file-commands '(counsel-projectile
                                            counsel-projectile-find-file
-                                           counsel-projectile-find-dir)))
+                                           counsel-projectile-find-dir))
+        (all-the-icons-ivy-buffer-commands
+         '(counsel-projectile-switch-to-buffer)))
     (all-the-icons-ivy-setup)))
-
 
 (require 'counsel)
 (general-def
@@ -151,12 +145,14 @@
 (unless (require 'fuz-core nil t)
   (fuz-build-and-load-dymod))
 
-;; ivy-fuz.el
-;; dependencies: fuz ivy
+;; ;; ivy-fuz.el
+;; ;; dependencies: fuz ivy
 (require 'ivy-fuz)
-(setq ivy-sort-matches-functions-alist '((t . ivy-fuz-sort-fn))
+
+(setq ivy-sort-matches-functions-alist '((helpful-variable)
+                                         (helpful-callable)
+                                         (t . ivy-fuz-sort-fn))
       ivy-re-builders-alist '((t . ivy-fuz-regex-fuzzy)))
-(add-to-list 'ivy-highlight-functions-alist '(ivy-fuz-regex-fuzzy . ivy-fuz-highlight-fn))
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

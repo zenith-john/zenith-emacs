@@ -21,7 +21,13 @@
 ;; which-key-posframe
 ;; dependencies: which-key posframe
 (require 'which-key-posframe)
+(setq which-key-posframe-parameters
+      '((left-fringe . 8)
+        (right-fringe . 8)))
 (which-key-posframe-mode)
+
+(with-current-buffer " *Minibuf-0*"
+  (erase-buffer))
 
 (provide 'init-which-key)
 ;;; init-which-key.el ends here

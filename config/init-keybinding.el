@@ -18,7 +18,9 @@
  "." 'find-file
  "g" 'magit-status
  "r" 'counsel-rg
- "s" 'snails)
+ "s" 'snails
+ "a" 'org-agenda
+ "A" 'zenith/my-org-agenda)
 
 (general-define-key
  :keymaps '(normal)

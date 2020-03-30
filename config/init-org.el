@@ -242,12 +242,5 @@
   (interactive)
   (org-agenda 0 "b"))
 
-(general-define-key
- :keymaps 'normal
- :prefix ","
- "a" 'org-agenda
- "A" 'zenith/my-org-agenda)
-
-
 (provide 'init-org)
 ;;; init-org.el ends here
