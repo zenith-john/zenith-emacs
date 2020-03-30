@@ -23,7 +23,7 @@
 (defun zenith/autoload (command-list file)
   "Autoload multiple function of the file at once"
   (dolist (command command-list)
-    (autoload command file)))
+    (autoload command file nil t)))
 
 (defun zenith/add-hook (hook-list func)
   (dolist (hook hook-list)

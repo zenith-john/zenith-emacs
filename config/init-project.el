@@ -10,7 +10,7 @@
 (require 'projectile)
 
 (setq projectile-cache-file (concat zenith-emacs-local-dir "projectile.cache")
-      projectile-enable-caching (not noninteractive)
+      projectile-enable-caching t
       projectile-known-projects-file (concat zenith-emacs-local-dir "projectile.projects")
       projectile-require-project-root t
       ;; the following ignored files is not used
