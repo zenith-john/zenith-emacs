@@ -6,7 +6,10 @@
 ;;; Code:
 
 ;; emacs-application-framework
-(autoload 'eaf-open "eaf" nil t)
+(zenith/autoload '(eaf-open
+                   eaf-open-browser
+                   eaf-open-mindmap
+                   eaf-create-mindmap) "eaf")
 (setq eaf-find-alternate-file-in-dired t)
 
 (setq browse-url-browser-function 'eaf-open-browser)
