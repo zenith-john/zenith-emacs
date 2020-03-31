@@ -16,10 +16,6 @@
 [submodule "extensions/graphviz-dot-mode"]
 	path = extensions/graphviz-dot-mode
 	url = https://github.com/ppareit/graphviz-dot-mode
-[submodule "extensions/python-language-server"]
-	path = extensions/python-language-server
-	url = https://github.com/microsoft/python-language-server
-	ignore = dirty
 [submodule "extensions/helm-bibtex"]
 	path = extensions/helm-bibtex
 	url = https://github.com/tmalsburg/helm-bibtex
@@ -60,18 +56,9 @@
 [submodule "extensions/pyimport"]
 	path = extensions/pyimport
 	url = https://github.com/Wilfred/pyimport
-[submodule "extensions/lsp-mode"]
-	path = extensions/lsp-mode
-	url = https://github.com/emacs-lsp/lsp-mode
 [submodule "extensions/company-lsp"]
 	path = extensions/company-lsp
 	url = https://github.com/tigersoldier/company-lsp
-[submodule "extensions/emacs-ccls"]
-	path = extensions/emacs-ccls
-	url = https://github.com/MaskRay/emacs-ccls
-[submodule "extensions/spinner"]
-	path = extensions/spinner
-	url = https://github.com/Malabarba/spinner.el
 [submodule "extensions/avy"]
 	path = extensions/avy
 	url = https://github.com/abo-abo/avy
@@ -144,9 +131,6 @@
 [submodule "extensions/s"]
 	path = extensions/s
 	url = https://github.com/magnars/s.el
-[submodule "extensions/ht"]
-	path = extensions/ht
-	url = https://github.com/Wilfred/ht.el
 [submodule "extensions/markdown-mode"]
 	path = extensions/markdown-mode
 	url = https://github.com/jrblevin/markdown-mode
@@ -258,9 +242,6 @@
 [submodule "extensions/org-mode"]
 	path = extensions/org-mode
 	url = https://code.orgmode.org/bzg/org-mode
-[submodule "extensions/lsp-python-ms"]
-	path = extensions/lsp-python-ms
-	url = https://github.com/emacs-lsp/lsp-python-ms
 [submodule "extensions/xr"]
 	path = extensions/xr
 	url = https://github.com/mattiase/xr
@@ -297,3 +278,6 @@
 [submodule "extensions/ivy-fuz.el"]
 	path = extensions/ivy-fuz
 	url = https://github.com/Silex/ivy-fuz.el
+[submodule "extensions/nox"]
+	path = extensions/nox
+	url = https://github.com/manateelazycat/nox

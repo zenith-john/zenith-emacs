@@ -8,3 +8,4 @@ session*
 /.auctex-auto/
 *.tex
 /.org-id-locations
+/nox/

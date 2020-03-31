@@ -5,18 +5,9 @@
 
 ;;; Code:
 
-;; lsp-python-ms
-;; dependencies: lsp-mode
-(setq lsp-python-ms-dir
-      (concat zenith-emacs-extension-dir "python-language-server/output/bin/Release/"))
-(add-hook 'python-mode-hook
-          (lambda ()
-            (require 'lsp-python-ms)
-            (lsp)))
-
 ;; pipenv
 ;; dependencies: pyvenv s f
-(autoload 'pipenv-mode "pipenv-mode")
+(autoload 'pipenv-mode "pipenv")
   (add-hook 'python-mode-hook 'pipenv-mode)
   (setq
    pipenv-projectile-after-switch-function

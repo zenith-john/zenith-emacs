@@ -6,8 +6,8 @@
 ;;; Code:
 
 ;; company-mode
-(setq company-idle-delay 0
-      company-minimum-prefix-length 2
+(setq company-idle-delay 0.1
+      company-minimum-prefix-length 0
       company-tooltip-limit 14
       company-dabbrev-downcase nil
       company-dabbrev-ignore-case nil
@@ -35,6 +35,7 @@
 (require 'company-box)
 (add-hook 'company-mode-hook 'company-box-mode)
 (setq company-box-show-single-candidate t
+      company-box-doc-enable nil ; Use C-h to manually show doc
       company-box-backends-colors nil
       company-box-max-candidates 50
       company-box-icons-alist 'company-box-icons-all-the-icons
