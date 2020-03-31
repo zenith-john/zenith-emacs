@@ -37,6 +37,8 @@
   (add-hook 'after-init-hook 'benchmark-init/deactivate)
   (require 'config))
 
+(setq gc-cons-threshold (* 100 1024 1024))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))

@@ -25,15 +25,16 @@
 (require 'init-project)
 (require 'init-snails)
 (require 'init-git)
+(require 'init-lsp)
 
 (run-with-idle-timer 1 nil
                      (lambda ()
+                       (message "Lazy Loading")
                        (require 'init-auto-save)
                        (require 'init-keyfreq)
                        (require 'init-ace-window)
                        (require 'init-helpful)
                        (require 'init-avy)
-                       (require 'init-lsp)
                        (require 'org)))
 
 (require 'init-keybinding)

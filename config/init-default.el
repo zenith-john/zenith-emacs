@@ -57,7 +57,9 @@
  tramp-persistency-file-name  (concat zenith-emacs-local-dir "tramp-persistency.el")
  url-cache-directory          (concat zenith-emacs-local-dir "url/")
  url-configuration-directory  (concat zenith-emacs-local-dir "url/")
- gamegrid-user-score-file-directory (concat zenith-emacs-local-dir "games/"))
+ gamegrid-user-score-file-directory (concat zenith-emacs-local-dir "games/")
+ ;; improve performance
+ bidi-display-reordering nil)
 
 (setq-default
  large-file-warning-threshold 15000000

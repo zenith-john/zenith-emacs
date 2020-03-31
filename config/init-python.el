@@ -48,9 +48,12 @@
 (setq conda-anaconda-home (expand-file-name "~/anaconda3/"))
 (zenith/autoload '(conda-env-activate conda-env-deactivate) "conda")
 
+(defun zenith/company-sort-by-alphabet (candidates)
+  (sort candidates #'string-lessp))
+
 (defun zenith/python-mode-hook ()
   "Fine tune delay to have more smooth python editing"
-  (setq-local company-idle-delay 0.2))
+  (setq-local company-transformers '(zenith/company-sort-by-alphabet)))
 
 (add-hook 'python-mode-hook 'zenith/python-mode-hook)
 

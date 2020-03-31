@@ -54,8 +54,8 @@
   (list
    :height (max (+ 1 ivy-height) ivy-posframe-height)
    :width (round (* 0.5 (frame-width)))
-   :min-height ivy-posframe-height
-   :min-width 80))
+   :min-height (max (+ 1 ivy-height) ivy-posframe-height)
+   :min-width (max 80 (round (* 0.5 (frame-width))))))
 
 (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
       ivy-posframe-size-function #'zenith/ivy-posframe-get-size

@@ -8,7 +8,7 @@
 ;; company-mode
 (setq company-idle-delay 0
       company-minimum-prefix-length 0
-      company-tooltip-limit 14
+      company-tooltip-limit 10
       company-dabbrev-downcase nil
       company-dabbrev-ignore-case nil
       company-dabbrev-code-other-buffers t
@@ -23,12 +23,6 @@
 
 (require 'company)
 (general-define-key "C-x C-j" #'company-complete-common)
-
-;; prescient
-(require 'company-prescient)
-(add-hook 'company-mode-hook 'company-prescient-mode)
-(setq prescient-save-file (concat zenith-emacs-root-dir "local/prescient-save.el"))
-(prescient-persist-mode +1)
 
 ;; company-box
 ;; dependencies: dash dash-functional company
