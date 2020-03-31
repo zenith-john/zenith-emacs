@@ -12,7 +12,8 @@
 (setq browse-url-browser-function 'eaf-open-browser)
 (defalias 'browse-web #'eaf-open-browser)
 
-(eaf-setq eaf-pdf-dark-mode "false")
+(with-eval-after-load 'eaf
+  (eaf-setq eaf-pdf-dark-mode "false"))
 
 (provide 'init-eaf)
 ;;; init-eaf.el ends here

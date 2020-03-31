@@ -82,10 +82,6 @@ preceded by the opening brace or a comma (disregarding whitespace in between)."
 (autoload 'modern-c++-font-lock-mode "modern-cpp-font-lock")
 (add-hook 'c++-mode-hook 'modern-c++-font-lock-mode)
 
-;; emacs-ccls
-;; dependencies: lsp-mode dash projectile
-(zenith/add-hook '(c-mode-hook c++-mode-hook objc-mode-hook) (lambda () (require 'ccls) (lsp)))
-
 (with-eval-after-load 'projectile
   (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
   (add-to-list 'projectile-project-root-files-bottom-up ".ccls-root")

@@ -9,7 +9,7 @@
 ;; swiper
 (require 'ivy)
 
-(setq ivy-height 15
+(setq ivy-height 20
       ivy-wrap t
       ivy-fixed-height-minibuffer t
       projectile-completion-system 'ivy
@@ -51,7 +51,7 @@
 (defun zenith/ivy-posframe-get-size ()
   "Set size of by the posframe"
   (list
-   :height ivy-posframe-height
+   :height (max (+ 1 ivy-height) ivy-posframe-height)
    :width (round (* 0.5 (frame-width)))
    :min-height ivy-posframe-height
    :min-width 80))
@@ -60,8 +60,6 @@
       ivy-posframe-size-function #'zenith/ivy-posframe-get-size
       ivy-posframe-height 20)
 (ivy-posframe-mode)
-(with-current-buffer (get-buffer ivy-posframe-buffer)
-  (setq-local truncate-lines t))
 
 ;; all-the-icons-ivy
 ;; dependencies: ivy all-the-icons
@@ -155,7 +153,8 @@
 (setq ivy-sort-matches-functions-alist '((helpful-variable)
                                          (helpful-callable)
                                          (t . ivy-fuz-sort-fn))
-      ivy-re-builders-alist '((t . ivy-fuz-regex-fuzzy)))
+      ivy-re-builders-alist '((counsel-rg . ivy--regex)
+                              (t . ivy-fuz-regex-fuzzy)))
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here
