@@ -50,9 +50,6 @@
 [submodule "extensions/emacs-python-pytest"]
 	path = extensions/emacs-python-pytest
 	url = https://github.com/wbolster/emacs-python-pytest
-[submodule "extensions/py-isort"]
-	path = extensions/py-isort
-	url = https://github.com/paetzke/py-isort.el
 [submodule "extensions/pyimport"]
 	path = extensions/pyimport
 	url = https://github.com/Wilfred/pyimport
@@ -215,12 +212,6 @@
 [submodule "extensions/git-timemachine"]
 	path = extensions/git-timemachine
 	url = https://gitlab.com/pidu/git-timemachine
-[submodule "extensions/yapfify"]
-	path = extensions/yapfify
-	url = https://github.com/JorisE/yapfify
-[submodule "extensions/conda"]
-	path = extensions/conda
-	url = https://github.com/necaris/conda.el
 [submodule "extensions/pythonic"]
 	path = extensions/pythonic
 	url = https://github.com/pythonic-emacs/pythonic
@@ -275,3 +266,9 @@
 [submodule "extensions/nox"]
 	path = extensions/nox
 	url = https://github.com/manateelazycat/nox
+[submodule "extensions/emacs-format-all-the-code"]
+	path = extensions/emacs-format-all-the-code
+	url = https://github.com/lassik/emacs-format-all-the-code
+[submodule "extensions/emacs-language-id"]
+	path = extensions/emacs-language-id
+	url = https://github.com/lassik/emacs-language-id

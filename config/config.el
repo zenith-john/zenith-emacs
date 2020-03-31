@@ -26,6 +26,7 @@
 (require 'init-snails)
 (require 'init-git)
 (require 'init-lsp)
+(require 'init-format)
 
 (run-with-idle-timer 1 nil
                      (lambda ()

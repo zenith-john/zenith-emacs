@@ -40,28 +40,6 @@
   :group 'awesome-tray)
 
 ;; Redefine advice to make sure no duplicate info
-(defun awesome-tray-get-echo-format-string (message-string)
-  (let* ((tray-info (awesome-tray-build-info))
-         (blank-length (- (awesome-tray-get-frame-width) (string-width tray-info) (string-width message-string) awesome-tray-info-padding-right))
-         (empty-fill-string (make-string (max 0 (- (awesome-tray-get-frame-width) (string-width tray-info) awesome-tray-info-padding-right)) ?\ ))
-         (message-fill-string (make-string (max 0 (- (awesome-tray-get-frame-width) (string-width message-string) (string-width tray-info) awesome-tray-info-padding-right)) ?\ )))
-    (prog1
-        (cond
-         ;; Fill message's end with whitespace to keep tray info at right of minibuffer.
-         ((> blank-length 0)
-          (concat message-string message-fill-string tray-info))
-         ;; Fill empty whitespace if new message contain duplicate tray-info (cause by move mouse on minibuffer window).
-         ((or (and awesome-tray-last-tray-info
-                   message-string
-                   (string-suffix-p awesome-tray-last-tray-info message-string))
-              (eq major-mode 'org-agenda-mode)) ; org-agenda-mode has strange buffer-name behavior
-          (concat empty-fill-string tray-info))
-         ;; Don't fill whitepsace at end of message if new message is very long.
-         (t
-          (concat message-string "\n" empty-fill-string tray-info)))
-      ;; Record last tray information.
-      (setq awesome-tray-last-tray-info tray-info))))
-
 (defun awesome-tray-message-advice (old-message &rest arguments)
   (unless (ignore-errors
             (cond
@@ -89,7 +67,7 @@
              '("clock" . (zenith/org-clock-info zenith/org-clock-face)))
 
 (setq awesome-tray-active-modules
-     '("evil" "location" "clock" "git" "buffer-name" "mode-name"))
+      '("evil" "location" "clock" "git" "buffer-name" "mode-name"))
 
 (global-hl-line-mode 1)
 

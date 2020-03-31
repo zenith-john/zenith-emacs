@@ -18,6 +18,7 @@
  "." 'find-file
  "g" 'magit-status
  "r" 'counsel-rg
+ "f" 'format-all-buffer
  "s" 'snails
  "a" 'org-agenda
  "A" 'zenith/my-org-agenda)

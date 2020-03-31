@@ -8,10 +8,10 @@
 ;; pipenv
 ;; dependencies: pyvenv s f
 (autoload 'pipenv-mode "pipenv")
-  (add-hook 'python-mode-hook 'pipenv-mode)
-  (setq
-   pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended)
+(add-hook 'python-mode-hook 'pipenv-mode)
+(setq
+ pipenv-projectile-after-switch-function
+ #'pipenv-projectile-after-switch-extended)
 
 ;; emacs-python-pytest
 ;; dependencies: dash dash-functional magit-popup projectile s
@@ -31,22 +31,10 @@
  '(pyvenv-activate
    pyvenv-workon) "pyvenv")
 
-;; py-isort
-(autoload 'py-isort-buffer "py-isort")
-
 ;; pyimport
 ;; depedencies: s shut-up
 (zenith/autoload
  '(pyimport-remove-unused pyimport-insert-missing) "pyimport")
-
-;; yapfify
-(zenith/autoload
-  '(yapfify-region yapfify-buffer) "yapfify")
-
-;; conda
-;; dependencies: pythonic dash s f
-(setq conda-anaconda-home (expand-file-name "~/anaconda3/"))
-(zenith/autoload '(conda-env-activate conda-env-deactivate) "conda")
 
 (defun zenith/company-sort-by-alphabet (candidates)
   (sort candidates #'string-lessp))
