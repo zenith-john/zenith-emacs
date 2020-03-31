@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; company-mode
-(setq company-idle-delay 0.1
+(setq company-idle-delay 0
       company-minimum-prefix-length 0
       company-tooltip-limit 14
       company-dabbrev-downcase nil

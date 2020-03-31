@@ -7,7 +7,7 @@
 
 ;; flycheck
 ;; dependencies: pkg-info let-alist seq
-(autoload 'flycheck-mode "flycheck")
+(autoload 'flycheck-mode "flycheck" nil t)
 (zenith/add-hook
  '(python-mode-hook
    c++-mode-hook

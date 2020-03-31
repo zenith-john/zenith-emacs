@@ -143,9 +143,6 @@
 [submodule "extensions/auctex"]
 	path = extensions/auctex
 	url = https://git.savannah.gnu.org/git/auctex.git
-[submodule "extensions/auto-compile"]
-	path = extensions/auto-compile
-	url = https://github.com/emacscollective/auto-compile
 [submodule "extensions/macrostep"]
 	path = extensions/macrostep
 	url = https://github.com/joddie/macrostep
@@ -218,9 +215,6 @@
 [submodule "extensions/git-timemachine"]
 	path = extensions/git-timemachine
 	url = https://gitlab.com/pidu/git-timemachine
-[submodule "extensions/sly-el-indent"]
-	path = extensions/sly-el-indent
-	url = https://github.com/cireu/sly-el-indent
 [submodule "extensions/yapfify"]
 	path = extensions/yapfify
 	url = https://github.com/JorisE/yapfify

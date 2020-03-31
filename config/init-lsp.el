@@ -10,7 +10,12 @@
   (require 'nox)
   (nox-ensure))
 
-(zenith/add-hook '(c-mode-hook c++-mode-hook python-mode-hook) 'zenith/nox-load-and-ensure)
+(setq read-process-output-max (* 1024 1024))
+
+(with-eval-after-load 'nox
+  (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio"))))
+
+(zenith/add-hook '(c-mode-hook c++-mode-hook js-mode-hook python-mode-hook) 'zenith/nox-load-and-ensure)
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

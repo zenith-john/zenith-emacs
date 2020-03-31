@@ -8,6 +8,7 @@
 ;; Package
 ;; swiper
 (require 'ivy)
+(require 'counsel)
 
 (setq ivy-height 20
       ivy-wrap t
@@ -74,7 +75,6 @@
          '(counsel-projectile-switch-to-buffer)))
     (all-the-icons-ivy-setup)))
 
-(require 'counsel)
 (general-def
   [remap apropos]                  #'counsel-apropos
   [remap bookmark-jump]            #'counsel-bookmark

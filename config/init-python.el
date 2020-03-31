@@ -48,5 +48,11 @@
 (setq conda-anaconda-home (expand-file-name "~/anaconda3/"))
 (zenith/autoload '(conda-env-activate conda-env-deactivate) "conda")
 
+(defun zenith/python-mode-hook ()
+  "Fine tune delay to have more smooth python editing"
+  (setq-local company-idle-delay 0.2))
+
+(add-hook 'python-mode-hook 'zenith/python-mode-hook)
+
 (provide 'init-python)
 ;;; init-python.el ends here

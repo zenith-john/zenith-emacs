@@ -1,10 +1,5 @@
 ;;; init-emacs-lisp.el --- emacs lisp configuration -*- lexical-binding: t; -*-
 
-;; auto-compile
-;; dependencies: packed
-(setq auto-compile-display-buffer nil
-      auto-compile-use-mode-line nil)
-
 ;; macrostep
 (autoload 'macrostep-expand "macro-expand")
 
