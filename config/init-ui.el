@@ -63,6 +63,12 @@
     (apply old-message "Sorry, something error in awesome-tray.")
     ))
 
+;; Redefine function to make awesome-tray work for daemon mode
+(defun awesome-tray-get-frame-width ()
+  "Only calculating a main Frame width, to avoid wrong width when new frame, such as `snails'."
+  (with-selected-frame (window-frame (minibuffer-window))
+    (frame-width)))
+
 (add-to-list 'awesome-tray-module-alist
              '("clock" . (zenith/org-clock-info zenith/org-clock-face)))
 

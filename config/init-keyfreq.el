@@ -11,8 +11,10 @@
 (keyfreq-autosave-mode 1)
 (setq keyfreq-excluded-commands '(org-self-insert-command
                                   self-insert-command
+                                  evil-next-line
                                   next-line
                                   previous-line
+                                  evil-previous-line
                                   right-char
                                   left-char
                                   cua-scroll-down

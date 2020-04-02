@@ -272,3 +272,6 @@
 [submodule "extensions/emacs-language-id"]
 	path = extensions/emacs-language-id
 	url = https://github.com/lassik/emacs-language-id
+[submodule "extensions/pyenv-mode"]
+	path = extensions/pyenv-mode
+	url = https://github.com/pythonic-emacs/pyenv-mode
