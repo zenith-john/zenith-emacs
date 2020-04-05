@@ -134,9 +134,6 @@
    ("L" (lambda (path) "Insert org-link with absolute path"
           (with-ivy-window (insert (format "[[%s]]" path)))) "insert org-link (abs. path)")))
 
-(ivy-add-actions
- 'counsel-ag ; also applies to `counsel-rg' & `counsel-pt'
- '(("O" +ivy-git-grep-other-window-action "open in other window")))
 
 ;; fuz.el
 (require 'fuz)

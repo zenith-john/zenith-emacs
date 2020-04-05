@@ -39,6 +39,47 @@
   "zenith/org-clock face"
   :group 'awesome-tray)
 
+;; No duplicate awesome-tray anymore!
+(defvar awesome-tray-last-message-string "" "Last message string for awesome-tray")
+
+(defun zenith/awesome-tray-compare-message-string (last-string message-string)
+  (if last-string
+      (string-prefix-p last-string message-string)
+    nil))
+
+(defun zenith/awesome-tray-get-echo-format-string (message-string)
+  (let* ((tray-info (awesome-tray-build-info))
+         (blank-length (- (awesome-tray-get-frame-width) (string-width tray-info) (string-width message-string) awesome-tray-info-padding-right))
+         (empty-fill-string (make-string (max 0 (- (awesome-tray-get-frame-width) (string-width tray-info) awesome-tray-info-padding-right)) ?\ ))
+         (message-fill-string (make-string (max 0 (- (awesome-tray-get-frame-width) (string-width message-string) (string-width tray-info) awesome-tray-info-padding-right)) ?\ )))
+    (cond
+     ((> blank-length 0)
+      (concat message-string message-fill-string tray-info))
+     (t
+      (concat message-string "\n" empty-fill-string tray-info)))))
+
+(defun awesome-tray-get-echo-format-string (message-string)
+  (let* ((tray-info (awesome-tray-build-info))
+         (empty-fill-string (make-string (max 0 (- (awesome-tray-get-frame-width) (string-width tray-info) awesome-tray-info-padding-right)) ?\ )))
+    (prog1
+        (cond
+         ;; Fill empty whitespace if new message contain duplicate tray-info (cause by move mouse on minibuffer window).
+         ((and awesome-tray-last-tray-info
+               message-string
+               (string-suffix-p awesome-tray-last-tray-info message-string))
+          (concat empty-fill-string tray-info))
+         ;; If the message is the same as the previous one, but the tray-info is updated, do not make duplicate tray-info
+         ((zenith/awesome-tray-compare-message-string
+           awesome-tray-last-message-string message-string)
+          (zenith/awesome-tray-get-echo-format-string awesome-tray-last-message-string))
+         ;; Don't fill whitepsace at end of message if new message is very long.
+         ;; Fill message's end with whitespace to keep tray info at right of minibuffer.
+         (t
+          (zenith/awesome-tray-get-echo-format-string message-string)))
+      ;; Record last tray information.
+      (setq awesome-tray-last-tray-info tray-info)
+      (setq awesome-tray-last-message-string message-string))))
+
 ;; Redefine advice to make sure no duplicate info
 (defun awesome-tray-message-advice (old-message &rest arguments)
   (unless (ignore-errors
