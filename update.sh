@@ -27,10 +27,18 @@ sudo make install
 make -C $root/extensions/liberime
 
 # build magit
+cd $root/extensions/libgit
+git submodule init
+git submodule update
+mkdir build
+cd build
+cmake ..
+make
+
 make -C $root/extensions/magit
 
 # compile .elc
-emacs --batch --eval "(byte-recompile-directory (expand-file-name \"./extensions\") 0)"
+emacs --batch -l $root/init.el --eval "(byte-recompile-directory (expand-file-name \"./extensions\") 0)"
 
 # do not generate *.elc file for snails
 rm extensions/snails/*.elc || true
