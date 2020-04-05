@@ -103,5 +103,9 @@
 
 (setq company-backends '((company-capf :with company-tabnine :separate)))
 
+(add-hook 'company-completion-started-hook (lambda (arg) (zenith/temp-no-gc)))
+(add-hook 'company-completion-cancelled-hook (lambda (arg) (zenith/restore-gc)))
+(add-hook 'company-completion-finished-hook (lambda (arg) (zenith/restore-gc)))
+
 (provide 'init-company)
 ;;; init-company.el ends here
