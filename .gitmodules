@@ -275,3 +275,12 @@
 [submodule "extensions/pyenv-mode"]
 	path = extensions/pyenv-mode
 	url = https://github.com/pythonic-emacs/pyenv-mode
+[submodule "extensions/company-tabnine"]
+	path = extensions/company-tabnine
+	url = https://github.com/TommyX12/company-tabnine
+[submodule "extensions/unicode-escape"]
+	path = extensions/unicode-escape
+	url = https://github.com/kosh04/unicode-escape.el
+[submodule "extensions/names"]
+	path = extensions/names
+	url = https://github.com/Malabarba/names

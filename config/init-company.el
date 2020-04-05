@@ -16,7 +16,6 @@
       company-require-match 'never
       company-global-modes
       '(not erc-mode message-mode help-mode gud-mode eshell-mode)
-      company-backends '(company-capf)
       company-frontends
       '(company-pseudo-tooltip-frontend
         company-echo-metadata-frontend))
@@ -82,6 +81,27 @@
             ((facep sym)    'ElispFace)))))
 
 (global-company-mode +1)
+
+;; company-tabnine
+;; dependencies: company dash s unicode-escape names
+(require 'company-tabnine)
+(unless (file-exists-p company-tabnine-binaries-folder)
+    (company-tabnine-install-binary))
+
+;; The free version of TabNine is good enough,
+;; and below code is recommended that TabNine not always
+;; prompt me to purchase a paid version in a large project.
+(defadvice company-echo-show (around disable-tabnine-upgrade-message activate)
+  (let ((company-message-func (ad-get-arg 0)))
+    (when (and company-message-func
+               (stringp (funcall company-message-func)))
+      (unless (string-match "The free version of TabNine only indexes up to" (funcall company-message-func))
+        ad-do-it))))
+
+(setq company-tabnine-auto-fallback t
+      company-tabnine-max-num-results 5)
+
+(setq company-backends '((company-capf :with company-tabnine :separate)))
 
 (provide 'init-company)
 ;;; init-company.el ends here
