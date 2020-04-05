@@ -38,7 +38,15 @@
   (require 'config)
   )
 
-(setq gc-cons-threshold (* 8 1024 1024))
+;; To remove gc limit temporarily
+(defun zenith/temp-no-gc ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+;; Restore gc
+(defun zenith/restore-gc ()
+  (setq gc-cons-threshold (* 20 1024 1024)))
+
+(zenith/restore-gc)
 
 (require 'server)
 (unless (server-running-p)

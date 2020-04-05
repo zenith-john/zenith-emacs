@@ -284,3 +284,6 @@
 [submodule "extensions/names"]
 	path = extensions/names
 	url = https://github.com/Malabarba/names
+[submodule "extensions/libegit2"]
+	path = extensions/libgit
+	url = https://github.com/magit/libegit2
