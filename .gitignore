@@ -9,3 +9,4 @@ session*
 *.tex
 /.org-id-locations
 /nox/
+/pyim/
