@@ -2,11 +2,11 @@
 
 # update git submodule
 if [ -d "./extensions/yasnippet" ]; then
+    echo "Update Submodules"
+    git submodule update --remote
+else
     echo "Initializing Submodules"
     git submodule update --init --recursive --depth 1
-else
-    echo "Update Submodules"
-    git submodule foreach "git pull origin master"
 fi
 
 root=$(pwd)

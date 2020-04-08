@@ -42,9 +42,11 @@
 (defun zenith/temp-no-gc ()
   (setq gc-cons-threshold most-positive-fixnum))
 
+(defvar zenith/low-gc-cons-threshold (* 20 1024 1024))
+
 ;; Restore gc
 (defun zenith/restore-gc ()
-  (setq gc-cons-threshold (* 20 1024 1024)))
+  (setq gc-cons-threshold zenith/low-gc-cons-threshold))
 
 (zenith/restore-gc)
 
