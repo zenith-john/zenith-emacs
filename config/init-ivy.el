@@ -41,10 +41,6 @@
 
 (ivy-mode +1)
 
-(require 'ivy-prescient)
-(setq ivy-prescient-retain-classic-highlighting t)
-(ivy-prescient-mode)
-
 ;; ivy-posframe
 ;; dependencies: ivy posframe
 (require 'ivy-posframe)
@@ -92,6 +88,7 @@
   [remap org-capture]              #'counsel-org-capture
   [remap swiper]                   #'counsel-grep-or-swiper
   "M-y"                            #'counsel-yank-pop)
+
 (setq counsel-find-file-ignore-regexp "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)"
       counsel-describe-function-function #'helpful-callable
       counsel-describe-variable-function #'helpful-variable
@@ -134,6 +131,11 @@
    ("L" (lambda (path) "Insert org-link with absolute path"
           (with-ivy-window (insert (format "[[%s]]" path)))) "insert org-link (abs. path)")))
 
+;; prescient
+;; load after counsel
+(require 'ivy-prescient)
+(setq ivy-prescient-retain-classic-highlighting t)
+(ivy-prescient-mode)
 
 ;; fuz.el
 (require 'fuz)

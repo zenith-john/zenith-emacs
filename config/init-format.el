@@ -1,4 +1,4 @@
-;;; init-format.el --- python configuration -*- lexical-binding: t; -*-
+;;; init-format.el --- format configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;;

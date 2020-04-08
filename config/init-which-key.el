@@ -26,8 +26,5 @@
         (right-fringe . 8)))
 (which-key-posframe-mode)
 
-(with-current-buffer " *Minibuf-0*"
-  (erase-buffer))
-
 (provide 'init-which-key)
 ;;; init-which-key.el ends here
