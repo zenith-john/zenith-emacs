@@ -10,7 +10,8 @@
   (require 'nox)
   (nox-ensure))
 
-(setq read-process-output-max (* 1024 1024))
+(setq read-process-output-max (* 1024 1024)
+      nox-optimization-p nil)
 
 (with-eval-after-load 'nox
   (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio"))))
