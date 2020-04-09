@@ -207,7 +207,8 @@
 (with-eval-after-load 'org
   (require 'evil-org)
   (evil-org-set-key-theme)
-  (evil-org-mode 1))
+  (add-hook 'org-mode-hook
+            'evil-org-mode))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
