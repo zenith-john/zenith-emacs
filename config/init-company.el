@@ -99,9 +99,45 @@
         ad-do-it))))
 
 (setq company-tabnine-auto-fallback t
-      company-tabnine-max-num-results 5)
+      company-tabnine-max-num-results 10)
 
-(setq company-backends '((company-capf :with company-tabnine :separate)))
+(setq company-backends '((company-capf company-tabnine)))
+
+;; Use my own prefix function to replace TabNine's
+(defun zenith/get-prefix ()
+  (interactive)
+  (let ((pattern (find-tag--default))
+        (beg (point)))
+    (save-excursion
+      (when pattern
+        (goto-char (+ (point) (length pattern) -1))
+        (when (search-backward pattern nil)
+          (setq beg (point)))))
+    (buffer-substring-no-properties beg (point))))
+
+(defun zenith/string-lessp-ignore-case (str1 str2)
+  (string-lessp (downcase str1) (downcase str2)))
+
+(defun zenith/company-compare-string (str1 str2)
+  (let* ((prefix company-prefix)
+         (prefix-p1 t)
+         (prefix-p2 t))
+    (when prefix
+      (setq prefix-p1 (string-prefix-p prefix str1)
+            prefix-p2 (string-prefix-p prefix str2)))
+    (if (equal prefix-p1 prefix-p2)
+        (zenith/string-lessp-ignore-case str1 str2)
+      prefix-p1)
+    ))
+
+(defun zenith/company-transformer (candidates)
+  ;; Sort candidate alphabetically and then show the candidates with same prefix
+  ;; first
+  (let ((company-prefix (zenith/get-prefix)))
+     (delete-consecutive-dups (sort candidates #'zenith/company-compare-string))
+     ))
+
+(add-to-list 'company-transformers 'zenith/company-transformer)
 
 (add-hook 'company-completion-started-hook (lambda (arg) (zenith/temp-no-gc)))
 (add-hook 'company-completion-cancelled-hook (lambda (arg) (zenith/restore-gc)))

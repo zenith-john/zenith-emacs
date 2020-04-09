@@ -48,14 +48,5 @@
 (zenith/autoload
  '(pyimport-remove-unused pyimport-insert-missing) "pyimport")
 
-(defun zenith/company-sort-by-alphabet (candidates)
-  (sort candidates #'string-lessp))
-
-(defun zenith/python-mode-hook ()
-  "Fine tune delay to have more smooth python editing"
-  (setq-local company-transformers '(zenith/company-sort-by-alphabet)))
-
-(add-hook 'python-mode-hook 'zenith/python-mode-hook)
-
 (provide 'init-python)
 ;;; init-python.el ends here
