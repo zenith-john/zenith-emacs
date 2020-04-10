@@ -154,6 +154,9 @@
 
 (autoload 'markdown-mode "markdown-mode")
 
+;; winner-mode
+(winner-mode 1)
+
 (provide 'init-default)
 ;;; init-default.el ends here
 

@@ -80,6 +80,30 @@
       (setq awesome-tray-last-tray-info tray-info)
       (setq awesome-tray-last-message-string message-string))))
 
+;; Redefine advice to make sure no duplicate info
+(defun awesome-tray-message-advice (old-message &rest arguments)
+  (unless (ignore-errors
+            (cond
+             ;; Don't wrap tray info if `awesome-tray-active-p' is nil.
+             ((not awesome-tray-active-p)
+              (apply old-message arguments))
+             ;; Don't wrap awesome-tray info if variable `inhibit-message' is non-nil.
+             (inhibit-message
+              (apply old-message arguments))
+             ;; Just flush tray info if message string is empty.
+             ((not (car arguments))
+              (apply old-message arguments)
+              (awesome-tray-flush-info))
+             ;; Otherwise, wrap message string with tray info.
+             (t
+              (apply old-message '("")) ; Ugly trick, force flushing the message area
+              (apply old-message "%s" (cons (awesome-tray-get-echo-format-string (apply 'format arguments)) '()))
+              ))
+            ;; Return t if everything is okay.
+            t)
+    (apply old-message "Sorry, something error in awesome-tray.")
+    ))
+
 ;; Redefine function to make awesome-tray work for daemon mode
 (defun awesome-tray-get-frame-width ()
   "Only calculating a main Frame width, to avoid wrong width when new frame, such as `snails'."
