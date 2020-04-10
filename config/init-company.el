@@ -94,7 +94,8 @@
     (company-tabnine-install-binary))
 
 (setq company-tabnine-auto-fallback t
-      company-tabnine-max-num-results 10)
+      company-tabnine-max-num-results 10
+      company-tabnine-always-trigger nil)
 
 (defun zenith/set-default-company-backends ()
   ;; Set backends for company-mode

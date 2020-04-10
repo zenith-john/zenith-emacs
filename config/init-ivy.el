@@ -79,7 +79,6 @@
   [remap describe-variable]        #'counsel-describe-variable
   [remap describe-bindings]        #'counsel-descbinds
   [remap set-variable]             #'counsel-set-variable
-  [remap execute-extended-command] #'counsel-M-x
   [remap find-file]                #'counsel-find-file
   [remap find-library]             #'counsel-find-library
   [remap info-lookup-symbol]       #'counsel-info-lookup-symbol
@@ -131,12 +130,6 @@
    ("L" (lambda (path) "Insert org-link with absolute path"
           (with-ivy-window (insert (format "[[%s]]" path)))) "insert org-link (abs. path)")))
 
-;; prescient
-;; load after counsel
-(require 'ivy-prescient)
-(setq ivy-prescient-retain-classic-highlighting t)
-(ivy-prescient-mode)
-
 ;; fuz.el
 (require 'fuz)
 (unless (require 'fuz-core nil t)
@@ -148,12 +141,18 @@
 
 ;; Less sort limit for better performance as the sort process is the bottleneck
 ;; of fuz matching.
-(setq ivy-fuz-sort-limit 100)
+(setq ivy-fuz-sort-limit 2000)
 (setq ivy-sort-matches-functions-alist '((helpful-variable)
                                          (helpful-callable)
                                          (t . ivy-fuz-sort-fn))
       ivy-re-builders-alist '((counsel-rg . ivy--regex)
                               (t . ivy-fuz-regex-fuzzy)))
+
+;; amx
+;; depednecies: s
+(require 'amx)
+(setq amx-save-file nil)
+(amx-mode)
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here
