@@ -14,7 +14,8 @@
       nox-optimization-p nil)
 
 (with-eval-after-load 'nox
-  (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio"))))
+  (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
+  (add-hook 'nox--managed-mode-hook 'zenith/set-default-company-backends))
 
 (zenith/add-hook '(c-mode-hook c++-mode-hook js-mode-hook python-mode-hook) 'zenith/nox-load-and-ensure)
 

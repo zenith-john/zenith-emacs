@@ -7,7 +7,7 @@
 
 ;; company-mode
 (setq company-idle-delay 0
-      company-minimum-prefix-length 0
+      company-minimum-prefix-length 1
       company-tooltip-limit 10
       company-dabbrev-downcase nil
       company-dabbrev-ignore-case nil
@@ -33,7 +33,7 @@
       company-box-max-candidates 50
       company-box-icons-alist 'company-box-icons-all-the-icons
       company-box-icons-functions
-      '(+company-box-icons--yasnippet company-box-icons--lsp +company-box-icons--elisp company-box-icons--acphp)
+      '(+company-box-icons--elisp +company-box-icons--tabnine +company-box-icons--nox)
       company-box-icons-all-the-icons
       `((Unknown       . ,(all-the-icons-material "find_in_page"             :height 0.8 :face 'all-the-icons-purple))
         (Text          . ,(all-the-icons-material "text_fields"              :height 0.8 :face 'all-the-icons-green))
@@ -61,16 +61,21 @@
         (Event         . ,(all-the-icons-material "event"                    :height 0.8 :face 'all-the-icons-red))
         (Operator      . ,(all-the-icons-material "control_point"            :height 0.8 :face 'all-the-icons-red))
         (TypeParameter . ,(all-the-icons-material "class"                    :height 0.8 :face 'all-the-icons-red))
-        ;; (Template   . ,(company-box-icons-image "Template.png"))))
-        (Yasnippet     . ,(all-the-icons-material "short_text"               :height 0.8 :face 'all-the-icons-green))
         (ElispFunction . ,(all-the-icons-material "functions"                :height 0.8 :face 'all-the-icons-red))
         (ElispVariable . ,(all-the-icons-material "check_circle"             :height 0.8 :face 'all-the-icons-blue))
         (ElispFeature  . ,(all-the-icons-material "stars"                    :height 0.8 :face 'all-the-icons-orange))
-        (ElispFace     . ,(all-the-icons-material "format_paint"             :height 0.8 :face 'all-the-icons-pink))))
+        (ElispFace     . ,(all-the-icons-material "format_paint"             :height 0.8 :face 'all-the-icons-pink))
+        (TabNine       . ,(all-the-icons-material "event"                    :height 0.8 :face 'all-the-icons-green))))
 
-(defun +company-box-icons--yasnippet (candidate)
-  (when (get-text-property 0 'yas-annotation candidate)
-    'Yasnippet))
+(defun +company-box-icons--tabnine (candidate)
+  (when (equal (get-text-property 0 'company-backend candidate) 'company-tabnine)
+    'TabNine))
+
+(require 'dash)
+(defun +company-box-icons--nox (candidate)
+  (-when-let* ((nox-item (get-text-property 0 'nox--lsp-item candidate))
+               (kind-num (plist-get nox-item :kind)))
+    (alist-get kind-num company-box-icons--lsp-alist)))
 
 (defun +company-box-icons--elisp (candidate)
   (when (derived-mode-p 'emacs-lisp-mode)
@@ -101,7 +106,11 @@
 (setq company-tabnine-auto-fallback t
       company-tabnine-max-num-results 10)
 
-(setq company-backends '((company-capf company-tabnine)))
+(defun zenith/set-default-company-backends ()
+  ;; Set backends for company-mode
+  (setq company-backends '((company-capf company-tabnine))))
+
+(zenith/set-default-company-backends)
 
 ;; Use my own prefix function to replace TabNine's
 (defun zenith/get-prefix ()
@@ -115,18 +124,14 @@
           (setq beg (point)))))
     (buffer-substring-no-properties beg (point))))
 
-(defun zenith/string-lessp-ignore-case (str1 str2)
-  (string-lessp (downcase str1) (downcase str2)))
-
 (defun zenith/company-compare-string (str1 str2)
-  (let* ((prefix company-prefix)
-         (prefix-p1 t)
-         (prefix-p2 t))
-    (when prefix
-      (setq prefix-p1 (string-prefix-p prefix str1)
-            prefix-p2 (string-prefix-p prefix str2)))
+  (let* ((str1 (downcase str1))
+         (str2 (downcase str2))
+         (prefix company-prefix)
+         (prefix-p1 (and prefix (string-prefix-p prefix str1)))
+         (prefix-p2 (and prefix (string-prefix-p prefix str2))))
     (if (equal prefix-p1 prefix-p2)
-        (zenith/string-lessp-ignore-case str1 str2)
+        (string-lessp str1 str2)
       prefix-p1)
     ))
 
