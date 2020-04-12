@@ -121,23 +121,32 @@
           (setq beg (point)))))
     (buffer-substring-no-properties beg (point))))
 
+;; See https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Hash.html
+(defun zenith/case-fold-string= (a b)
+  (string-equal (upcase a) (upcase b)))
+
+(defun zenith/case-fold-string-hash (a)
+  (sxhash-equal (upcase a)))
+
+(define-hash-table-test 'zenith/case-fold
+  'zenith/case-fold-string= 'zenith/case-fold-string-hash)
+
+(defvar zenith/company-sort-hashtable (make-hash-table :test 'zenith/case-fold)
+  "Hash table for sorting")
+
 (defun zenith/company-compare-string (str1 str2)
-  (let* ((str1 (downcase str1))
-         (str2 (downcase str2))
-         (prefix company-prefix)
-         (prefix-p1 (and prefix (string-prefix-p prefix str1)))
-         (prefix-p2 (and prefix (string-prefix-p prefix str2))))
-    (if (equal prefix-p1 prefix-p2)
-        (string-lessp str1 str2)
-      prefix-p1)
-    ))
+  (< (gethash str1 zenith/company-sort-hashtable)
+     (gethash str2 zenith/company-sort-hashtable)))
 
 (defun zenith/company-transformer (candidates)
   ;; Sort candidate alphabetically and then show the candidates with same prefix
   ;; first
+  (clrhash zenith/company-sort-hashtable)
   (let ((company-prefix (zenith/get-prefix)))
-     (delete-consecutive-dups (sort candidates #'zenith/company-compare-string))
-     ))
+    (dolist (candidate candidates)
+      (puthash candidate (or (and company-prefix (fuz-calc-score-skim company-prefix candidate)) 0) zenith/company-sort-hashtable))
+    (delete-consecutive-dups (sort candidates #'zenith/company-compare-string))
+    ))
 
 (add-to-list 'company-transformers 'zenith/company-transformer)
 
