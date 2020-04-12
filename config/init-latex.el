@@ -6,13 +6,20 @@
 ;;; Code:
 
 (defvar +latex-company-backends '())
+(defvar zenith/bibtex-library (expand-file-name "~/Dropbox/Library.bib")
+  "The default bibtex library")
 
 ;; helm-bibtex
 ;; dependencies: swiper parsebib s dash f biblio
 (autoload 'ivy-bibtex "ivy-bibtex" "" t)
 (add-to-list 'ivy-re-builders-alist '(ivy-bibtex . ivy--regex-ignore-order))
-(setq bibtex-completion-bibliography (expand-file-name "~/Dropbox/Library.bib")
+(setq bibtex-completion-bibliography zenith/bibtex-library
       bibtex-completion-additional-search-fields '("abstract"))
+
+;; ebib
+;; depedencies: parsebib
+(require 'ebib)
+(setq ebib-preload-bib-files `(,zenith/bibtex-library))
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; Get ReTeX working with biblatex

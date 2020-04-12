@@ -144,9 +144,12 @@
 (setq ivy-fuz-sort-limit 2000)
 (setq ivy-sort-matches-functions-alist '((helpful-variable)
                                          (helpful-callable)
+                                         (amx-completing-read-ivy) ;; Use amx own sorting
                                          (t . ivy-fuz-sort-fn))
       ivy-re-builders-alist '((counsel-rg . ivy--regex)
+                              (swiper . ivy--regex)
                               (t . ivy-fuz-regex-fuzzy)))
+(add-to-list 'ivy-highlight-functions-alist '(ivy-fuz-regex-fuzzy . ivy-fuz-highlight-fn))
 
 ;; amx
 ;; depednecies: s
