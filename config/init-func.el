@@ -20,10 +20,10 @@
   (interactive)
   (clear-image-cache))
 
-(defun zenith/autoload (command-list file)
+(defun zenith/autoload (command-list file &optional non-interactive)
   "Autoload multiple function of the file at once"
   (dolist (command command-list)
-    (autoload command file nil t)))
+    (autoload command file nil (not non-interactive))))
 
 (defun zenith/add-hook (hook-list func)
   (dolist (hook hook-list)

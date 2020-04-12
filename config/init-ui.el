@@ -21,6 +21,16 @@
 ;; doom-themes
 (require 'doom-themes)
 (load-theme 'doom-one t)
+(require 'doom-themes-ext-org)
+(doom-themes-org-config)
+
+(with-eval-after-load 'org-faces
+  (set-face-attribute 'org-block-begin-line
+                      nil :underline "#A7A6AA" :background "#444444")
+  (set-face-attribute 'org-block
+                      nil :background "#302D36")
+  (set-face-attribute 'org-block-end-line
+                      nil :overline "#A7A6AA" :background "#444444"))
 
 ;; awesome-tray
 (require 'awesome-tray)

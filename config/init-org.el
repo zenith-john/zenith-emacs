@@ -10,6 +10,7 @@
 ;; org-mode
 (defvar org-directory "~/Dropbox/")
 (defvar org-agenda-files '("~/Dropbox/"))
+(defvar zenith/note-directory (expand-file-name "~/Documents/Notes"))
 
 ;;
 ;;; Packages
@@ -38,7 +39,10 @@
   (require 'org-bullets)
   (org-bullets-mode)
   ;; Org-agenda export to icalendar
-  (require 'ox-icalendar))
+  (require 'ox-icalendar)
+  ;; org-edit-latex
+  (require 'org-edit-latex)
+  (org-edit-latex-mode))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
@@ -60,6 +64,8 @@
    org-hide-emphasis-markers nil
    org-hide-leading-stars t
    org-hide-leading-stars-before-indent-mode t
+   org-id-track-globally t
+   org-id-locations-file (expand-file-name ".org-id-locations" zenith-emacs-local-dir)
    org-image-actual-width nil
    org-indent-indentation-per-level 2
    org-indent-mode-turns-on-hiding-stars t
@@ -75,6 +81,7 @@
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3))
    org-special-ctrl-a/e t
+   org-src-fontify-natively t
    org-startup-folded t
    org-startup-indented t
    org-startup-with-inline-images nil
@@ -183,7 +190,15 @@
   (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
 
   ;; I prefer C-c C-c over C-c ' (more consistent)
-  (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit))
+  (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit)
+
+  ;; org-babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (latex . t)
+     (python . t)
+     (shell . t))))
 
 (eval-after-load 'ox-latex
   '(add-to-list 'org-latex-classes
@@ -195,6 +210,29 @@
                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
+;; org-edit-latex
+(with-eval-after-load 'org-edit-latex
+  (setq org-edit-latex-create-master nil))
+
+;; org-mind-map
+;; dependencies: dash org
+(zenith/autoload '(org-mind-map-write
+                   org-mind-map-write-current-branch
+                   org-mind-map-write-current-tree) "ox-org")
+
+(with-eval-after-load 'ox-org
+  (setq org-mind-map-engine "dot"))
+
+;; org-roam
+;; dependencies: dash f s org emacsql emacsql-sqlite
+(require 'org-roam)
+(org-roam-mode 1)
+(with-eval-after-load 'org-roam
+  (setq
+   org-roam-directory zenith/note-directory
+   org-roam-completion-system 'ivy))
+
+;; ox-icalendar
 (with-eval-after-load 'ox-icalendar
   (setq org-icalendar-combined-agenda-file (expand-file-name "~/Dropbox/agenda.ics")
         org-icalendar-include-todo t
