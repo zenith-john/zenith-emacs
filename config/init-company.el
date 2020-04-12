@@ -10,6 +10,7 @@
       company-minimum-prefix-length 1
       company-tooltip-limit 10
       company-dabbrev-downcase nil
+
       company-dabbrev-ignore-case nil
       company-dabbrev-code-other-buffers t
       company-tooltip-align-annotations t
@@ -135,7 +136,7 @@
   "Hash table for sorting")
 
 (defun zenith/company-compare-string (str1 str2)
-  (< (gethash str1 zenith/company-sort-hashtable)
+  (> (gethash str1 zenith/company-sort-hashtable)
      (gethash str2 zenith/company-sort-hashtable)))
 
 (defun zenith/company-transformer (candidates)

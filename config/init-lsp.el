@@ -10,8 +10,18 @@
   (require 'nox)
   (nox-ensure))
 
-(setq read-process-output-max (* 1024 1024)
-      nox-optimization-p nil)
+(setq nox-optimization-p nil)
+
+(defun zenith/max-read-process ()
+  (setq read-process-output-max (* 20 1024 1024)))
+(defun zenith/normal-read-process ()
+  (setq read-process-output-max (* 1024 1024)))
+(add-hook 'company-completion-started-hook (lambda (arg) (zenith/max-read-process)))
+(add-hook 'company-completion-cancelled-hook (lambda (arg) (zenith/normal-read-process)))
+(add-hook 'company-completion-finished-hook (lambda (arg) (zenith/normal-read-process)))
+
+(add-hook 'minibuffer-setup-hook #'max-gc-limit)
+(add-hook 'minibuffer-exit-hook #'reset-gc-limit)
 
 (with-eval-after-load 'nox
   (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
