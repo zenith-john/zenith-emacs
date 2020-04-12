@@ -302,3 +302,9 @@
 [submodule "extensions/org-edit-latex"]
 	path = extensions/org-edit-latex
 	url = https://github.com/et2010/org-edit-latex
+[submodule "extensions/evil-surround"]
+	path = extensions/evil-surround
+	url = https://github.com/emacs-evil/evil-surround
+[submodule "extensions/evil-nerd-commenter"]
+	path = extensions/evil-nerd-commenter
+	url = https://github.com/redguardtoo/evil-nerd-commenter

@@ -31,6 +31,15 @@
 (setq evil-collection-company-use-tng nil)
 (evil-collection-init)
 
+;; evil-surround
+;; dependencies: evil
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+;; evil-nerd-commenter
+;; depedencies: evil
+(require 'evil-nerd-commenter)
+
 ;; evil-matchit
 ;; dependencies: evil
 (require 'evil-matchit)

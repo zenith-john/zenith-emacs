@@ -29,17 +29,22 @@
  :prefix ","
  "," 'switch-to-buffer
  "." 'find-file
+ ";" 'evilnc-comment-operator
+ "\\" 'evilnc-copy-and-comment-operator
+ "a" 'org-agenda
+ "A" 'zenith/my-org-agenda
+ "f" 'format-all-buffer
  "g" 'magit-status
  "r" 'counsel-rg
- "f" 'format-all-buffer
- "s" 'snails
- "a" 'org-agenda
- "A" 'zenith/my-org-agenda)
+ "s" 'snails)
 
 (general-define-key
  :keymaps '(normal motion)
  "M-." 'xref-find-definitions
  "C-w" 'zenith/hydra-window/body)
+
+(general-define-key
+ "M-;" 'evilnc-comment-or-uncomment-lines)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here
