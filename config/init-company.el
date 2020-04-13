@@ -10,7 +10,6 @@
       company-minimum-prefix-length 1
       company-tooltip-limit 10
       company-dabbrev-downcase nil
-
       company-dabbrev-ignore-case nil
       company-dabbrev-code-other-buffers t
       company-tooltip-align-annotations t
@@ -104,12 +103,6 @@
       company-tabnine-max-num-results 10
       company-tabnine-always-trigger nil)
 
-(defun zenith/set-default-company-backends ()
-  ;; Set backends for company-mode
-  (setq company-backends '((company-capf company-tabnine))))
-
-(zenith/set-default-company-backends)
-
 ;; Use my own prefix function to replace TabNine's
 (defun zenith/get-prefix ()
   (interactive)
@@ -149,7 +142,98 @@
     (delete-consecutive-dups (sort candidates #'zenith/company-compare-string))
     ))
 
-(add-to-list 'company-transformers 'zenith/company-transformer)
+
+(defvar zenith/common-company-backends '(company-capf company-tabnine)
+  "Company backends for common buffers")
+
+(defvar-local zenith/local-company-backends zenith/common-company-backends
+  "Company backends used for fuzzy matching")
+;; The fuzzy matching is not usable in mode other than emacs-list-mode
+;; As some backends rely on envirnment to provide the completion.
+(defvar-local zenith/fuzzy-matching-prefix ""
+  "Prefix for fuzzy-matching")
+
+;; the following code is inspired by company-fuzzy
+(defun zenith/company-get-annotation (candidate)
+  (zenith/company-get-annotation-by-backend
+   candidate
+   (get-text-property 0 'company-backend candidate)))
+
+(defun zenith/company-get-annotation-by-backend (candidate backend)
+  (if (and candidate
+           backend)
+      (ignore-errors (funcall backend 'annotation candidate))
+    ""))
+
+(defun zenith/company-get-doc (candidate)
+  (zenith/company-get-doc-by-backend
+   candidate
+   (get-text-property 0 'company-backend candidate)))
+
+(defun zenith/company-get-doc-by-backend (candidate backend)
+  (if (and candidate
+           backend)
+      (ignore-errors
+       (funcall backend 'doc-buffer candidate))
+    ""))
+
+(defun zenith/fuzzy-matching-candidate (candidate)
+  (fuz-calc-score-skim zenith/fuzzy-matching-prefix (substring-no-properties candidate)))
+
+(defun zenith/extract-prefix (prefix)
+  (cond
+   ((or (not prefix) (equal prefix 'stop)) "")
+   ((listp prefix) (car prefix))
+   (t prefix)))
+
+(defun zenith/get-candidates-fuzzy (backend)
+  (save-excursion
+    (let* ((prefix (funcall backend 'prefix))
+           (zenith/fuzzy-matching-prefix (zenith/extract-prefix prefix))
+           (new-prefix (if (equal zenith/fuzzy-matching-prefix "")
+                           ""
+                         (substring zenith/fuzzy-matching-prefix 0 1)))
+           (company-backend backend)
+           (candidates))
+      (setq candidates (company--preprocess-candidates
+                        (company--fetch-candidates new-prefix)))
+      (cl-remove-if-not 'zenith/fuzzy-matching-candidate candidates))))
+
+(defun zenith/fuzzy-candidates ()
+  (let ((all-candidates '()))
+    (dolist (backend zenith/local-company-backends)
+      (let ((temp-candidates))
+        (if (equal backend 'company-tabnine)
+            (let ((company-backend 'company-tabnine))
+              (setq temp-candidates (company--preprocess-candidates
+                                     (company--fetch-candidates
+                                      (funcall backend 'prefix)))))
+          (setq temp-candidates (zenith/get-candidates-fuzzy backend)))
+        (when temp-candidates
+          (mapc (lambda (arg)(put-text-property 0 1 'company-backend backend arg)) temp-candidates)
+          (setq all-candidates (append all-candidates temp-candidates))
+          )))
+    (zenith/company-transformer all-candidates)))
+
+(defun zenith/fuzzy-matching-backend (command &optional arg &rest ignored)
+  "Backend source for fuzzy matching"
+  (interactive (list 'interactive))
+  (cl-case command
+    (interactive (company-begin-backend 'zenith/fuzzy-matching-backends))
+    (prefix
+     (setq zenith/fuzzy-matching-prefix (zenith/get-prefix))
+     (and (not (company-in-string-or-comment))
+          (company-grab-symbol)))
+    (candidates (zenith/fuzzy-candidates))
+    (annotation (zenith/company-get-annotation arg))
+    (doc-buffer (zenith/company-get-doc arg))
+    (sorted t)))
+
+(defun zenith/set-company-fuzzy-backends ()
+  ;; Set backends for company-mode
+  (setq company-backends '(zenith/fuzzy-matching-backend)))
+
+(zenith/set-company-fuzzy-backends)
 
 (add-hook 'company-completion-started-hook (lambda (arg) (zenith/temp-no-gc)))
 (add-hook 'company-completion-cancelled-hook (lambda (arg) (zenith/restore-gc)))
