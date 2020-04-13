@@ -114,9 +114,6 @@
 
 (global-auto-revert-mode 1)
 
-(general-def isearch-mode-map [escape] #'isearch-abort)
-(general-define-key [remap list-buffers] #'ibuffer)
-
 ;; ibuffer-projectile
 ;; dependencies: projectile
 (add-hook 'ibuffer-hook

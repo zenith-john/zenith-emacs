@@ -9,8 +9,6 @@
 
 (autoload 'pyim-convert-string-at-point "pyim")
 
-(general-define-key "M-/" 'pyim-convert-string-at-point)
-
 (with-eval-after-load 'pyim
   ;; liberime
   (load-file (expand-file-name "liberime/build/liberime.so" zenith-emacs-extension-dir))

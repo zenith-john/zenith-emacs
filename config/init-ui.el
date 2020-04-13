@@ -130,7 +130,6 @@
 
 ;; goto-line-preview
 (autoload 'goto-line-preview "goto-line-preview")
-(general-def [remap goto-line] 'goto-line-preview)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

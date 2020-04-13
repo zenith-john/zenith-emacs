@@ -29,13 +29,6 @@
       ;; enable ability to select prompt (alternative to `ivy-immediate-done')
       ivy-use-selectable-prompt t)
 
-(general-def ivy-mode-map
-  [remap switch-to-buffer]              #'ivy-switch-buffer
-  [remap switch-to-buffer-other-window] #'ivy-switch-buffer-other-window
-  [remap imenu-anywhere]                #'ivy-imenu-anywhere)
-
-(general-def ivy-minibuffer-map [escape] #'keyboard-escape-quit)
-
 ;; Don't show annoying helpful buffer in buffer selection list
 (add-to-list 'ivy-ignore-buffers "\*helpful")
 
@@ -70,23 +63,6 @@
         (all-the-icons-ivy-buffer-commands
          '(counsel-projectile-switch-to-buffer)))
     (all-the-icons-ivy-setup)))
-
-(general-def
-  [remap apropos]                  #'counsel-apropos
-  [remap bookmark-jump]            #'counsel-bookmark
-  [remap describe-face]            #'counsel-faces
-  [remap describe-function]        #'counsel-describe-function
-  [remap describe-variable]        #'counsel-describe-variable
-  [remap describe-bindings]        #'counsel-descbinds
-  [remap set-variable]             #'counsel-set-variable
-  [remap find-file]                #'counsel-find-file
-  [remap find-library]             #'counsel-find-library
-  [remap info-lookup-symbol]       #'counsel-info-lookup-symbol
-  [remap imenu]                    #'counsel-imenu
-  [remap recentf-open-files]       #'counsel-recentf
-  [remap org-capture]              #'counsel-org-capture
-  [remap swiper]                   #'counsel-grep-or-swiper
-  "M-y"                            #'counsel-yank-pop)
 
 (setq counsel-find-file-ignore-regexp "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)"
       counsel-describe-function-function #'helpful-callable

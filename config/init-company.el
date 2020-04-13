@@ -21,13 +21,6 @@
         company-echo-metadata-frontend))
 
 (require 'company)
-(general-define-key "C-x C-j" #'company-complete-common)
-(general-define-key
- :keymaps 'company-active-map
- "M-RET" (lambda ()
-           (interactive)
-           (company-abort)
-           (newline-and-indent)))
 
 ;; company-box
 ;; dependencies: dash dash-functional company

@@ -220,15 +220,6 @@
     ;; Else add a star to the current environment.
     (LaTeX-modify-environment (concat (LaTeX-current-environment) "*"))))
 
-;; Exchange position of { and [ in latex mode to reduce the injury of the finger
-(general-define-key
- :keymaps 'LaTeX-mode-map
- "、" (lambda ()(interactive)(self-insert-command 1 ?\\))
- "C-*" 'LaTeX-star-environment-dwim
- "[" (lambda ()(interactive)(self-insert-command 1 ?{))
- "{" (lambda ()(interactive)(self-insert-command 1 ?\[))
- )
-
 (setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
       '(LaTeX-section-heading
         LaTeX-section-title

@@ -3,7 +3,6 @@
 ;; ace-window
 ;; dependencies: avy
 (autoload 'ace-window "ace-window")
-(general-define-key "M-o" 'ace-window)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
       aw-scope 'frame
       aw-background t)

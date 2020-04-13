@@ -4,9 +4,6 @@
 (zenith/autoload '(avy-goto-char avy-goto-char-in-line) "avy")
 (setq avy-background t
       avy-all-windows nil)
-(general-define-key
- "M-g s" 'avy-goto-char
- "M-g f" 'avy-goto-char-in-line)
 
 (provide 'init-avy)
 ;;; init-avy.el ends here

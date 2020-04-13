@@ -9,11 +9,6 @@
 (autoload 'fd-dired "fd-dired")
 
 (autoload 'er/expand-region "expand-region")
-(general-define-key
- "C-=" 'er/expand-region)
-(general-define-key
- :keymaps 'normal
- "=" 'er/expand-region)
 
 (defun +clear-image-cache ()
   "Remove image cache to redisplay the image."

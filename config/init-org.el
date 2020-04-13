@@ -190,9 +190,6 @@
 
   (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
 
-  ;; I prefer C-c C-c over C-c ' (more consistent)
-  (define-key org-src-mode-map (kbd "C-c C-c") #'org-edit-src-exit)
-
   ;; org-babel
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -251,10 +248,7 @@
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys)
-  (evil-define-key 'motion org-agenda-mode-map
-    "a" 'org-attach
-    "o" 'org-agenda-attach-open))
+  (evil-org-agenda-set-keys))
 
 ;; ol-bibtex
 (with-eval-after-load 'ol-bibtex

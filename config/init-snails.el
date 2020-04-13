@@ -14,19 +14,6 @@
     (setq-local truncate-lines nil)))
 (add-hook 'snails-mode-hook 'zenith/enable-truncate-lines)
 
-;; Use arrow to move and <escape> to quit.
-(general-define-key
- :keymaps 'snails-mode-map
- "<down>" 'snails-select-next-item
- "<up>" 'snails-select-prev-item
- "<escape>" 'snails-quit)
-
-;; I don't know why, but the ivy-mode set <escape> to minibuffer-keyboard-quit
-;; and overwrite the keybindings in snails-mode-map.
-(general-define-key
- :keymaps 'ivy-mode-map
- [escape] nil)
-
 (defvar zenith/snails-project-root nil "The root of the current project")
 (defun zenith/snails-backend-projectile-root ()
   "Find projectile root."
