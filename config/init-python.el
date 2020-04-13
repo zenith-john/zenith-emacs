@@ -33,16 +33,19 @@
 
 ;; pyenv-mode
 ;; dependencies: pythonic
-(require 'pyenv-mode)
 
-;; It is worth noting that emacs read $HOME/.profile to load environment variables.
-;; From http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
-(defun zenith/pyenv-init-global ()
-  "Initialize pyenv version to the global one"
-  (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
-    (pyenv-mode-set global-pyenv)))
+(zenith/delay-load
+ (lambda ()
+   (require 'pyenv-mode)
 
-(zenith/pyenv-init-global)
+   ;; It is worth noting that emacs read $HOME/.profile to load environment variables.
+   ;; From http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
+   (defun zenith/pyenv-init-global ()
+     "Initialize pyenv version to the global one"
+     (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
+       (pyenv-mode-set global-pyenv)))
+
+   (zenith/pyenv-init-global)))
 
 ;; pyimport
 ;; depedencies: s shut-up

@@ -308,3 +308,6 @@
 [submodule "extensions/evil-nerd-commenter"]
 	path = extensions/evil-nerd-commenter
 	url = https://github.com/redguardtoo/evil-nerd-commenter
+[submodule "extensions/rg"]
+	path = extensions/rg
+	url = https://github.com/dajva/rg.el

@@ -38,7 +38,15 @@
 
 ;; evil-nerd-commenter
 ;; depedencies: evil
-(require 'evil-nerd-commenter)
+(zenith/autoload
+ '(evilnc-comment-operator
+   evilnc-comment-or-uncomment-lines
+   evilnc-comment-or-uncomment-paragraphs
+   evilnc-comment-or-uncomment-to-the-line
+   evilnc-copy-and-comment-lines
+   evilnc-copy-and-comment-operator
+   evilnc-copy-to-line)
+ "evil-nerd-commenter")
 
 ;; evil-matchit
 ;; dependencies: evil

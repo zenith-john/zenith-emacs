@@ -37,28 +37,32 @@
  "f"     'format-all-buffer
  "g"     'magit-status
  "r"     'counsel-rg
+ "R"     'rg-project
  "s"     'snails)
 
 (general-define-key
  :states '(normal motion)
  "gs"    'avy-goto-char
+ "R"     'rg-dwim-project-dir
  "M-."   'xref-find-definitions
  "C-w"   'zenith/hydra-window/body)
 
 (general-define-key
  [remap goto-line]    'goto-line-preview
  [remap list-buffers] 'ibuffer
- "M-;"                'evilnc-comment-or-uncomment-lines
+ "C-."                'yas-insert-snippet
  "C-x C-j"            'company-complete-common
- "M-o"                'ace-window
- "M-/"                'pyim-convert-string-at-point)
+ "M-;"                'evilnc-comment-or-uncomment-lines
+ "M-/"                'pyim-convert-string-at-point
+ "M-o"                'ace-window)
 
 (general-define-key
  :keymaps 'company-active-map
  "M-RET" (lambda ()
            (interactive)
            (company-abort)
-           (newline-and-indent)))
+           (newline-and-indent))
+ [tab]    'yas-maybe-expand)
 
 (general-define-key
  :keymaps 'isearch-mode-map

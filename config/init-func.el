@@ -24,5 +24,9 @@
   (dolist (hook hook-list)
     (add-hook hook func)))
 
+(defun zenith/delay-load (func)
+  (run-with-idle-timer 1 nil
+                       func))
+
 (provide 'init-func)
 ;;; init-func.el ends here

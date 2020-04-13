@@ -53,6 +53,9 @@
 (add-hook 'minibuffer-setup-hook 'zenith/temp-no-gc)
 (add-hook 'minibuffer-exit-hook 'zenith/restore-gc)
 
+(add-hook 'minibuffer-setup-hook #'zenith/temp-no-gc)
+(add-hook 'minibuffer-exit-hook #'zenith/restore-gc)
+
 (require 'server)
 (unless (server-running-p)
   (server-start))

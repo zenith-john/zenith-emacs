@@ -18,7 +18,7 @@
 
 ;; ebib
 ;; depedencies: parsebib
-(require 'ebib)
+(autoload 'ebib "ebib" nil t)
 (setq ebib-preload-bib-files `(,zenith/bibtex-library))
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)

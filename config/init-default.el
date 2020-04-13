@@ -114,42 +114,9 @@
 
 (global-auto-revert-mode 1)
 
-;; ibuffer-projectile
-;; dependencies: projectile
-(add-hook 'ibuffer-hook
-          (lambda ()
-            (require 'ibuffer-projectile)
-            (ibuffer-projectile-set-filter-groups)
-            (unless (eq ibuffer-sorting-mode 'alphabetic)
-              (ibuffer-do-sort-by-alphabetic))
-            (setq-default ibuffer-formats
-                          '((mark modified read-only " "
-                             (name 18 18 :left :elide)
-                             " "
-                             (size 9 -1 :right)
-                             " "
-                             (mode 16 16 :left :elide)
-                             " "
-                             project-relative-file)))))
-
 (cua-mode 1)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-
-;; ws-butler
-(require 'ws-butler)
-(ws-butler-global-mode 1)
-
-;; emacs-wgrep
-(autoload 'wgrep-change-to-wgrep-mode "wgrep")
-(setq wgrep-auto-save-buffer t)
-
-;; Mode load
-(dolist (elt '(("\\.md\\'" . markdown-mode)
-               ("\\.markdown\\'" . markdown-mode)))
-  (add-to-list 'auto-mode-alist elt))
-
-(autoload 'markdown-mode "markdown-mode")
 
 ;; winner-mode
 (winner-mode 1)

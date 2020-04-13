@@ -20,9 +20,6 @@
 (add-hook 'company-completion-cancelled-hook (lambda (arg) (zenith/normal-read-process)))
 (add-hook 'company-completion-finished-hook (lambda (arg) (zenith/normal-read-process)))
 
-(add-hook 'minibuffer-setup-hook #'zenith/temp-no-gc)
-(add-hook 'minibuffer-exit-hook #'zenith/restore-gc)
-
 (with-eval-after-load 'nox
   (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
   (add-hook 'nox--managed-mode-hook 'zenith/set-company-fuzzy-backends))

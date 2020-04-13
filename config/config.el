@@ -10,10 +10,9 @@
 
 (require 'init-default)
 (require 'init-func)
-(require 'init-undo-tree)
+(require 'init-utils)
 (require 'init-ui)
 (require 'init-evil)
-(require 'init-sp)
 (require 'init-which-key)
 (require 'init-pyim)
 (require 'init-eaf)
@@ -26,18 +25,8 @@
 (require 'init-snails)
 (require 'init-git)
 (require 'init-lsp)
-(require 'init-format)
-
-(run-with-idle-timer 1 nil
-                     (lambda ()
-                       (message "Lazy Loading")
-                       (require 'init-auto-save)
-                       (require 'init-keyfreq)
-                       (require 'init-ace-window)
-                       (require 'init-helpful)
-                       (require 'init-avy)
-                       (require 'org)))
-
+(require 'init-auto-save)
+(require 'init-keyfreq)
 (require 'init-keybinding)
 
 (require 'init-emacs-lisp)

@@ -15,6 +15,10 @@
 ;;
 ;;; Packages
 
+;; dely load org-mode
+(zenith/delay-load (lambda ()(require 'org-mode)))
+
+;; org-clock
 (zenith/autoload '(org-clock-load org-clock-save) "org-clock")
 (add-hook 'org-mode-hook 'org-clock-load)
 (setq org-clock-persist 'history
@@ -223,8 +227,11 @@
 
 ;; org-roam
 ;; dependencies: dash f s org emacsql emacsql-sqlite
-(require 'org-roam)
-(org-roam-mode 1)
+(zenith/delay-load
+ (lambda ()
+   (require 'org-roam)
+   (org-roam-mode 1)))
+
 (with-eval-after-load 'org-roam
   (setq
    org-roam-directory zenith/note-directory
