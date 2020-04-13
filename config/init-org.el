@@ -82,6 +82,7 @@
      (org-agenda-files :maxlevel . 3))
    org-special-ctrl-a/e t
    org-src-fontify-natively t
+   org-src-preserve-indentation t
    org-startup-folded t
    org-startup-indented t
    org-startup-with-inline-images nil
