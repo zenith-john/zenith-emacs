@@ -256,6 +256,14 @@
     "a" 'org-attach
     "o" 'org-agenda-attach-open))
 
+;; ol-bibtex
+(with-eval-after-load 'ol-bibtex
+  ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.
+  (defun org-bibtex-read-file (file)
+    "Read FILE with `org-bibtex-read-buffer'"
+    (interactive "fFile: ")
+    (org-bibtex-read-buffer (find-file-noselect file 'nowarn))))
+
 ;; Org attach
 (setq org-attach-method 'lns)
 

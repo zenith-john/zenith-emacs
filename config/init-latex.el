@@ -42,8 +42,8 @@
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
-  (setq bibtex-dialect 'biblatex
-        bibtex-align-at-equal-sign t
+  (bibtex-set-dialect 'biblatex)
+  (setq bibtex-align-at-equal-sign t
         bibtex-text-indentation 20))
 
 (with-eval-after-load 'tex
