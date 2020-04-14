@@ -6,15 +6,17 @@
 ;;; Code:
 
 (defvar +latex-company-backends '())
-(defvar zenith/bibtex-library (expand-file-name "~/Dropbox/Library.bib")
-  "The default bibtex library")
 
 ;; helm-bibtex
 ;; dependencies: swiper parsebib s dash f biblio
 (autoload 'ivy-bibtex "ivy-bibtex" "" t)
 (add-to-list 'ivy-re-builders-alist '(ivy-bibtex . ivy--regex-ignore-order))
 (setq bibtex-completion-bibliography zenith/bibtex-library
-      bibtex-completion-additional-search-fields '("abstract"))
+      bibtex-completion-additional-search-fields '("abstract")
+      bibtex-autokey-year-length 4
+      bibtex-autokey-name-year-separator ""
+      bibtex-autokey-year-title-separator ""
+      bibtex-autokey-titlewords 0)
 
 ;; ebib
 ;; depedencies: parsebib
@@ -220,12 +222,43 @@
     ;; Else add a star to the current environment.
     (LaTeX-modify-environment (concat (LaTeX-current-environment) "*"))))
 
-(setq LaTeX-section-hook ; Add the toc entry to the sectioning hooks.
+(setq LaTeX-section-hook
       '(LaTeX-section-heading
         LaTeX-section-title
-        LaTeX-section-section)
+        LaTeX-section-section
+        LaTeX-section-label)
       LaTeX-fill-break-at-separators nil
       LaTeX-item-indent 0)
+
+(defun zenith/latex-toggle-section-with-star ()
+  (interactive)
+  (if (member '("section" 2) LaTeX-section-list) ;; TODO: Make it more rubost.
+   (setq LaTeX-section-list
+      '(("part" 0)
+        ("chapter" 1)
+        ("section*" 2)
+        ("subsection*" 3)
+        ("subsubsection*" 4)
+        ("paragraph" 5)
+        ("subparagraph" 6)))
+   (setq LaTeX-section-list
+         '(("part" 0)
+           ("chapter" 1)
+           ("section" 2)
+           ("subsection" 3)
+           ("subsubsection" 4)
+           ("paragraph" 5)
+           ("subparagraph" 6)))))
+
+(setq LaTeX-section-label
+      '(("part" . "part:")
+        ("chapter" . "chap:")
+        ("section" . "sec:")
+        ("subsection" . "sec:")
+        ("subsubsection" . "sec:")
+        ("section*" . "sec:")
+        ("subsection*" . "sec:")))
+
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)

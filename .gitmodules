@@ -305,3 +305,9 @@
 [submodule "extensions/rg"]
 	path = extensions/rg
 	url = https://github.com/dajva/rg.el
+[submodule "extensions/org-ref"]
+	path = extensions/org-ref
+	url = https://github.com/jkitchin/org-ref
+[submodule "extensions/emacs-htmlize"]
+	path = extensions/emacs-htmlize
+	url = https://github.com/hniksic/emacs-htmlize

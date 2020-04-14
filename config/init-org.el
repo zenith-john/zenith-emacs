@@ -10,7 +10,9 @@
 ;; org-mode
 (defvar org-directory "~/Dropbox/")
 (defvar org-agenda-files '("~/Dropbox/"))
-(defvar zenith/note-directory (expand-file-name "~/Documents/Notes"))
+(defvar zenith/note-directory (expand-file-name "~/Documents/Notes/"))
+(defvar zenith/bibtex-library (expand-file-name "~/Dropbox/Library.bib")
+  "The default bibtex library")
 
 ;;
 ;;; Packages
@@ -65,6 +67,7 @@
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t
    org-footnote-auto-label 'plain
+   org-goto-interface 'outline-path-completion
    org-hidden-keywords nil
    org-hide-emphasis-markers nil
    org-hide-leading-stars t
@@ -76,6 +79,7 @@
    org-indent-mode-turns-on-hiding-stars t
    org-insert-heading-respect-content t
    org-list-description-max-indent 4
+   org-outline-path-complete-in-steps nil
    org-pretty-entities nil
    org-pretty-entities-include-sub-superscripts t
    org-priority-faces
@@ -85,6 +89,7 @@
    org-refile-targets
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3))
+   org-refile-use-outline-path 'file
    org-special-ctrl-a/e t
    org-src-fontify-natively t
    org-src-preserve-indentation t
@@ -242,11 +247,20 @@
   (add-hook 'org-mode-hook
             'evil-org-mode))
 
+(with-eval-after-load 'org-id
+  (setq org-id-extra-files (directory-files-recursively zenith/note-directory ".*\\.org"))
+  (org-id-update-id-locations)
+  (defun org-id-complete-link (&optional arg)
+  "Create an id: link using completion"
+  (concat "id:"
+          (org-id-get-with-outline-path-completion)))
+  (org-link-set-parameters "id"
+                           :complete 'org-id-complete-link))
+
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
-;; ol-bibtex
 (with-eval-after-load 'ol-bibtex
   ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.
   (defun org-bibtex-read-file (file)
@@ -279,6 +293,17 @@
 (defun zenith/my-org-agenda ()
   (interactive)
   (org-agenda 0 "b"))
+
+(setq org-ref-default-bibliography `(,zenith/bibtex-library)
+      org-ref-bibliography-notes (concat zenith/note-directory "biblio.org")
+      org-ref-completion-library 'org-ref-ivy-cite
+      orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
+(zenith/delay-load (lambda ()(require 'org-ref)))
+
+(defun zenith/require-org-ref-packages ()
+  (interactive)
+  (require 'doi-utils)
+  (require 'org-ref-isbn))
 
 (provide 'init-org)
 ;;; init-org.el ends here
