@@ -6,6 +6,9 @@
 ;;; Code:
 
 ;; yasnippet
+
+;; disable useless keybindings
+(setq yas-minor-mode-map (make-sparse-keymap))
 (require 'yasnippet)
 (setq yas-snippet-dirs `(,(concat zenith-emacs-extension-dir "snippets/")))
 

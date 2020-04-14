@@ -16,7 +16,7 @@
 ;;; Packages
 
 ;; dely load org-mode
-(zenith/delay-load (lambda ()(require 'org-mode)))
+(zenith/delay-load (lambda ()(require 'org)))
 
 ;; org-clock
 (zenith/autoload '(org-clock-load org-clock-save) "org-clock")
@@ -46,7 +46,9 @@
   (require 'ox-icalendar)
   ;; org-edit-latex
   (require 'org-edit-latex)
-  (org-edit-latex-mode))
+  (org-edit-latex-mode)
+  ;; manually load org-id
+  (require 'org-id))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
@@ -56,7 +58,6 @@
    org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))
    org-cycle-include-plain-lists t
    org-catch-invisible-edits 'show-and-error
-   org-eldoc-breadcrumb-separator " → "
    org-entities-user
    '(("flat"  "\\flat" nil "" "" "266D" "♭")
      ("sharp" "\\sharp" nil "" "" "266F" "♯"))
@@ -67,8 +68,8 @@
    org-hidden-keywords nil
    org-hide-emphasis-markers nil
    org-hide-leading-stars t
-   org-hide-leading-stars-before-indent-mode t
    org-id-track-globally t
+   org-id-link-to-org-use-id t
    org-id-locations-file (expand-file-name ".org-id-locations" zenith-emacs-local-dir)
    org-image-actual-width nil
    org-indent-indentation-per-level 2
