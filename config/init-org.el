@@ -226,18 +226,6 @@
 (with-eval-after-load 'ox-org
   (setq org-mind-map-engine "dot"))
 
-;; org-roam
-;; dependencies: dash f s org emacsql emacsql-sqlite
-(zenith/delay-load
- (lambda ()
-   (require 'org-roam)
-   (org-roam-mode 1)))
-
-(with-eval-after-load 'org-roam
-  (setq
-   org-roam-directory zenith/note-directory
-   org-roam-completion-system 'ivy))
-
 ;; ox-icalendar
 (with-eval-after-load 'ox-icalendar
   (setq org-icalendar-combined-agenda-file (expand-file-name "~/Dropbox/agenda.ics")

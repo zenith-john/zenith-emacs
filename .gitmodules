@@ -293,12 +293,6 @@
 [submodule "extensions/org-mind-map"]
 	path = extensions/org-mind-map
 	url = https://github.com/the-humanities/org-mind-map
-[submodule "extensions/org-roam"]
-	path = extensions/org-roam
-	url = https://github.com/jethrokuan/org-roam
-[submodule "extensions/emacsql"]
-	path = extensions/emacsql
-	url = https://github.com/skeeto/emacsql
 [submodule "extensions/org-edit-latex"]
 	path = extensions/org-edit-latex
 	url = https://github.com/et2010/org-edit-latex
