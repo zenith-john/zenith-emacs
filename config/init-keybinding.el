@@ -43,6 +43,7 @@
 (general-define-key
  :states '(normal motion)
  "gs"    'avy-goto-char
+ "r"     'counsel-recentf
  "R"     'rg-dwim-project-dir
  "M-."   'xref-find-definitions
  "C-w"   'zenith/hydra-window/body)
