@@ -74,4 +74,13 @@
 (setq avy-background t
       avy-all-windows nil)
 
+;; perspective.el
+(require 'perspective)
+
+(setq persp-state-default-file (concat zenith-emacs-local-dir "persp"))
+(persp-mode 1)
+(add-hook 'after-init-hook
+          (lambda ()(persp-state-restore persp-state-default-file)))
+(add-hook 'kill-emacs-hook 'persp-state-save)
+
 (provide 'init-utils)

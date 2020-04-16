@@ -34,8 +34,15 @@
  "="     'er/expand-region
  "a"     'org-agenda
  "A"     'zenith/my-org-agenda
+ "b"     'persp-switch-to-buffer
  "f"     'format-all-buffer
  "g"     'magit-status
+ "pk"    'persp-kill
+ "pl"    'persp-state-load
+ "pn"    'persp-next
+ "pp"    'persp-prev
+ "pr"    'persp-rename
+ "ps"    'persp-switch
  "r"     'counsel-rg
  "R"     'rg-project
  "s"     'snails)
@@ -104,7 +111,7 @@
 
 (general-define-key
  :keymaps                               'ivy-mode-map
-  [remap switch-to-buffer]              'ivy-switch-buffer
+  [remap switch-to-buffer]              'persp-ivy-switch-buffer ;; use persp switch buffer
   [remap switch-to-buffer-other-window] 'ivy-switch-buffer-other-window
   [remap imenu-anywhere]                'ivy-imenu-anywhere
   [remap apropos]                       'counsel-apropos

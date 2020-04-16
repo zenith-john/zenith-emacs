@@ -311,3 +311,6 @@
 [submodule "extensions/emacs-htmlize"]
 	path = extensions/emacs-htmlize
 	url = https://github.com/hniksic/emacs-htmlize
+[submodule "perspective"]
+	path = extensions/perspective
+	url = https://github.com/nex3/perspective-el
