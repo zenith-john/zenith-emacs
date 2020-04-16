@@ -196,16 +196,17 @@
   (let ((all-candidates '()))
     (dolist (backend zenith/local-company-backends)
       (let ((temp-candidates))
-        (if (equal backend 'company-tabnine)
-            (let ((company-backend 'company-tabnine))
-              (setq temp-candidates (company--preprocess-candidates
-                                     (company--fetch-candidates
-                                      (funcall backend 'prefix)))))
-          (setq temp-candidates (zenith/get-candidates-fuzzy backend)))
-        (when temp-candidates
-          (mapc (lambda (arg)(put-text-property 0 1 'company-backend backend arg)) temp-candidates)
-          (setq all-candidates (append all-candidates temp-candidates))
-          )))
+        (ignore-errors
+          (if (equal backend 'company-tabnine)
+              (let ((company-backend 'company-tabnine))
+                (setq temp-candidates (company--preprocess-candidates
+                                       (company--fetch-candidates
+                                        (funcall backend 'prefix)))))
+            (setq temp-candidates (zenith/get-candidates-fuzzy backend)))
+          (when temp-candidates
+            (mapc (lambda (arg)(put-text-property 0 1 'company-backend backend arg)) temp-candidates)
+            (setq all-candidates (append all-candidates temp-candidates))
+            ))))
     (zenith/company-transformer all-candidates)))
 
 (defun zenith/fuzzy-matching-backend (command &optional arg &rest ignored)

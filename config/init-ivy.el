@@ -124,6 +124,9 @@
                                          (t . ivy-fuz-sort-fn))
       ivy-re-builders-alist '((counsel-rg . ivy--regex)
                               (swiper . ivy--regex)
+                              (amx-completing-read-ivy)
+                              (helpful-variable)
+                              (helpful-callable)
                               (t . ivy-fuz-regex-fuzzy)))
 (add-to-list 'ivy-highlight-functions-alist '(ivy-fuz-regex-fuzzy . ivy-fuz-highlight-fn))
 
