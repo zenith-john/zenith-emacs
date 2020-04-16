@@ -49,31 +49,31 @@
         bibtex-text-indentation 20))
 
 (with-eval-after-load 'tex
+  ;; the order of company-backend is important.
   ;; company-auctex
   ;; dependencies: yasnippet company auctex
   (require 'company-auctex)
-  (add-to-list '+latex-company-backends 'company-auctex-bibs)
-  (add-to-list '+latex-company-backends 'company-auctex-labels)
-  (add-to-list '+latex-company-backends 'company-auctex-symbols)
-  (add-to-list '+latex-company-backends 'company-auctex-environments)
-  (add-to-list '+latex-company-backends 'company-auctex-macros)
-
-  ;; company-reftex
-  ;; dependencies: s company
-  (require 'company-reftex)
-  (add-to-list '+latex-company-backends 'company-reftex-labels)
-  (add-to-list '+latex-company-backends 'company-reftex-citations)
-
   ;; company-math
   ;; dependencies: company math-symbol-lists
   (require 'company-math)
+
+  (add-to-list '+latex-company-backends 'company-auctex-bibs)
+  (add-to-list '+latex-company-backends 'company-auctex-labels)
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
-  (add-to-list '+latex-company-backends 'company-latex-commands))
+  (add-to-list '+latex-company-backends '(company-auctex-macros company-auctex-environments))
+
+  ;; company-reftex
+  ;; dependencies: s company
+  ;; (require 'company-reftex)
+  ;; (add-to-list '+latex-company-backends 'company-reftex-labels)
+  ;; (add-to-list '+latex-company-backends 'company-reftex-citations)
+  )
 
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
-   (make-local-variable 'company-backends)
-   (add-to-list 'company-backends +latex-company-backends))
+  (make-local-variable 'company-backends)
+  (dolist (backend +latex-company-backends)
+    (add-to-list 'company-backends backend)))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-company-setup)
 
@@ -150,6 +150,9 @@
           ("citeurl" "[{")
           ;; Special commands
           ("fullcite" "[{")
+          ;; hyperref
+          ("autoref" "{")
+          ("nameref" "{")
           ;; cleveref
           ("cref" "{")
           ("Cref" "{")

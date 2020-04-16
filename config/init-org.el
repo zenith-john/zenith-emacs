@@ -50,7 +50,9 @@
   (require 'org-edit-latex)
   (org-edit-latex-mode)
   ;; manually load org-id
-  (require 'org-id))
+  (require 'org-id)
+  ;; load org-mind-map
+  (require 'org-mind-map))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
@@ -69,6 +71,7 @@
    org-footnote-auto-label 'plain
    org-goto-interface 'outline-path-completion
    org-hidden-keywords nil
+   org-highlight-latex-and-related '(native)
    org-hide-emphasis-markers nil
    org-hide-leading-stars t
    org-id-track-globally t
@@ -224,12 +227,12 @@
 
 ;; org-mind-map
 ;; dependencies: dash org
-(zenith/autoload '(org-mind-map-write
-                   org-mind-map-write-current-branch
-                   org-mind-map-write-current-tree) "ox-org")
-
 (with-eval-after-load 'ox-org
-  (setq org-mind-map-engine "dot"))
+  (setq org-mind-map-engine "dot"
+        org-mind-map-dot-output '("pdf" "png" "eps")
+        org-mind-map-include-text nil
+        org-mind-map-include-images nil)
+  (setcdr (assoc "resolution" org-mind-map-default-graph-attribs) "200"))
 
 ;; ox-icalendar
 (with-eval-after-load 'ox-icalendar
@@ -298,10 +301,11 @@
       org-ref-bibliography-notes (concat zenith/note-directory "biblio.org")
       org-ref-completion-library 'org-ref-ivy-cite
       orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
-(zenith/delay-load (lambda ()(require 'org-ref)))
+(zenith/delay-load 'zenith/require-org-ref-packages)
 
 (defun zenith/require-org-ref-packages ()
   (interactive)
+  (require 'org-ref)
   (require 'doi-utils)
   (require 'org-ref-isbn))
 
