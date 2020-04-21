@@ -34,6 +34,7 @@
 (require 'init-python)
 (require 'init-cc)
 (require 'init-latex)
+(require 'init-rust)
 
 (provide 'config)
 ;;; config.el ends here
