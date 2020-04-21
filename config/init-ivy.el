@@ -87,6 +87,12 @@
            (target (read-file-name (format "%s %s to:" prompt source))))
       (funcall cmd source target 1))))
 
+(defun zenith/open-by-external-program (path)
+  "Open file in external program"
+  (let ((display-buffer-alist '("*Async Shell Command*" . display-buffer-no-window)))
+    (async-shell-command (format "nohup xdg-open \"%s\" >/dev/null 2>&1"
+                                 (file-relative-name path default-directory)))))
+
 ;; Configure `counsel-find-file'
 (ivy-add-actions
  'counsel-find-file
@@ -97,6 +103,7 @@
    ("d" ,(+ivy-action-reloading #'+ivy-confirm-delete-file) "delete")
    ("r" (lambda (path) (rename-file path (read-string "New name: "))) "rename")
    ("R" ,(+ivy-action-reloading (+ivy-action-given-file #'rename-file "Move")) "move")
+   ("e" zenith/open-by-external-program "external program")
    ("f" find-file-other-window "other window")
    ("F" find-file-other-frame "other frame")
    ("p" (lambda (path) (with-ivy-window (insert (file-relative-name path default-directory)))) "insert relative path")
