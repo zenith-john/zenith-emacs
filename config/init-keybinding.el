@@ -43,9 +43,11 @@
 (general-define-key
  :states '(normal motion)
  "gs"    'avy-goto-char
- "r"     'counsel-recentf
- "R"     'rg-dwim-project-dir
+ "gr"    'counsel-recentf
+ "gR"    'rg-dwim-project-dir
  "M-."   'xref-find-definitions
+ "C-v"   nil
+ "M-v"   'evil-visual-block
  "C-w"   'zenith/hydra-window/body)
 
 (general-define-key

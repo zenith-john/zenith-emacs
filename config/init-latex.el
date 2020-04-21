@@ -236,22 +236,25 @@
 (defun zenith/latex-toggle-section-with-star ()
   (interactive)
   (if (member '("section" 2) LaTeX-section-list) ;; TODO: Make it more rubost.
-   (setq LaTeX-section-list
-      '(("part" 0)
-        ("chapter" 1)
-        ("section*" 2)
-        ("subsection*" 3)
-        ("subsubsection*" 4)
-        ("paragraph" 5)
-        ("subparagraph" 6)))
-   (setq LaTeX-section-list
-         '(("part" 0)
-           ("chapter" 1)
-           ("section" 2)
-           ("subsection" 3)
-           ("subsubsection" 4)
-           ("paragraph" 5)
-           ("subparagraph" 6)))))
+      (setq LaTeX-section-list
+            '(("part" 0)
+              ("chapter" 1)
+              ("section*" 2)
+              ("subsection*" 3)
+              ("subsubsection*" 4)
+              ("paragraph" 5)
+              ("subparagraph" 6)
+              ("section" 2)
+              ("subsection" 3)
+              ("subsubsection" 4)))
+    (setq LaTeX-section-list
+          '(("part" 0)
+            ("chapter" 1)
+            ("section" 2)
+            ("subsection" 3)
+            ("subsubsection" 4)
+            ("paragraph" 5)
+            ("subparagraph" 6)))))
 
 (setq LaTeX-section-label
       '(("part" . "part:")

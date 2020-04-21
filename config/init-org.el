@@ -17,7 +17,7 @@
 ;;
 ;;; Packages
 
-;; dely load org-mode
+;; delay load org-mode
 (zenith/delay-load (lambda ()(require 'org)))
 
 ;; org-clock
@@ -80,7 +80,7 @@
    org-image-actual-width nil
    org-indent-indentation-per-level 2
    org-indent-mode-turns-on-hiding-stars t
-   org-insert-heading-respect-content t
+   org-insert-heading-respect-content nil
    org-list-description-max-indent 4
    org-outline-path-complete-in-steps nil
    org-pretty-entities nil
@@ -117,7 +117,8 @@
   ;; Make emphasis clear when using bold font
   (add-to-list 'org-emphasis-alist
                '("*" (:foreground "pink")))
-
+  (setcar (nthcdr 4 org-emphasis-regexp-components) 4)
+  (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAITING(w@/!)" "PAUSE(p)" "SOMEDAY(s)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")
