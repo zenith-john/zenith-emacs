@@ -311,3 +311,6 @@
 [submodule "extensions/emacs-htmlize"]
 	path = extensions/emacs-htmlize
 	url = https://github.com/hniksic/emacs-htmlize
+[submodule "extensions/rust-mode"]
+	path = extensions/rust-mode
+	url = https://github.com/rust-lang/rust-mode
