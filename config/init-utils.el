@@ -74,4 +74,8 @@
 (setq avy-background t
       avy-all-windows nil)
 
+;; ctrlf
+(require 'ctrlf)
+(ctrlf-mode 1)
+
 (provide 'init-utils)

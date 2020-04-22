@@ -314,3 +314,6 @@
 [submodule "extensions/rust-mode"]
 	path = extensions/rust-mode
 	url = https://github.com/rust-lang/rust-mode
+[submodule "extensions/ctrlf"]
+	path = extensions/ctrlf
+	url = https://github.com/raxod502/ctrlf

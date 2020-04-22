@@ -73,6 +73,10 @@
  [escape] 'isearch-abort)
 
 (general-define-key
+ :keymaps 'undo-tree-map
+ "C-r" nil)
+
+(general-define-key
  :states  '(normal motion)
  :keymaps 'org-agenda-mode-map
  "a"      'org-attach
