@@ -256,15 +256,6 @@
             ("paragraph" 5)
             ("subparagraph" 6)))))
 
-(setq LaTeX-section-label
-      '(("part" . "part:")
-        ("chapter" . "chap:")
-        ("section" . "sec:")
-        ("subsection" . "sec:")
-        ("subsubsection" . "sec:")
-        ("section*" . "sec:")
-        ("subsection*" . "sec:")))
-
 (defun zenith/update-after-save-hook ()
   (make-local-variable 'after-save-hook)
   (add-hook 'after-save-hook '(lambda ()(TeX-update-style t))))
