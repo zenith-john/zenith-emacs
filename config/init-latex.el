@@ -265,6 +265,12 @@
         ("section*" . "sec:")
         ("subsection*" . "sec:")))
 
+(defun zenith/update-after-save-hook ()
+  (make-local-variable 'after-save-hook)
+  (add-hook 'after-save-hook '(lambda ()(TeX-update-style t))))
+
+(add-hook 'LaTeX-mode-hook 'zenith/update-after-save-hook)
+
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 (add-hook 'LaTeX-mode-hook 'auto-fill-mode)

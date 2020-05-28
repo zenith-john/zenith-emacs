@@ -3,10 +3,10 @@
 # key: article
 # condition: t
 # --
-
 \documentclass[UTF8]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{enumerate}
@@ -18,11 +18,30 @@
 \usepackage{xspace}
 \usepackage{tikz-cd}
 \setlength{\parindent}{2em}
-\usepackage[backend=biber,style=gb7714-2015]{biblatex}
+\usepackage[backend=biber,style=alphabetic,citestyle=alphabetic]{biblatex}
 \addbibresource[location=local]{~/Dropbox/Library.bib}
 \geometry{a4paper,centering,scale=0.8}
 \usepackage{xeCJK}
 \setCJKmainfont{SimSun}
+
+\newcommand{\id}{{\rm Id}}
+\newcommand{\ho}{{\rm Hom}}
+\newcommand{\group}{\mathbf{Group}}
+\newcommand{\set}{\mathbf{Set}}
+\newcommand{\ring}{\mathbf{Ring}}
+\newcommand{\topo}{\mathbf{Top}}
+\newcommand{\htop}{\mathbf{hTop}}
+\newcommand{\cp}[1]{\mathbb{P}^{#1}(\mathbb{C})}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\grad}{{\rm grad}\;}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
 \title{$1}
 \author{张南涛\ 2017012502\ Bio72}
 \date{}
