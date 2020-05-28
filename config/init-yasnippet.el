@@ -27,14 +27,22 @@
 (defun zenith/may-expand ()
   (interactive)
   (let* ((word-end (point))
-         (word-start (save-excursion (search-backward-regexp "[[:blank:]\n\r]" nil t)))
-         (word))
+         (word-start (save-excursion
+                       (search-backward-regexp "[[:blank:]\n\r\(\[\{]" nil t)))
+         (word)
+         (len))
 
     (when word-start
       (setq word (buffer-substring-no-properties (+ word-start 1) word-end))
       (when (string-prefix-p "," word)
         (delete-region (+ word-start 1) (+ word-start 2))
-        (call-interactively 'yas-expand)))))
+        (if (call-interactively 'yas-expand)
+            t
+          (setq len (- (length word) 1))
+          (backward-char len)
+          (insert-char ?,)
+          (forward-char len)
+          nil)))))
 
 (defun zenith/post-self-insert-hook ()
   (interactive)
