@@ -89,7 +89,7 @@
 
 (defun zenith/open-by-external-program (path)
   "Open file in external program"
-  (let ((display-buffer-alist '("*Async Shell Command*" . display-buffer-no-window)))
+  (let ((display-buffer-alist '(("*Async Shell Command*" . (display-buffer-no-window)))))
     (async-shell-command (format "nohup xdg-open \"%s\" >/dev/null 2>&1"
                                  (file-relative-name path default-directory)))))
 
@@ -140,7 +140,7 @@
 ;; amx
 ;; depednecies: s
 (require 'amx)
-(setq amx-save-file nil)
+(setq amx-save-file (expand-file-name "amx-items" zenith-emacs-local-dir))
 (amx-mode)
 
 (provide 'init-ivy)
