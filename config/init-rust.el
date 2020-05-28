@@ -13,9 +13,7 @@
   (flycheck-mode 1)
   (setq-local flycheck-checker 'rust-clippy))
 (add-hook 'rust-mode-hook 'zenith/nox-load-and-ensure)
-(add-hook 'rust-mode-hook (lambda ()
-                            (flycheck-mode 1)
-                            (flycheck-select-checker 'rust-clippy)))
+(add-hook 'rust-mode-hook 'zenith/rust-flycheck-hook)
 
 (provide 'init-rust)
 ;;; init-rust.el ends here

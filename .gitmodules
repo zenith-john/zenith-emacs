@@ -317,3 +317,12 @@
 [submodule "extensions/ctrlf"]
 	path = extensions/ctrlf
 	url = https://github.com/raxod502/ctrlf
+[submodule "extensions/emacs-mini-frame"]
+	path = extensions/emacs-mini-frame
+	url = https://github.com/muffinmad/emacs-mini-frame
+[submodule "extensions/qt-pro-mode"]
+	path = extensions/qt-pro-mode
+	url = https://github.com/EricCrosson/qt-pro-mode
+[submodule "extensions/flycheck-clang-tidy"]
+	path = extensions/flycheck-clang-tidy
+	url = https://github.com/ch1bo/flycheck-clang-tidy

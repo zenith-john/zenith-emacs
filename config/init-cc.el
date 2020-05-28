@@ -8,7 +8,7 @@
 ;;; Code:
 (setq-default c-basic-offset tab-width
               c-backspace-function #'delete-backward-char
-              c-default-style "doom")
+              c-default-style "microsoft")
 
 ;; The plusses in c++-mode can be annoying to search for ivy/helm (which reads
 ;; queries as regexps), so we add these for convenience.
@@ -18,58 +18,31 @@
   ;;; Better fontification (also see `modern-cpp-font-lock')
 (add-hook 'c-mode-common-hook #'rainbow-delimiters-mode)
 
-(defun +cc-c++-lineup-inclass (langelem)
-  "Indent inclass lines one level further than access modifier keywords."
-  (and (eq major-mode 'c++-mode)
-       (or (assoc 'access-label c-syntactic-context)
-           (save-excursion
-             (save-match-data
-               (re-search-backward
-                "\\(?:p\\(?:ublic\\|r\\(?:otected\\|ivate\\)\\)\\)"
-                (c-langelem-pos langelem) t))))
-       '++))
-(defun +cc-lineup-arglist-close (langlem)
-  "Line up the closing brace in an arglist with the opening brace IF cursor is
-preceded by the opening brace or a comma (disregarding whitespace in between)."
-  (when (save-excursion
-          (save-match-data
-            (skip-chars-backward " \t\n" (c-langelem-pos langelem))
-            (memq (char-before) (list ?, ?\( ?\;))))
-    (c-lineup-arglist langlem)))
+;; Custom style, base from llvm Microsoft
+;; help with c-guess-no-install and c-guess-view
+(c-add-style "microsoft"
+             '("linux"
+               (c-basic-offset . 4)     ; Guessed value
+               (c-offsets-alist
+                (access-label . *)      ; Guessed value
+                (block-close . 0)       ; Guessed value
+                (brace-list-close . 0)  ; Guessed value
+                (brace-list-entry . 0)  ; Guessed value
+                (brace-list-intro . +)  ; Guessed value
+                (brace-list-open . 0)   ; Guessed value
+                (class-close . 0)       ; Guessed value
+                (class-open . 0)        ; Guessed value
+                (defun-block-intro . +) ; Guessed value
+                (defun-close . 0)       ; Guessed value
+                (defun-open . 0)        ; Guessed value
+                (else-clause . 0)       ; Guessed value
+                (inclass . +)           ; Guessed value
+                (statement . 0)             ; Guessed value
+                (statement-block-intro . +) ; Guessed value
+                (substatement . +)      ; Guessed value
+                (substatement-open . 0) ; Guessed value
+                )))
 
-;; Custom style, based off of linux
-(c-add-style
- "doom" '((c-basic-offset . tab-width)
-          (c-comment-only-line-offset . 0)
-          (c-hanging-braces-alist (brace-list-open)
-                                  (brace-entry-open)
-                                  (substatement-open after)
-                                  (block-close . c-snug-do-while)
-                                  (arglist-cont-nonempty))
-          (c-cleanup-list brace-else-brace)
-          (c-offsets-alist
-           (knr-argdecl-intro . 0)
-           (substatement-open . 0)
-           (substatement-label . 0)
-           (statement-cont . +)
-           (case-label . +)
-           ;; align args with open brace OR don't indent at all (if open
-           ;; brace is at eolp and close brace is after arg with no trailing
-           ;; comma)
-           (brace-list-intro . 0)
-           (brace-list-close . -)
-           (arglist-intro . +)
-           (arglist-close +cc-lineup-arglist-close 0)
-           ;; don't over-indent lambda blocks
-           (inline-open . 0)
-           (inlambda . 0)
-           ;; indent access keywords +1 level, and properties beneath them
-           ;; another level
-           (access-label . -)
-           (inclass +cc-c++-lineup-inclass +)
-           (label . 0))))
-
-  ;;; Keybindings
 ;; Smartparens and cc-mode both try to autoclose angle-brackets intelligently.
 ;; The result isn't very intelligent (causes redundant characters), so just do
 ;; it ourselves.
@@ -81,6 +54,21 @@ preceded by the opening brace or a comma (disregarding whitespace in between)."
 ;; modern-cpp-font-lock
 (autoload 'modern-c++-font-lock-mode "modern-cpp-font-lock")
 (add-hook 'c++-mode-hook 'modern-c++-font-lock-mode)
+
+;; QT keywords
+(setq c-protection-key (concat "\\<\\(public\\|public slot\\|protected"
+                                  "\\|protected slot\\|private\\|private slot"
+                                  "\\)\\>"))
+
+;; QT pro
+(require 'qt-pro-mode)
+(add-to-list 'auto-mode-alist '("\\.pr[io]$" . qt-pro-mode))
+
+(defun zenith/c-flycheck-hook ()
+  (flycheck-mode 1)
+  (require 'flycheck-clang-tidy)
+  (setq-local flycheck-checker 'c/c++-clang-tidy))
+(add-hook 'c-mode-common-hook 'zenith/c-flycheck-hook)
 
 (with-eval-after-load 'projectile
   (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
