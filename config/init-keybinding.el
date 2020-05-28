@@ -53,7 +53,6 @@
 (general-define-key
  [remap goto-line]    'goto-line-preview
  [remap list-buffers] 'ibuffer
- [tab]                yas-maybe-expand
  "C-."                'yas-insert-snippet
  "C-x C-j"            'company-complete-common
  "M-;"                'evilnc-comment-or-uncomment-lines
@@ -65,8 +64,7 @@
  "M-RET" (lambda ()
            (interactive)
            (company-abort)
-           (newline-and-indent))
- [tab]    yas-maybe-expand)
+           (newline-and-indent)))
 
 (general-define-key
  :keymaps 'isearch-mode-map
