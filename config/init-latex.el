@@ -72,6 +72,7 @@
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
   (make-local-variable 'company-backends)
+  (setq zenith/local-company-backends nil)
   (dolist (backend +latex-company-backends)
     (add-to-list 'company-backends backend)))
 

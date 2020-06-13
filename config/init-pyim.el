@@ -14,11 +14,11 @@
       liberime-user-data-dir (concat zenith-emacs-local-dir "pyim/rime"))
 
 (with-eval-after-load 'pyim
-  (require 'liberime-config)
+  (require 'liberime nil t)
   (liberime-start liberime-shared-data-dir liberime-user-data-dir)
   (liberime-select-schema "luna_pinyin_simp")
   (add-to-list 'pyim-punctuation-dict '("\\" "、"))
-  (setq pyim-default-scheme 'rime)
+  (setq pyim-default-scheme 'rime-quanpin)
   (pyim-isearch-mode 1))
 
 (setq pyim-dcache-directory (concat zenith-emacs-local-dir "pyim/dcache/")

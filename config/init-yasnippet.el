@@ -14,37 +14,40 @@
 
 (yas-global-mode +1)
 
-(defun zenith/remove-comma-for-word-at-point ()
-  (interactive)
-  (save-excursion
-    (let ((word-end (point))
-          (word-start (search-backward-regexp "[[:blank:]\n\r]")))
-      (when (string-prefix-p ","
-                             (buffer-substring-no-properties
-                              (+ word-start 1) word-end))
-          (delete-region (+ word-start 1) (+ word-start 2))))))
+(defvar zenith/snippet-prefix ?,
+  "The first character of expanding yasnippet")
 
 (defun zenith/may-expand ()
+  "Auto expand if the word before the point are started with
+`zenith/snippet-prefix'. Retern `t' if the expand is successfule
+and `nil' otherwise."
   (interactive)
   (let* ((word-end (point))
          (word-start (save-excursion
-                       (search-backward-regexp "[[:blank:]\n\r\(\[\{]" nil t)))
+                       (save-restriction
+                         (narrow-to-region (line-beginning-position) (line-end-position))
+                         (search-backward-regexp "^\\|[[:blank:]]\\|(\\|)\\|\\[\\|]\\|{\\|}" nil t))))
          (word)
          (len))
 
     (when word-start
-      (setq word (buffer-substring-no-properties (+ word-start 1) word-end))
-      (when (string-prefix-p "," word)
-        (delete-region (+ word-start 1) (+ word-start 2))
+      (if (eq (char-after word-start) zenith/snippet-prefix)
+          (setq word (buffer-substring-no-properties word-start word-end))
+        (setq
+         word-start (+ word-start 1)
+         word (buffer-substring-no-properties word-start word-end)))
+      (when (eq zenith/snippet-prefix (string-to-char word))
+        (delete-region word-start (+ word-start 1))
         (if (call-interactively 'yas-expand)
             t
           (setq len (- (length word) 1))
           (backward-char len)
-          (insert-char ?,)
+          (insert-char zenith/snippet-prefix)
           (forward-char len)
           nil)))))
 
 (defun zenith/post-self-insert-hook ()
+  "Check whether or not to expand after insertation of ~SPC~."
   (interactive)
   (when (eq (char-before) ?\s)
     (delete-backward-char 1)
