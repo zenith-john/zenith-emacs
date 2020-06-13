@@ -19,7 +19,7 @@
 
 (defun zenith/may-expand ()
   "Auto expand if the word before the point are started with
-`zenith/snippet-prefix'. Retern `t' if the expand is successfule
+`zenith/snippet-prefix'. Return `t' if the expansion is successful
 and `nil' otherwise."
   (interactive)
   (let* ((word-end (point))
@@ -47,7 +47,7 @@ and `nil' otherwise."
           nil)))))
 
 (defun zenith/post-self-insert-hook ()
-  "Check whether or not to expand after insertation of ~SPC~."
+  "Check whether or not to expand after insertion of ~SPC~."
   (interactive)
   (when (eq (char-before) ?\s)
     (delete-backward-char 1)

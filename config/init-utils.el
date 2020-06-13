@@ -115,9 +115,11 @@
 
 ;; Delete word in a more user friendly way
 (defun zenith/is-space (char)
+  "Check a char is whether a space character."
   (string-match (char-to-string char) "\t\n\r "))
 
 (defun zenith/aggressive-delete-space ()
+  "Remove all the space until non-space character."
   (interactive)
   (let ((end (point))
         (begin (save-excursion
@@ -125,6 +127,8 @@
     (delete-region (+ 1 begin) end)))
 
 (defun zenith/delete-word-or-space ()
+  "Remove all the space until non-space character if the char at point and
+before are all space characters and delete word otherwise."
   (interactive)
   (if (and (zenith/is-space (char-before))
            (zenith/is-space (char-before (- (point) 1))))
