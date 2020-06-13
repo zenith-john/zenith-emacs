@@ -51,13 +51,14 @@
  "C-w"   'zenith/hydra-window/body)
 
 (general-define-key
- [remap goto-line]    'goto-line-preview
- [remap list-buffers] 'ibuffer
- "C-."                'yas-insert-snippet
- "C-x C-j"            'company-complete-common
- "M-;"                'evilnc-comment-or-uncomment-lines
- "M-/"                'pyim-convert-string-at-point
- "M-o"                'ace-window)
+ [remap goto-line]          'goto-line-preview
+ [remap list-buffers]       'ibuffer
+ "C-."                      'yas-insert-snippet
+ "C-x C-j"                  'company-complete-common
+ "M-;"                      'evilnc-comment-or-uncomment-lines
+ "M-/"                      'pyim-convert-string-at-point
+ "M-o"                      'ace-window
+ [remap backward-kill-word] 'zenith/delete-word-or-space)
 
 (general-define-key
  :keymaps 'company-active-map

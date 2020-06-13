@@ -54,7 +54,7 @@
 (autoload 'markdown-mode "markdown-mode")
 
 ;; rg.el
-;; depedencies: s transient wgrep
+;; dependencies: s transient wgrep
 (zenith/autoload '(rg rg-project rg-dwim-project-dir) "rg")
 
 ;; ace-window
@@ -77,5 +77,58 @@
 ;; ctrlf
 (require 'ctrlf)
 (ctrlf-mode 1)
+
+;; spell check by ispell
+(setq-default ispell-program-name (executable-find "hunspell")
+              ispell-dictionary "en_US"
+              ispell-silently-savep t)
+
+(require 'wucuo)
+
+(setq wucuo-flyspell-start-mode "fast")
+
+(defun zenith/flyspell-check-region ()
+  "Remove overlay and check region"
+  (interactive)
+  (let ((wucuo-flyspell-start-mode "fast"))
+    (wucuo-spell-check-buffer)))
+
+(defun zenith/flyspell-check-buffer ()
+  "Remove overlay and check buffer"
+  (interactive)
+  (let ((wucuo-flyspell-start-mode "normal"))
+    (wucuo-spell-check-buffer)))
+
+(defun zenith/add-word-to-dictionary (beg end)
+  "Add word at point to the dictionary"
+  (interactive "r")
+  (save-excursion
+    (let* ((word (concat (if (region-active-p)
+                             (buffer-substring-no-properties beg end)
+                           (word-at-point))
+                         "\n"))
+           (file (expand-file-name (concat "~/.hunspell_" ispell-dictionary))))
+      (append-to-file word nil file)))
+  (zenith/flyspell-check-region))
+
+(add-hook 'after-save-hook 'zenith/flyspell-check-region)
+
+;; Delete word in a more user friendly way
+(defun zenith/is-space (char)
+  (string-match (char-to-string char) "\t\n\r "))
+
+(defun zenith/aggressive-delete-space ()
+  (interactive)
+  (let ((end (point))
+        (begin (save-excursion
+                 (re-search-backward "[^ \t\n\r]" nil t))))
+    (delete-region (+ 1 begin) end)))
+
+(defun zenith/delete-word-or-space ()
+  (interactive)
+  (if (and (zenith/is-space (char-before))
+           (zenith/is-space (char-before (- (point) 1))))
+      (zenith/aggressive-delete-space)
+    (backward-kill-word 1)))
 
 (provide 'init-utils)

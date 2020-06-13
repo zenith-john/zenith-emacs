@@ -326,3 +326,9 @@
 [submodule "extensions/flycheck-clang-tidy"]
 	path = extensions/flycheck-clang-tidy
 	url = https://github.com/ch1bo/flycheck-clang-tidy
+[submodule "extensions/wucuo"]
+	path = extensions/wucuo
+	url = https://github.com/redguardtoo/wucuo
+[submodule "extensions/flyspell-correct"]
+	path = extensions/flyspell-correct
+	url = https://github.com/d12frosted/flyspell-correct
