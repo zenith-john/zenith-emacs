@@ -78,6 +78,41 @@
 (require 'ctrlf)
 (ctrlf-mode 1)
 
+(defun zenith/ctrlf-toggle-regex ()
+  "Toggle regex search for ctrlf"
+  (interactive)
+  (ctrlf-change-search-style
+   (pcase ctrlf--style
+     ('fuzzy 'fuzzy-regexp)
+     ('fuzzy-regexp 'fuzzy)
+     ('literal 'regexp)
+     ('regexp 'literal))))
+
+(defun zenith/ctrlf-toggle-fuzzy ()
+  "Toggle fuzzy for ctrlf."
+  (interactive)
+  (ctrlf-change-search-style
+   (pcase ctrlf--style
+     ('fuzzy 'literal)
+     ('literal 'fuzzy)
+     ('fuzzy-regexp 'regexp)
+     ('regexp 'fuzzy-regexp))))
+
+(defun zenith/ctrlf-next-match ()
+  "Move to the next match of previous search"
+  (interactive)
+  (ctrlf--search (first ctrlf-search-history) :bound 'wraparound))
+
+(defun zenith/ctrlf-previous-match ()
+  "Move to the previous match of the previous search."
+  (interactive)
+  (ctrlf--search (first ctrlf-search-history) :backward t :bound 'wraparound))
+
+(add-to-list 'ctrlf-minibuffer-bindings
+             '("M-f" . zenith/ctrlf-toggle-fuzzy))
+(add-to-list 'ctrlf-minibuffer-bindings
+             '("M-d" . zenith/ctrlf-toggle-regex))
+
 ;; spell check by ispell
 (setq-default ispell-program-name (executable-find "hunspell")
               ispell-dictionary "en_US"
@@ -134,5 +169,11 @@ before are all space characters and delete word otherwise."
            (zenith/is-space (char-before (- (point) 1))))
       (zenith/aggressive-delete-space)
     (backward-kill-word 1)))
+
+(defun zenith/fill-and-indent-region ()
+  "Fill paragraph and indent region at once"
+  (interactive)
+  (call-interactively 'fill-paragraph)
+  (call-interactively 'indent-region))
 
 (provide 'init-utils)

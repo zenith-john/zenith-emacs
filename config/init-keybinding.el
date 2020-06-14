@@ -25,7 +25,7 @@
 (define-key evil-motion-state-map "," nil)
 
 (general-define-key
- :states '(normal motion)
+ :states '(normal motion visual)
  :prefix ","
  ","     'switch-to-buffer
  "."     'find-file
@@ -41,14 +41,22 @@
  "s"     'snails)
 
 (general-define-key
- :states '(normal motion)
+ :states '(normal motion visual)
  "gs"    'avy-goto-char
  "gr"    'counsel-recentf
  "gR"    'rg-dwim-project-dir
+ "j"     'evil-next-visual-line
+ "k"     'evil-previous-visual-line
+ "gj"    'evil-next-line
+ "gk"    'evil-previous-line
  "M-."   'xref-find-definitions
  "C-v"   nil
  "M-v"   'evil-visual-block
- "C-w"   'zenith/hydra-window/body)
+ "C-w"   'zenith/hydra-window/body
+ "n"     'zenith/ctrlf-next-match
+ "N"     'zenith/ctrlf-previous-match
+ "/"     'ctrlf-forward-regexp
+ "?"     'ctrlf-backward-regexp)
 
 (general-define-key
  [remap goto-line]          'goto-line-preview
@@ -58,7 +66,8 @@
  "M-;"                      'evilnc-comment-or-uncomment-lines
  "M-/"                      'pyim-convert-string-at-point
  "M-o"                      'ace-window
- [remap backward-kill-word] 'zenith/delete-word-or-space)
+ [remap backward-kill-word] 'zenith/delete-word-or-space
+ [remap fill-paragraph]     'zenith/fill-and-indent-region)
 
 (general-define-key
  :keymaps 'company-active-map
