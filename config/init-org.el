@@ -255,11 +255,22 @@
   (setq org-id-extra-files (directory-files-recursively zenith/note-directory ".*\\.org"))
   (org-id-update-id-locations)
   (defun org-id-complete-link (&optional arg)
-  "Create an id: link using completion"
-  (concat "id:"
-          (org-id-get-with-outline-path-completion)))
+    "Create an id: link using completion"
+    (concat "id:"
+            (org-id-get-with-outline-path-completion)))
   (org-link-set-parameters "id"
-                           :complete 'org-id-complete-link))
+                           :complete 'org-id-complete-link)
+  (defun zenith/search-id-reverse-link ()
+    "Search the id in the directory"
+    (interactive)
+    (let ((query
+           (cdr (first (org-entry-properties nil "ID")))))
+      (rg-project query "*.org")))
+  (defun zenith/org-insert-link-by-id ()
+    "Insert the link by id"
+    (interactive)
+    (let ((link (org-link--try-special-completion "id")))
+      (org-insert-link nil link))))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
@@ -302,6 +313,7 @@
       org-ref-bibliography-notes (concat zenith/note-directory "biblio.org")
       org-ref-completion-library 'org-ref-ivy-cite
       orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
+
 (zenith/delay-load 'zenith/require-org-ref-packages)
 
 (defun zenith/require-org-ref-packages ()

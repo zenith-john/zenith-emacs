@@ -66,6 +66,7 @@
  "M-;"                      'evilnc-comment-or-uncomment-lines
  "M-/"                      'pyim-convert-string-at-point
  "M-o"                      'ace-window
+ "M-k"                      'ace-delete-window
  [remap backward-kill-word] 'zenith/delete-word-or-space
  [remap fill-paragraph]     'zenith/fill-and-indent-region)
 
@@ -89,6 +90,11 @@
  :keymaps 'org-agenda-mode-map
  "a"      'org-attach
  "o"      'org-agenda-attach-open)
+
+(general-define-key
+ :keymaps 'org-mode-map
+ "C-l" 'zenith/org-insert-link-by-id
+ "M-r" 'zenith/search-id-reverse-link)
 
 ;; I prefer C-c C-c over C-c ' (more consistent)
 (general-define-key

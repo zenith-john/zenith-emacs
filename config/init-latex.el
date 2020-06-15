@@ -97,7 +97,9 @@
         TeX-electric-sub-and-superscript t)
   (setq-default
    TeX-engine 'xetex
-   TeX-show-compilation nil)
+   TeX-show-compilation nil
+   ;; fill paragraph should leave line equation in a line
+   LaTeX-fill-break-at-separators '(\\\( \\\[ \\\]))
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
 
@@ -231,12 +233,11 @@
         LaTeX-section-title
         LaTeX-section-section
         LaTeX-section-label)
-      LaTeX-fill-break-at-separators nil
       LaTeX-item-indent 0)
 
 (defun zenith/latex-toggle-section-with-star ()
   (interactive)
-  (if (member '("section" 2) LaTeX-section-list) ;; TODO: Make it more rubost.
+  (if (member '("section" 2) LaTeX-section-list) ;; TODO: Make it more robust.
       (setq LaTeX-section-list
             '(("part" 0)
               ("chapter" 1)
@@ -261,7 +262,14 @@
   (make-local-variable 'after-save-hook)
   (add-hook 'after-save-hook '(lambda ()(TeX-update-style t))))
 
-(add-hook 'LaTeX-mode-hook 'zenith/update-after-save-hook)
+(defun zenith/latex-mode-hook ()
+  ;; Set up after-save-hook
+  (zenith/update-after-save-hook)
+  ;; Set up environment for LaTeX
+  (LaTeX-add-environments
+   '("tikzcd" LaTeX-env-label)))
+
+(add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
