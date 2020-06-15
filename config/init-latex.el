@@ -63,17 +63,9 @@
   ;; dependencies: company math-symbol-lists
   (require 'company-math)
 
-  (add-to-list '+latex-company-backends 'company-auctex-bibs)
   (add-to-list '+latex-company-backends 'company-auctex-labels)
   (add-to-list '+latex-company-backends 'company-math-symbols-latex)
-  (add-to-list '+latex-company-backends '(company-auctex-macros company-auctex-environments))
-
-  ;; company-reftex
-  ;; dependencies: s company
-  ;; (require 'company-reftex)
-  ;; (add-to-list '+latex-company-backends 'company-reftex-labels)
-  ;; (add-to-list '+latex-company-backends 'company-reftex-citations)
-  )
+  (add-to-list '+latex-company-backends '(company-auctex-macros company-auctex-environments)))
 
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
@@ -105,7 +97,7 @@
    TeX-engine 'xetex
    TeX-show-compilation nil
    ;; fill paragraph should leave line equation in a line
-   LaTeX-fill-break-at-separators '(\\\( \\\[ \\\]))
+   LaTeX-fill-break-at-separators '(\\\( \\\[ \\\] \}))
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
 

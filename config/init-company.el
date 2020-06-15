@@ -210,6 +210,15 @@
             ))))
     (zenith/company-transformer all-candidates)))
 
+(defun zenith/post-completion (result)
+  "Do post completion depend on backends"
+  (let ((backend (get-text-property 0 'company-backend result)))
+    (if (and backend
+             result)
+        (ignore-errors
+          (funcall backend 'post-completion result))
+      nil)))
+
 (defun zenith/fuzzy-matching-backend (command &optional arg &rest ignored)
   "Backend source for fuzzy matching"
   (interactive (list 'interactive))
@@ -222,6 +231,7 @@
     (candidates (zenith/fuzzy-candidates))
     (annotation (zenith/company-get-annotation arg))
     (doc-buffer (zenith/company-get-doc arg))
+    (post-completion (zenith/post-completion arg))
     (sorted t)))
 
 (defun zenith/set-company-fuzzy-backends ()
