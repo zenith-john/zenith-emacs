@@ -173,7 +173,22 @@ before are all space characters and delete word otherwise."
 (defun zenith/fill-and-indent-region ()
   "Fill paragraph and indent region at once"
   (interactive)
-  (call-interactively 'fill-paragraph)
+  (when auto-fill-function
+    (call-interactively 'fill-paragraph))
   (call-interactively 'indent-region))
+
+;; visual fill column
+(autoload 'visual-fill-column-mode "visual-fill-column" "" t)
+(add-hook 'visual-line-mode 'visual-fill-column-mode)
+
+(defun zenith/toggle-visual-column-and-auto-fill ()
+  "Toggle visual line mode and auto-fill-mode"
+  (interactive)
+  (if visual-line-mode
+      (progn
+        (visual-line-mode 0)
+        (auto-fill-mode 1))
+    (visual-line-mode 1)
+    (auto-fill-mode 0)))
 
 (provide 'init-utils)

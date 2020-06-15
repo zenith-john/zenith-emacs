@@ -332,3 +332,6 @@
 [submodule "extensions/flyspell-correct"]
 	path = extensions/flyspell-correct
 	url = https://github.com/d12frosted/flyspell-correct
+[submodule "extensions/visual-fill-column"]
+	path = extensions/visual-fill-column
+	url = https://github.com/joostkremers/visual-fill-column
