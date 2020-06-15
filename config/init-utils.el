@@ -146,8 +146,6 @@
       (append-to-file word nil file)))
   (zenith/flyspell-check-region))
 
-(add-hook 'after-save-hook 'zenith/flyspell-check-region)
-
 ;; Delete word in a more user friendly way
 (defun zenith/is-space (char)
   "Check a char is whether a space character."
@@ -190,5 +188,19 @@ before are all space characters and delete word otherwise."
         (auto-fill-mode 1))
     (visual-line-mode 1)
     (auto-fill-mode 0)))
+
+;; jump in my way
+(defvar zenith/jump-function-alist
+  '((org-mode . org-goto)
+    (latex-mode . reftex-goto-label)
+    (t . counsel-imenu))
+  "The function to call when jump")
+
+(defun zenith/jump ()
+  "Jump as `zenith/jump-function-alist' like."
+  (interactive)
+  (if-let ((func (alist-get major-mode zenith/jump-function-alist)))
+      (funcall func)
+    (funcall (alist-get t zenith/jump-function-alist))))
 
 (provide 'init-utils)

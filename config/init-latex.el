@@ -38,7 +38,13 @@
       reftex-plug-into-AUCTeX t
       reftex-toc-split-windows-fraction 0.3
 	  reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
-	  reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource"))
+	  reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource")
+      reftex-label-alist
+      '(("theorem" ?t "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
+        ("lemma"   ?t "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
+        ("proposition" ?t "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
+        ("remark"      ?t "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
+        ("definition"  ?t "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[D]ef\\.") -3)))
 (add-hook 'reftex-toc-mode-hook
 	      (lambda () (reftex-toc-rescan)))
 

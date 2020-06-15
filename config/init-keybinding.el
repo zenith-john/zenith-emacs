@@ -55,6 +55,7 @@
  "C-w"   'zenith/hydra-window/body
  "n"     'zenith/ctrlf-next-match
  "N"     'zenith/ctrlf-previous-match
+ "r"     'zenith/jump
  "/"     'ctrlf-forward-regexp
  "?"     'ctrlf-backward-regexp)
 
