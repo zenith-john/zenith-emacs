@@ -46,6 +46,14 @@
    :min-height (max (+ 1 ivy-height) ivy-posframe-height)
    :min-width (max 80 (round (* 0.5 (frame-width))))))
 
+;; Set color for ivy-posframe
+(with-eval-after-load 'doom-themes
+  (let ((bg-color (face-background 'default nil))
+        (fg-color (face-foreground 'default nil)))
+    (set-face-attribute 'ivy-posframe nil
+                        :background (doom-lighten bg-color 0.05)
+                        :foreground (doom-lighten fg-color 0.05))))
+
 (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
       ivy-posframe-size-function #'zenith/ivy-posframe-get-size
       ivy-posframe-height 20)
@@ -113,28 +121,19 @@
    ("L" (lambda (path) "Insert org-link with absolute path"
           (with-ivy-window (insert (format "[[%s]]" path)))) "insert org-link (abs. path)")))
 
-;; fuz.el
-(require 'fuz)
-(unless (require 'fuz-core nil t)
-  (fuz-build-and-load-dymod))
+;; https://github.com/tumashu/emacs-helper/commit/1932a9e8a64f08bb9603cf244df41f6c0bbc3dac
+;; Search chinese with pinyin
+(defun zenith/ivy-cregexp-helper (str)
+  (cons (pyim-cregexp-build str) t))
 
-;; ;; ivy-fuz.el
-;; ;; dependencies: fuz ivy
-(require 'ivy-fuz)
+(defun zenith/ivy-cregexp-ignore-order (str)
+  (let ((str-list (split-string str)))
+    (if str-list
+      (mapcar 'zenith/ivy-cregexp-helper (split-string str))
+      "")))
 
-;; Less sort limit for better performance as the sort process is the bottleneck
-;; of fuz matching.
-(setq ivy-fuz-sort-limit 2000)
-(setq ivy-sort-matches-functions-alist '((helpful-variable)
-                                         (helpful-callable)
-                                         (amx-completing-read-ivy) ;; Use amx own sorting
-                                         (t . ivy-fuz-sort-fn))
-      ivy-re-builders-alist '((counsel-rg . ivy--regex)
-                              (swiper . ivy--regex)
-                              (amx-completing-read-ivy)
-                              (helpful-variable)
-                              (helpful-callable)
-                              (t . ivy-fuz-regex-fuzzy)))
+(setq ivy-re-builders-alist '((t . zenith/ivy-cregexp-ignore-order)))
+
 (add-to-list 'ivy-highlight-functions-alist '(ivy-fuz-regex-fuzzy . ivy-fuz-highlight-fn))
 
 ;; amx

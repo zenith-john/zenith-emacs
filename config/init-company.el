@@ -97,6 +97,11 @@
       company-tabnine-max-num-results 10
       company-tabnine-always-trigger nil)
 
+;; fuz.el
+(require 'fuz)
+(unless (require 'fuz-core nil t)
+  (fuz-build-and-load-dymod))
+
 ;; Use my own prefix function to replace TabNine's
 (defun zenith/get-prefix ()
   (interactive)
