@@ -59,7 +59,7 @@
 
 ;; ace-window
 ;; dependencies: avy
-(autoload 'ace-window "ace-window")
+(zenith/autoload '(ace-window ace-delete-window) "ace-window")
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
       aw-scope 'frame
       aw-background t)
@@ -177,22 +177,13 @@ before are all space characters and delete word otherwise."
 
 ;; visual fill column
 (autoload 'visual-fill-column-mode "visual-fill-column" "" t)
-(add-hook 'visual-line-mode 'visual-fill-column-mode)
-
-(defun zenith/toggle-visual-column-and-auto-fill ()
-  "Toggle visual line mode and auto-fill-mode"
-  (interactive)
-  (if visual-line-mode
-      (progn
-        (visual-line-mode 0)
-        (auto-fill-mode 1))
-    (visual-line-mode 1)
-    (auto-fill-mode 0)))
+(add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
+(add-hook 'auto-fill-mode-hook 'visual-line-mode)
 
 ;; jump in my way
 (defvar zenith/jump-function-alist
   '((org-mode . org-goto)
-    (latex-mode . reftex-goto-label)
+    (latex-mode . reftex-toc)
     (t . counsel-imenu))
   "The function to call when jump")
 

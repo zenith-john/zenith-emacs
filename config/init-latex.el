@@ -44,9 +44,8 @@
         ("lemma"   ?m "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
         ("proposition" ?m "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
         ("remark"      ?m "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
-        ("definition"  ?m "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[D]ef\\.") -3)))
-(add-hook 'reftex-toc-mode-hook
-	      (lambda () (reftex-toc-rescan)))
+        ("definition"  ?m "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[D]ef\\.") -3))
+      reftex-ref-macro-prompt nil)
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
@@ -258,7 +257,8 @@
 
 (defun zenith/update-after-save-hook ()
   (make-local-variable 'after-save-hook)
-  (add-hook 'after-save-hook '(lambda ()(TeX-update-style t))))
+  (add-hook 'after-save-hook '(lambda ()
+                                (TeX-update-style t))))
 
 (defun zenith/latex-mode-hook ()
   ;; Set up after-save-hook
