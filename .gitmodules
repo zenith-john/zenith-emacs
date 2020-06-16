@@ -131,9 +131,6 @@
 [submodule "extensions/emacs-memoize"]
 	path = extensions/emacs-memoize
 	url = https://github.com/skeeto/emacs-memoize
-[submodule "extensions/emacs-doom-themes"]
-	path = extensions/emacs-doom-themes
-	url = https://github.com/hlissner/emacs-doom-themes
 [submodule "extensions/auctex"]
 	path = extensions/auctex
 	url = https://git.savannah.gnu.org/git/auctex.git
@@ -335,3 +332,6 @@
 [submodule "extensions/visual-fill-column"]
 	path = extensions/visual-fill-column
 	url = https://github.com/joostkremers/visual-fill-column
+[submodule "extensions/emacs-doom-themes"]
+	path = extensions/emacs-doom-themes
+	url = https://github.com/hlissner/emacs-doom-themes
