@@ -72,6 +72,19 @@
  [remap fill-paragraph]     'zenith/fill-and-indent-region)
 
 (general-define-key
+ :prefix "C-c"
+ "1" (general-simulate-key "C-c !")
+ "2" (general-simulate-key "C-c @")
+ "3" (general-simulate-key "C-c #")
+ "4" (general-simulate-key "C-c $")
+ "5" (general-simulate-key "C-c %")
+ "6" (general-simulate-key "C-c ^")
+ "7" (general-simulate-key "C-c &")
+ "8" (general-simulate-key "C-c *")
+ "9" (general-simulate-key "C-c (")
+ "0" (general-simulate-key "C-c )"))
+
+(general-define-key
  :keymaps 'company-active-map
  "M-RET" (lambda ()
            (interactive)
