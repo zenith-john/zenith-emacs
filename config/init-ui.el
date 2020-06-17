@@ -20,7 +20,7 @@
 
 ;; doom-themes
 (require 'doom-themes)
-(load-theme 'doom-material t)
+(load-theme 'doom-palenight t)
 
 (require 'doom-themes-ext-org)
 (doom-themes-org-config)

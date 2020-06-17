@@ -91,10 +91,7 @@
            (interactive)
            (company-abort)
            (newline-and-indent))
- "M-TAB" '(lambda ()
-            (interactive)
-            (company-abort)
-            (counsel-company)))
+ "M-TAB" 'counsel-company)
 
 (general-define-key
  :keymaps 'isearch-mode-map
@@ -134,13 +131,6 @@
 (general-define-key
  :keymaps 'ivy-mode-map
  [escape] nil)
-
-;; Use arrow to move and <escape> to quit.
-(general-define-key
- :keymaps   'snails-mode-map
- "<down>"   'snails-select-next-item
- "<up>"     'snails-select-prev-item
- "<escape>" 'snails-quit)
 
 (general-define-key
  :keymaps                               'ivy-mode-map
