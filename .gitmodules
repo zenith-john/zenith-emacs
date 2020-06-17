@@ -227,18 +227,12 @@
 [submodule "extensions/qtermwidget"]
 	path = extensions/qtermwidget
 	url = https://github.com/lxqt/qtermwidget
-[submodule "extensions/emacs-application-framework"]
-	path = extensions/emacs-application-framework
-	url = https://github.com/manateelazycat/emacs-application-framework
 [submodule "extensions/evil-matchit"]
 	path = extensions/evil-matchit
 	url = https://github.com/redguardtoo/evil-matchit
 [submodule "extensions/evil-org-mode"]
 	path = extensions/evil-org-mode
 	url = https://github.com/Somelauw/evil-org-mode
-[submodule "extensions/snails"]
-	path = extensions/snails
-	url = https://github.com/manateelazycat/snails
 [submodule "extensions/awesome-tray"]
 	path = extensions/awesome-tray
 	url = https://github.com/manateelazycat/awesome-tray
@@ -254,9 +248,6 @@
 [submodule "extensions/fuz.el"]
 	path = extensions/fuz
 	url = https://github.com/rustify-emacs/fuz.el
-[submodule "extensions/ivy-fuz.el"]
-	path = extensions/ivy-fuz
-	url = https://github.com/Silex/ivy-fuz.el
 [submodule "extensions/nox"]
 	path = extensions/nox
 	url = https://github.com/manateelazycat/nox
