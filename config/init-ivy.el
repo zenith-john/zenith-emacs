@@ -16,8 +16,6 @@
       projectile-completion-system 'ivy
       ;; Don't use ^ as initial input
       ivy-initial-inputs-alist nil
-      ;; highlight til EOL
-      ivy-format-function #'ivy-format-function-line
       ;; enable magic slash on non-match
       ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected
       ;; don't show recent files in switch-buffer
@@ -27,7 +25,11 @@
       ;; don't quit minibuffer on delete-error
       ivy-on-del-error-function nil
       ;; enable ability to select prompt (alternative to `ivy-immediate-done')
-      ivy-use-selectable-prompt t)
+      ivy-use-selectable-prompt t
+      ;; highlight until EOL
+      ivy-format-functions-alist
+      '((t . ivy-format-function-line)))
+
 
 ;; Don't show annoying helpful buffer in buffer selection list
 (add-to-list 'ivy-ignore-buffers "\*helpful")
@@ -45,14 +47,6 @@
    :width (round (* 0.5 (frame-width)))
    :min-height (max (+ 1 ivy-height) ivy-posframe-height)
    :min-width (max 80 (round (* 0.5 (frame-width))))))
-
-;; Set color for ivy-posframe
-(with-eval-after-load 'doom-themes
-  (let ((bg-color (face-background 'default nil))
-        (fg-color (face-foreground 'default nil)))
-    (set-face-attribute 'ivy-posframe nil
-                        :background (doom-lighten bg-color 0.05)
-                        :foreground (doom-lighten fg-color 0.05))))
 
 (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
       ivy-posframe-size-function #'zenith/ivy-posframe-get-size
@@ -133,8 +127,6 @@
       "")))
 
 (setq ivy-re-builders-alist '((t . zenith/ivy-cregexp-ignore-order)))
-
-(add-to-list 'ivy-highlight-functions-alist '(ivy-fuz-regex-fuzzy . ivy-fuz-highlight-fn))
 
 ;; amx
 ;; depednecies: s

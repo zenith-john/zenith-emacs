@@ -44,7 +44,8 @@
         ("lemma"   ?m "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
         ("proposition" ?m "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
         ("remark"      ?m "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
-        ("definition"  ?m "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[D]ef\\.") -3))
+        ("definition"  ?m "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
+        ("corollary"   ?m "cor:"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3))
       reftex-ref-macro-prompt nil)
 
 ;; set up mode for bib files

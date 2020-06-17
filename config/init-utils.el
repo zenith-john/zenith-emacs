@@ -134,6 +134,8 @@
   (let ((wucuo-flyspell-start-mode "normal"))
     (wucuo-spell-check-buffer)))
 
+;; Not enable it because checking makes cursor fly.
+
 (defun zenith/add-word-to-dictionary (beg end)
   "Add word at point to the dictionary"
   (interactive "r")

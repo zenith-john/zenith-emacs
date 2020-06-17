@@ -6,8 +6,7 @@
 ;;; Code:
 
 ;; pyim
-(autoload 'pyim-convert-string-at-point "pyim" nil t)
-(zenith/delay-load (lambda ()(require 'pyim)))
+(require 'pyim)
 
 ;; liberime
 (setq liberime-shared-data-dir "/usr/share/rime-data"

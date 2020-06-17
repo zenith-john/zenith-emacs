@@ -335,3 +335,9 @@
 [submodule "extensions/emacs-doom-themes"]
 	path = extensions/emacs-doom-themes
 	url = https://github.com/hlissner/emacs-doom-themes
+[submodule "extensions/doom-modeline"]
+	path = extensions/doom-modeline
+	url = https://github.com/seagle0128/doom-modeline
+[submodule "extensions/shrink-path"]
+	path = extensions/shrink-path
+	url = https://gitlab.com/bennya/shrink-path.el
