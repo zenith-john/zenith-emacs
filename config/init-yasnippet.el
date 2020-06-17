@@ -14,6 +14,7 @@
 
 (yas-global-mode +1)
 
+;; Make yasnippet expandsion easy for me.
 (defvar zenith/snippet-prefix ?,
   "The first character of expanding yasnippet")
 
@@ -25,7 +26,7 @@ and `nil' otherwise."
   (let* ((word-end (point))
          (word-start (save-excursion
                        (save-restriction
-                         (narrow-to-region (line-beginning-position) (line-end-position))
+                         (narrow-to-region (line-beginning-position 0) (line-end-position))
                          (search-backward-regexp "^\\|[[:blank:]]\\|(\\|)\\|\\[\\|]\\|{\\|}" nil t))))
          (word)
          (len))
@@ -46,17 +47,33 @@ and `nil' otherwise."
           (forward-char len)
           nil)))))
 
-(defun zenith/post-self-insert-hook ()
+(defun zenith/post-command-hook ()
   "Check whether or not to expand after insertion of ~SPC~."
   (interactive)
-  (when (eq (char-before) ?\s)
+  (when
+      (and
+       yas-minor-mode
+       (eq last-command 'self-insert-command)
+       (eq (char-before) ?\s))
     (delete-backward-char 1)
     (unless (zenith/may-expand)
       (insert-char ?\s)
       (when (boundp company-mode)
         (company-abort)))))
 
-(add-hook 'post-self-insert-hook 'zenith/post-self-insert-hook t)
+(define-minor-mode auto-expand-mode
+  "Minor mode for zenith/may-expand"
+  nil nil nil
+  (if auto-expand-mode
+      (add-hook 'post-command-hook 'zenith/post-command-hook nil t)
+    (remove-hook 'post-command-hook 'zenith/post-command-hook t)))
+
+(define-globalized-minor-mode global-auto-expand-mode auto-expand-mode auto-expand-mode-on)
+
+(defun auto-expand-mode-on ()
+  (auto-expand-mode 1))
+
+(global-auto-expand-mode 1)
 
 (provide 'init-yasnippet)
 ;;; init-yasnippet.el ends here
