@@ -126,7 +126,8 @@
       (mapcar 'zenith/ivy-cregexp-helper (split-string str))
       "")))
 
-(setq ivy-re-builders-alist '((t . zenith/ivy-cregexp-ignore-order)))
+(setq ivy-re-builders-alist '((counsel-company . ivy--regex-fuzzy)
+                              (t . zenith/ivy-cregexp-ignore-order)))
 
 ;; amx
 ;; depednecies: s

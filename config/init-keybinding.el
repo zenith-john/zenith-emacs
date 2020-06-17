@@ -68,6 +68,7 @@
  "M-/"                      'pyim-convert-string-at-point
  "M-o"                      'ace-window
  "M-k"                      'ace-delete-window
+ "M-TAB"                    'counsel-company
  [remap backward-kill-word] 'zenith/delete-word-or-space
  [remap fill-paragraph]     'zenith/fill-and-indent-region)
 
@@ -89,7 +90,11 @@
  "M-RET" (lambda ()
            (interactive)
            (company-abort)
-           (newline-and-indent)))
+           (newline-and-indent))
+ "M-TAB" '(lambda ()
+            (interactive)
+            (company-abort)
+            (counsel-company)))
 
 (general-define-key
  :keymaps 'isearch-mode-map
