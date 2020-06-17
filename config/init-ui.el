@@ -29,6 +29,7 @@
 ;; the height has to be 1 to use org-set-tags-command
 (setq doom-modeline-height 25)
 (doom-modeline-mode 1)
+(setq inhibit-compacting-font-caches t)
 
 ;; Redefine `doom-modeline-redisplay' to ignore `doom-modeline--size-hacked-p'
 ;; to fix the problem caused by reuse of some buffer, for example *Org Tags*
@@ -54,6 +55,20 @@ then this function does nothing."
              mode-line-format)
     (redisplay t)))
 
+;; Redefine `hl-line-highlight' to disable highlight line when selection is
+;; active.
+(defun hl-line-highlight ()
+  "Activate the Hl-Line overlay on the current line."
+  (if
+      (and hl-line-mode	; Might be changed outside the mode function.
+           (not (region-active-p)))
+      (progn
+        (unless hl-line-overlay
+          (setq hl-line-overlay (hl-line-make-overlay))) ; To be moved.
+        (overlay-put hl-line-overlay
+                     'window (unless hl-line-sticky-flag (selected-window)))
+	(hl-line-move hl-line-overlay))
+    (hl-line-unhighlight)))
 
 (global-hl-line-mode 1)
 
