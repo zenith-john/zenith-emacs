@@ -29,13 +29,13 @@
               (ibuffer-do-sort-by-alphabetic))
             (setq-default ibuffer-formats
                           '((mark modified read-only " "
-                             (name 18 18 :left :elide)
-                             " "
-                             (size 9 -1 :right)
-                             " "
-                             (mode 16 16 :left :elide)
-                             " "
-                             project-relative-file)))))
+                                  (name 18 18 :left :elide)
+                                  " "
+                                  (size 9 -1 :right)
+                                  " "
+                                  (mode 16 16 :left :elide)
+                                  " "
+                                  project-relative-file)))))
 
 ;; ws-butler
 (require 'ws-butler)
@@ -173,8 +173,7 @@ before are all space characters and delete word otherwise."
 (defun zenith/fill-and-indent-region ()
   "Fill paragraph and indent region at once"
   (interactive)
-  (when auto-fill-function
-    (call-interactively 'fill-paragraph))
+  (call-interactively 'fill-paragraph)
   (call-interactively 'indent-region))
 
 ;; visual fill column
