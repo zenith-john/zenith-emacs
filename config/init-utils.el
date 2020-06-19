@@ -149,10 +149,6 @@
   (zenith/flyspell-check-region))
 
 ;; Delete word in a more user friendly way
-(defun zenith/is-space (char)
-  "Check a char is whether a space character."
-  (string-match (char-to-string char) "\t\n\r "))
-
 (defun zenith/aggressive-delete-space ()
   "Remove all the space until non-space character."
   (interactive)

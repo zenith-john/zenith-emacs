@@ -107,14 +107,13 @@
   (interactive)
   (let ((pattern (find-tag--default))
         (beg (point)))
-    (if (zenith/is-space (char-before beg))
-        (progn
-          (save-excursion
-            (when pattern
-              (goto-char (+ (point) (length pattern) -1))
-              (when (search-backward pattern nil t)
-                (setq beg (point)))))
-          (buffer-substring-no-properties beg (point))))))
+    (ignore-errors
+      (save-excursion
+        (when pattern
+          (goto-char (+ (point) (length pattern) -1))
+          (when (search-backward pattern nil t)
+            (setq beg (point)))))
+      (buffer-substring-no-properties beg (point)))))
 
 ;; See https://www.gnu.org/software/emacs/manual/html_node/elisp/Defining-Hash.html
 (defun zenith/case-fold-string= (a b)

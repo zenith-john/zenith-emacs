@@ -45,7 +45,8 @@
      (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
        (pyenv-mode-set global-pyenv)))
 
-   (zenith/pyenv-init-global)))
+   (ignore-errors
+     (zenith/pyenv-init-global))))
 
 ;; pyimport
 ;; depedencies: s shut-up

@@ -105,7 +105,7 @@
       recentf-exclude
       (list #'file-remote-p "\\.\\(?:gz\\|gif\\|svg\\|png\\|jpe?g\\)$"
             "^/tmp/" "^/ssh:" "\\.?ido\\.last$" "\\.revive$" "/TAGS$"
-            "^/var/folders/.+$"
+            "^/var/folders/.+$" "\\.git/" "\\.log$"
             ;; ignore private DOOM temp files (but not all of them)
             (lambda (file) (file-in-directory-p file zenith-emacs-local-dir))))
 (unless noninteractive

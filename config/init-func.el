@@ -6,9 +6,9 @@
 ;;; Code:
 
 ;; fd-dired
-(autoload 'fd-dired "fd-dired")
+(autoload 'fd-dired "fd-dired" nil t)
 
-(autoload 'er/expand-region "expand-region")
+(autoload 'er/expand-region "expand-region" nil t)
 
 (defun +clear-image-cache ()
   "Remove image cache to redisplay the image."
@@ -21,12 +21,19 @@
     (autoload command file nil (not non-interactive))))
 
 (defun zenith/add-hook (hook-list func)
+  "Add one function to multiple hooks at once"
   (dolist (hook hook-list)
     (add-hook hook func)))
 
 (defun zenith/delay-load (func)
+  "Delay the evaluation of the function"
   (run-with-idle-timer 1 nil
                        func))
+
+(defun zenith/is-space (char)
+  "Check a char is whether a space character."
+  (string-match (char-to-string char) "\t\n\r "))
+
 
 (provide 'init-func)
 ;;; init-func.el ends here

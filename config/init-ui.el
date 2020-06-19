@@ -31,8 +31,13 @@
 (doom-modeline-mode 1)
 (setq inhibit-compacting-font-caches t)
 
+
 ;; Redefine `doom-modeline-redisplay' to ignore `doom-modeline--size-hacked-p'
 ;; to fix the problem caused by reuse of some buffer, for example *Org Tags*
+(defun zenith/doom-modeline-always-redisplay ()
+  "Check whether this buffer should always display"
+  (or (eq (buffer-name) "Org tags")))
+
 (defun doom-modeline-redisplay (&rest _)
   "Call `redisplay' to trigger mode-line height calculations.
 
@@ -52,8 +57,11 @@ as a `:before' advice for any function.  If the current buffer
 has no mode-line or this function has already been calle in it,
 then this function does nothing."
   (when (and (bound-and-true-p doom-modeline-mode)
-             mode-line-format)
-    (redisplay t)))
+             mode-line-format
+             (not doom-modeline--size-hacked-p))
+    (redisplay t)
+    (unless (zenith/doom-modeline-always-redisplay)
+      (setq doom-modeline--size-hacked-p t))))
 
 ;; Redefine `hl-line-highlight' to disable highlight line when selection is
 ;; active.
