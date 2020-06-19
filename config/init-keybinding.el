@@ -121,9 +121,10 @@
 (general-define-key
  :keymaps 'LaTeX-mode-map
  "、"     (lambda ()(interactive)(self-insert-command 1 ?\\))
- "C-*"    'LaTeX-star-environment-dwim
+ "C-c *"  'LaTeX-star-environment-dwim
  "["      (lambda ()(interactive)(self-insert-command 1 ?{))
  "{"      (lambda ()(interactive)(self-insert-command 1 ?\[))
+ "C-c ]"  'zenith/cycle-equation
  )
 
 ;; I don't know why, but the ivy-mode set <escape> to minibuffer-keyboard-quit

@@ -256,6 +256,58 @@
             ("paragraph" 5)
             ("subparagraph" 6)))))
 
+(setq-default zenith/equation-env-list
+              '(("\\begin{equation}\n" . "\n\\end{equation}")
+                ("\\[" . "\\]")
+                ("\\(" . "\\)")))
+
+(defun zenith/regex-or (l)
+  (let ((regex "\\(?:")
+        (first-one t))
+    (dolist (e l)
+      (if (not first-one)
+          (setq regex
+                (concat regex "\\\|"))
+        (setq first-one nil))
+      (setq regex
+            (concat regex (regexp-quote e))))
+    (concat regex "\\)")))
+
+(defun zenith/equation-match (beg end)
+  "Check whether `beg' and `end' matches as equation"
+  (let ((beg-string (buffer-substring-no-properties beg (min (+ beg 20) (point-max))))
+        (end-string (buffer-substring-no-properties (max (point-min) (- end 20)) end))
+        ret)
+    (dolist (e zenith/equation-env-list)
+      (when (and
+             (string-prefix-p (car e) beg-string)
+             (string-suffix-p (cdr e) end-string))
+        (setq ret e)))
+    ret))
+
+(defun zenith/cycle-equation ()
+  (interactive)
+  (if-let* ((beg (save-excursion (re-search-backward (zenith/regex-or (mapcar
+                                                                       'car zenith/equation-env-list)) nil t)))
+            (end (save-excursion (re-search-forward (zenith/regex-or (mapcar
+                                                                      'cdr zenith/equation-env-list)) nil t)))
+            (kind (zenith/equation-match beg end))
+            (len (safe-length zenith/equation-env-list))
+            (pos (cl-position kind zenith/equation-env-list))
+            (next (nth (if (= pos (- len 1))
+                           0
+                         (+ pos 1)) zenith/equation-env-list)))
+      (progn
+        (save-excursion
+          (goto-char beg)
+          (delete-char (length (car kind)))
+          (insert (car next))
+          (re-search-forward (zenith/regex-or (mapcar
+                                               'cdr zenith/equation-env-list)))
+          (delete-backward-char (length (cdr kind)))
+          (insert (cdr next))))
+    (message "No match equation environment found.")))
+
 (defun zenith/update-after-save-hook ()
   (make-local-variable 'after-save-hook)
   (add-hook 'after-save-hook '(lambda ()
