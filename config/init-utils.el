@@ -118,6 +118,11 @@
               ispell-dictionary "en_US"
               ispell-silently-savep t)
 
+(setq wucuo-font-faces-to-check
+      '(font-lock-string-face
+        font-lock-doc-face
+        font-lock-comment-face))
+
 (require 'wucuo)
 
 (setq wucuo-flyspell-start-mode "fast")
@@ -134,6 +139,9 @@
   (let ((wucuo-flyspell-start-mode "normal"))
     (wucuo-spell-check-buffer)))
 
+(add-hook 'text-mode-hook 'wucuo-start)
+(add-hook 'prog-mode-hook 'wucuo-start)
+
 ;; Not enable it because checking makes cursor fly.
 
 (defun zenith/add-word-to-dictionary (beg end)
@@ -142,7 +150,7 @@
   (save-excursion
     (let* ((word (concat (if (region-active-p)
                              (buffer-substring-no-properties beg end)
-                           (word-at-point))
+                           (word-at-point t))
                          "\n"))
            (file (expand-file-name (concat "~/.hunspell_" ispell-dictionary))))
       (append-to-file word nil file)))

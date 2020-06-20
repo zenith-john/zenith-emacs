@@ -60,17 +60,18 @@
  "?"     'ctrlf-backward-regexp)
 
 (general-define-key
- [remap goto-line]          'goto-line-preview
- [remap list-buffers]       'ibuffer
- "C-."                      'yas-insert-snippet
- "C-x C-j"                  'company-complete-common
- "M-;"                      'evilnc-comment-or-uncomment-lines
- "M-/"                      'pyim-convert-string-at-point
- "M-o"                      'ace-window
- "M-k"                      'ace-delete-window
- "M-TAB"                    'counsel-company
- [remap backward-kill-word] 'zenith/delete-word-or-space
- [remap fill-paragraph]     'zenith/fill-and-indent-region)
+ [remap goto-line]             'goto-line-preview
+ [remap list-buffers]          'ibuffer
+ "C-."                         'yas-insert-snippet
+ "C-x C-j"                     'company-complete-common
+ "M-;"                         'evilnc-comment-or-uncomment-lines
+ "M-/"                         'pyim-convert-string-at-point
+ "M-o"                         'ace-window
+ "M-k"                         'ace-delete-window
+ "M-TAB"                       'counsel-company
+ [remap backward-kill-word]    'zenith/delete-word-or-space
+ [remap xref-pop-marker-stack] 'evil-jump-backward
+ [remap fill-paragraph]        'zenith/fill-and-indent-region)
 
 (general-define-key
  :prefix "C-c"

@@ -287,10 +287,10 @@
 
 (defun zenith/cycle-equation ()
   (interactive)
-  (if-let* ((beg (save-excursion (re-search-backward (zenith/regex-or (mapcar
-                                                                       'car zenith/equation-env-list)) nil t)))
-            (end (save-excursion (re-search-forward (zenith/regex-or (mapcar
-                                                                      'cdr zenith/equation-env-list)) nil t)))
+  (if-let* ((regex (zenith/regex-or (append (mapcar 'car zenith/equation-env-list)
+                                            (mapcar 'cdr zenith/equation-env-list))))
+            (beg (save-excursion (re-search-backward regex nil t)))
+            (end (save-excursion (re-search-forward regex nil t)))
             (kind (zenith/equation-match beg end))
             (len (safe-length zenith/equation-env-list))
             (pos (cl-position kind zenith/equation-env-list))
