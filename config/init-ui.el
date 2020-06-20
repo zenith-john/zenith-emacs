@@ -36,7 +36,8 @@
 ;; to fix the problem caused by reuse of some buffer, for example *Org Tags*
 (defun zenith/doom-modeline-always-redisplay ()
   "Check whether this buffer should always display"
-  (or (eq (buffer-name) "Org tags")))
+  (or (string-equal (buffer-name) " *Org tags*")
+      (string-equal (buffer-name) " *Org todo*")))
 
 (defun doom-modeline-redisplay (&rest _)
   "Call `redisplay' to trigger mode-line height calculations.
@@ -54,7 +55,7 @@ is to make it easier to do so.
 This function is like `redisplay' with non-nil FORCE argument.
 It accepts an arbitrary number of arguments making it suitable
 as a `:before' advice for any function.  If the current buffer
-has no mode-line or this function has already been calle in it,
+has no mode-line or this function has already been called in it,
 then this function does nothing."
   (when (and (bound-and-true-p doom-modeline-mode)
              mode-line-format
@@ -81,7 +82,7 @@ then this function does nothing."
 (global-hl-line-mode 1)
 
 ;; goto-line-preview
-(autoload 'goto-line-preview "goto-line-preview")
+(autoload 'goto-line-preview "goto-line-preview" nil t)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

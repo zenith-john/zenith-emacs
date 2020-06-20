@@ -332,3 +332,6 @@
 [submodule "extensions/shrink-path"]
 	path = extensions/shrink-path
 	url = https://gitlab.com/bennya/shrink-path.el
+[submodule "extensions/shackle"]
+	path = extensions/shackle
+	url = https://depp.brause.cc/shackle.git

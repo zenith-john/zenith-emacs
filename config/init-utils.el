@@ -177,7 +177,8 @@ before are all space characters and delete word otherwise."
 (defun zenith/fill-and-indent-region ()
   "Fill paragraph and indent region at once"
   (interactive)
-  (call-interactively 'fill-paragraph)
+  (when (derived-mode-p 'text-mode)
+    (call-interactively 'fill-paragraph))
   (call-interactively 'indent-region))
 
 ;; visual fill column
@@ -199,5 +200,16 @@ before are all space characters and delete word otherwise."
   (if-let ((func (alist-get major-mode zenith/jump-function-alist)))
       (funcall func)
     (funcall (alist-get t zenith/jump-function-alist))))
+
+;; popup window control
+;; shackle
+;; TODO: Add more rules to fit my use.
+(require 'shackle)
+(setq shackle-default-alignment 'below
+      shackle-default-size 0.33
+      shackle-default-rule
+      `(:size ,shackle-default-size :align ,shackle-default-alignment))
+(shackle-mode)
+
 
 (provide 'init-utils)
