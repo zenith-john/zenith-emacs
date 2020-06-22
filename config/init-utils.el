@@ -206,4 +206,42 @@ otherwise."
       (funcall func)
     (funcall (alist-get t zenith/jump-function-alist))))
 
+;; Popup window management
+;; shackle
+(require 'shackle)
+(setq shackle-default-alignment 'below
+      shackle-default-size 0.33)
+
+(defun zenith/get-most-below-window ()
+  "Get the most below window"
+  (interactive)
+  (save-window-excursion
+    (save-excursion
+      (ignore-errors
+        (dotimes (i 20)
+          (windmove-down)))
+      (selected-window))))
+
+(defvar zenith/matching-popup-list
+  '(" \\*"
+    "\\*Help")
+  "The regex suggest that the buffer is popup window")
+
+(setq shackle-rules
+      '((" \\*" :regexp t :custom zenith/shackle-custom-window)
+        ("\\*Help" :regexp t :custom zenith/shackle-custom-window)))
+
+(defun zenith/matching-popup (str)
+  (let ((ret))
+    (dolist (regexp zenith/matching-popup-list ret)
+      (setq ret (or ret (string-match-p regexp str))))))
+
+(defun zenith/shackle-custom-window (buffer alist plist)
+  (let ((win (zenith/get-most-below-window)))
+    (if (zenith/matching-popup (buffer-name (window-buffer win)))
+        (shackle--window-display-buffer buffer win 'window alist)
+      (shackle--display-buffer-aligned-window buffer alist plist))))
+
+(shackle-mode)
+
 (provide 'init-utils)
