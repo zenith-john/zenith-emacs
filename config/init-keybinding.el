@@ -37,27 +37,26 @@
  "f"     'format-all-buffer
  "g"     'magit-status
  "r"     'counsel-rg
- "R"     'rg-project
- "s"     'snails)
+ "R"     'rg-project)
 
+;; Use remap instead of direct key to reduce conflicts with other package name
+;; in particular evil-collection.
 (general-define-key
- :states '(normal motion visual)
- "gs"    'avy-goto-char
- "gr"    'counsel-recentf
- "gR"    'rg-dwim-project-dir
- "j"     'evil-next-visual-line
- "k"     'evil-previous-visual-line
- "gj"    'evil-next-line
- "gk"    'evil-previous-line
- "M-."   'xref-find-definitions
- "C-v"   nil
- "M-v"   'evil-visual-block
- "C-w"   'zenith/hydra-window/body
- "n"     'zenith/ctrlf-next-match
- "N"     'zenith/ctrlf-previous-match
- "r"     'zenith/jump
- "/"     'ctrlf-forward-regexp
- "?"     'ctrlf-backward-regexp)
+ :states                           '(normal motion visual)
+ "gs"                              'avy-goto-char
+ "gr"                              'counsel-recentf
+ "gR"                              'rg-dwim-project-dir
+ "M-."                             'xref-find-definitions
+ "C-v"                             'nil
+ "M-v"                             'evil-visual-block
+ "C-w"                             'zenith/hydra-window/body
+ [remap evil-search-next]          'zenith/ctrlf-next-match
+ [remap evil-search-previous]      'zenith/ctrlf-previous-match
+ [remap evil-replace]              'zenith/jump
+ [remap evil-paste-after]          'yank
+ [remap evil-paste-before]         'counsel-yank-pop
+ [remap evil-search-forward]       'ctrlf-forward-regexp
+ [remap evil-search-backward]      'ctrlf-backward-regexp)
 
 (general-define-key
  [remap goto-line]             'goto-line-preview
@@ -72,6 +71,15 @@
  [remap backward-kill-word]    'zenith/delete-word-or-space
  [remap xref-pop-marker-stack] 'evil-jump-backward
  [remap fill-paragraph]        'zenith/fill-and-indent-region)
+
+(general-define-key
+ :prefix "C-x"
+ "f" 'find-file
+ "s" 'save-buffer)
+
+(general-define-key
+ :keymaps 'emacs-lisp-mode-map
+ "C-x e" 'eval-last-sexp)
 
 (general-define-key
  :prefix "C-c"
@@ -128,39 +136,37 @@
  "C-c ]"  'zenith/cycle-equation
  )
 
-;; I don't know why, but the ivy-mode set <escape> to minibuffer-keyboard-quit
-;; and overwrite the keybindings in snails-mode-map.
 (general-define-key
- :keymaps 'ivy-mode-map
- [escape] nil)
-
-(general-define-key
- :keymaps                               'ivy-mode-map
-  [remap switch-to-buffer]              'ivy-switch-buffer
-  [remap switch-to-buffer-other-window] 'ivy-switch-buffer-other-window
-  [remap imenu-anywhere]                'ivy-imenu-anywhere
-  [remap apropos]                       'counsel-apropos
-  [remap bookmark-jump]                 'counsel-bookmark
-  [remap describe-face]                 'counsel-faces
-  [remap describe-function]             'counsel-describe-function
-  [remap describe-variable]             'counsel-describe-variable
-  [remap describe-bindings]             'counsel-descbinds
-  [remap set-variable]                  'counsel-set-variable
-  [remap find-file]                     'counsel-find-file
-  [remap find-library]                  'counsel-find-library
-  [remap info-lookup-symbol]            'counsel-info-lookup-symbol
-  [remap imenu]                         'counsel-imenu
-  [remap recentf-open-files]            'counsel-recentf
-  [remap org-capture]                   'counsel-org-capture
-  [remap swiper]                        'counsel-grep-or-swiper
-  "M-y"                                 'counsel-yank-pop
-  "C-h f"                               'helpful-callable
-  "C-h v"                               'helpful-variable
-  "C-h k"                               'helpful-key)
+ :keymaps                              'ivy-mode-map
+ [remap switch-to-buffer]              'ivy-switch-buffer
+ [remap switch-to-buffer-other-window] 'ivy-switch-buffer-other-window
+ [remap imenu-anywhere]                'ivy-imenu-anywhere
+ [remap apropos]                       'counsel-apropos
+ [remap bookmark-jump]                 'counsel-bookmark
+ [remap describe-face]                 'counsel-faces
+ [remap describe-function]             'counsel-describe-function
+ [remap describe-variable]             'counsel-describe-variable
+ [remap describe-bindings]             'counsel-descbinds
+ [remap set-variable]                  'counsel-set-variable
+ [remap find-file]                     'counsel-find-file
+ [remap find-library]                  'counsel-find-library
+ [remap info-lookup-symbol]            'counsel-info-lookup-symbol
+ [remap imenu]                         'counsel-imenu
+ [remap recentf-open-files]            'counsel-recentf
+ [remap org-capture]                   'counsel-org-capture
+ [remap swiper]                        'counsel-grep-or-swiper
+ "M-y"                                 'counsel-yank-pop
+ "C-h f"                               'helpful-callable
+ "C-h v"                               'helpful-variable
+ "C-h k"                               'helpful-key)
 
 (general-define-key
  :keymaps 'ivy-minibuffer-map
  [escape] 'keyboard-escape-quit)
+
+(general-define-key
+ :keymaps 'minibuffer-local-map
+ [escape] 'minibuffer-keyboard-quit)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

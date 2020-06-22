@@ -34,7 +34,7 @@
 (global-evil-surround-mode 1)
 
 ;; evil-nerd-commenter
-;; depedencies: evil
+;; dependencies: evil
 (zenith/autoload
  '(evilnc-comment-operator
    evilnc-comment-or-uncomment-lines

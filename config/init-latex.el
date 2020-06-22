@@ -97,7 +97,8 @@
    TeX-engine 'xetex
    TeX-show-compilation nil
    ;; fill paragraph should leave line equation in a line
-   LaTeX-fill-break-at-separators '(\\\( \\\[ \\\] \}))
+   LaTeX-fill-break-at-separators '(\\\( \\\[ \\\] \})
+   TeX-command-extra-options "-shell-escape")
   ;; fontify common latex commands
   ;; Fontification taken from https://tex.stackexchange.com/a/86119/81279
 
@@ -195,11 +196,7 @@
   ;; set default pdf viewer
   (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
   ;; set-up chktex
-  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s")
-
-  (add-to-list 'TeX-command-list
-             '("XeLaTeX" "xelatex -interaction=nonstopmode %s"
-               TeX-run-command t t :help "Run xelatex") t))
+  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s"))
 
 ;; tell emacs how to parse tex files
 (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))

@@ -212,15 +212,37 @@
      (python . t)
      (shell . t))))
 
-(eval-after-load 'ox-latex
-  '(add-to-list 'org-latex-classes
-                '("ctexart"
-                  "\\documentclass{ctexart}"
-                  ("\\section{%s}" . "\\section*{%s}")
-                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("myart"
+                 "\\documentclass{article}
+[DEFAULT-PACKAGES]
+[PACKAGES]
+\\usepackage[backend=biber,style=alphabetic]{biblatex}
+\\addbibresource[location=local]{~/Dropbox/Library.bib}
+\\setCJKmainfont{Source Han Sans CN}
+\\setmonofont{Source Code Pro}
+\\gappto{\\UrlBreaks}{\\UrlOrds}
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (setq org-latex-compiler "xelatex"
+        org-latex-default-class "myart"
+        org-export-with-sub-superscripts nil
+        org-latex-listings 'minted
+        org-latex-minted-options '(("breaklines" "true")
+                                   ("frame" "single")
+                                   ("breakanywhere" "true"))
+        org-latex-pdf-process
+        '("latexmk -output-directory %o %f"))
+  (setq org-latex-packages-alist '(("" "minted")
+                                   ("" "xcolor")
+                                   ("" "xeCJK")
+                                   ("" "fontspec")
+                                   ("" "etoolbox"))))
 
 ;; org-edit-latex
 (with-eval-after-load 'org-edit-latex

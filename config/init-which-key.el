@@ -22,8 +22,8 @@
 ;; dependencies: which-key posframe
 (require 'which-key-posframe)
 (setq which-key-posframe-parameters
-      '((left-fringe . 8)
-        (right-fringe . 8)))
+      '((left-fringe . 0)
+        (right-fringe . 0)))
 (which-key-posframe-mode)
 
 (provide 'init-which-key)
