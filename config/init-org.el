@@ -57,6 +57,8 @@
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
 (with-eval-after-load 'org
+  (defun zenith/refile-targets-notes ()
+    (directory-files zenith/note-directory t ".*\\.org\\'"))
   (setq-default
    org-adapt-indentation nil
    org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))
@@ -81,7 +83,6 @@
    org-indent-indentation-per-level 2
    org-indent-mode-turns-on-hiding-stars t
    org-insert-heading-respect-content nil
-   org-list-description-max-indent 4
    org-outline-path-complete-in-steps nil
    org-pretty-entities nil
    org-pretty-entities-include-sub-superscripts t
@@ -91,11 +92,13 @@
      (?c . success))
    org-refile-targets
    '((nil :maxlevel . 3)
-     (org-agenda-files :maxlevel . 3))
+     (org-agenda-files :maxlevel . 3)
+     (zenith/refile-targets-notes :maxlevel . 3))
    org-refile-use-outline-path 'file
    org-special-ctrl-a/e t
    org-src-fontify-natively t
    org-src-preserve-indentation t
+   org-src-tab-acts-natively t
    org-startup-folded t
    org-startup-indented t
    org-startup-with-inline-images nil
@@ -159,8 +162,7 @@
           ("Idea" . ?d)))
 
   ;; Org agenda settings
-  (setq org-enable-table-editor 'optimized
-        org-agenda-start-on-weekday nil
+  (setq org-agenda-start-on-weekday nil
         org-agenda-skip-scheduled-if-deadline-is-shown t
         org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
         org-agenda-skip-scheduled-if-done t
@@ -238,7 +240,8 @@
         org-latex-listings 'minted
         org-latex-minted-options '(("breaklines" "true")
                                    ("frame" "single")
-                                   ("breakanywhere" "true"))
+                                   ("breakanywhere" "true")
+                                   ("fontsize" "\\footnotesize"))
         org-latex-pdf-process
         '("latexmk -g -pdf -pdflatex=\"%latex\" -shell-escape -outdir=%o %f"))
   (setq org-latex-packages-alist '(("" "minted")
@@ -282,7 +285,7 @@
   (defun org-id-complete-link (&optional arg)
     "Create an id: link using completion"
     (concat "id:"
-            (org-id-get-with-outline-path-completion)))
+            (org-id-get-with-outline-path-completion org-refile-targets)))
   (org-link-set-parameters "id"
                            :complete 'org-id-complete-link)
   (defun zenith/search-id-reverse-link ()

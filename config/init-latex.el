@@ -37,8 +37,8 @@
         (?t . "\\textcite[]{%l}"))
       reftex-plug-into-AUCTeX t
       reftex-toc-split-windows-fraction 0.3
-	  reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
-	  reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource")
+      reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
+      reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource")
       reftex-label-alist
       '(("theorem" ?m "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
         ("lemma"   ?m "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
@@ -253,10 +253,11 @@
             ("paragraph" 5)
             ("subparagraph" 6)))))
 
-(setq-default zenith/equation-env-list
-              '(("\\begin{equation}\n" . "\n\\end{equation}")
-                ("\\[" . "\\]")
-                ("\\(" . "\\)")))
+(defvar zenith/equation-env-list
+  '(("\\begin{equation}\n" . "\n\\end{equation}")
+    ("\\[" . "\\]")
+    ("\\(" . "\\)"))
+  "The pairs of equation environment")
 
 (defun zenith/regex-or (l)
   (let ((regex "\\(?:")

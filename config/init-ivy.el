@@ -43,9 +43,9 @@
 (defun zenith/ivy-posframe-get-size ()
   "Set size of by the posframe"
   (list
-   :height (max (+ 1 ivy-height) ivy-posframe-height)
+   :height (max (+ 3 ivy-height) ivy-posframe-height)
    :width (round (* 0.5 (frame-width)))
-   :min-height (max (+ 1 ivy-height) ivy-posframe-height)
+   :min-height (max (+ 3 ivy-height) ivy-posframe-height)
    :min-width (max 80 (round (* 0.5 (frame-width))))))
 
 (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
