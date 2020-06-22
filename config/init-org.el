@@ -114,15 +114,9 @@
                                   'default)
                               :background nil t)))
 
-  ;; seems that default open method is not usable in org-file-apps
-  (setq org-file-apps
-        '((auto-mode . emacs)
-          ("\\.mm\\'" . system)
-          ("\\.x?html?\\'" . system)
-          ("\\.pdf\\'" . system)
-          ; nohup is important otherwise the application will be killed.
-          (system . "nohup /usr/bin/xdg-open %s")))
-
+  ;; seems that default open method is not by default usable in org-file-apps
+  (setcdr (assoc "\\.pdf\\'" org-file-apps) "/usr/bin/zathura %s")
+  (add-to-list 'org-file-apps '(t . "nohup /usr/bin/xdg-open %s"))
   ;; Make emphasis clear when using bold font
   (add-to-list 'org-emphasis-alist
                '("*" (:foreground "pink")))
@@ -246,7 +240,7 @@
                                    ("frame" "single")
                                    ("breakanywhere" "true"))
         org-latex-pdf-process
-        '("latexmk -g -pdf -pdflatex=\"%latex\" -outdir=%o %f"))
+        '("latexmk -g -pdf -pdflatex=\"%latex\" -shell-escape -outdir=%o %f"))
   (setq org-latex-packages-alist '(("" "minted")
                                    ("" "xcolor")
                                    ("" "xeCJK")
