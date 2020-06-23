@@ -79,7 +79,7 @@ then this function does nothing."
 	(hl-line-move hl-line-overlay))
     (hl-line-unhighlight)))
 
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; goto-line-preview
 (autoload 'goto-line-preview "goto-line-preview" nil t)

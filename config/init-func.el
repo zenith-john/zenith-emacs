@@ -34,6 +34,10 @@
   "Check a char is whether a space character."
   (string-match (char-to-string char) "\t\n\r "))
 
+(defun zenith/get-bare-file-name (&optional buffer)
+  (let ((file (buffer-file-name buffer)))
+    (file-name-sans-extension (file-name-base file))))
+
 
 (provide 'init-func)
 ;;; init-func.el ends here

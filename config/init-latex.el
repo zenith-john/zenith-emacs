@@ -40,13 +40,48 @@
       reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
       reftex-bibliography-commands '("bibliography" "nobibiliography" "addbibresource")
       reftex-label-alist
-      '(("theorem" ?m "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
-        ("lemma"   ?m "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
-        ("proposition" ?m "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
-        ("remark"      ?m "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
-        ("definition"  ?m "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
-        ("corollary"   ?m "cor:"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3))
+      '(("theorem" ?h "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
+        ("lemma"   ?l "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
+        ("proposition" ?p "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
+        ("remark"      ?r "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
+        ("definition"  ?d "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
+        ("corollary"   ?c "cor:"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3)
+        ("equation"  ?e "eq:" "~(\\eqref{%s})" nil (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+        ("eqnarray"  ?e "eq:" nil eqnarray-like))
       reftex-ref-macro-prompt nil)
+
+(defun zenith/reftex-label-alist-toggle (&optional multi)
+  (interactive)
+  (if (and (not multi) (string-suffix-p "%f" (nth 3 (first reftex-label-alist))))
+      (setq-local reftex-label-alist
+                  '(("theorem" ?h "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
+                    ("lemma"   ?l "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
+                    ("proposition" ?p "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
+                    ("remark"      ?r "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
+                    ("definition"  ?d "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
+                    ("corollary"   ?c "cor:"  "~\\ref{%s}" t (regexp "[Cc]orollary" "[Cc]or\\.") -3)
+                    ("equation"  ?e "eq:" "~(\\eqref{%s})" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+                    ("eqnarray"  ?e "eq:" nil eqnarray-like)))
+    (setq-local reftex-label-alist
+                '(("theorem" ?h "thm:%f-" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
+                  ("lemma"   ?l "lem:%f-" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
+                  ("proposition" ?p "prop:%f-" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
+                  ("remark"      ?r "rmk:%f-"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
+                  ("definition"  ?d "def:%f-"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
+                  ("corollary"   ?c "cor:%f-"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3)
+                  ("equation"  ?e "eq:%f-" "~(\\eqref{%s})" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+                  ("eqnarray"  ?e "eq:%f-" nil eqnarray-like)))))
+
+(defvar zenith/label-kinds
+  (rx (or "thm:" "lem:" "prop:" "rmk:" "def:" "cor:" "eq:")))
+
+(defun zenith/update-label-and-reference ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((file-name (zenith/get-bare-file-name)))
+      (while (re-search-forward zenith/label-kinds nil t)
+        (insert file-name "-")))))
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
@@ -316,7 +351,8 @@
   (zenith/update-after-save-hook)
   ;; Set up environment for LaTeX
   (LaTeX-add-environments
-   '("tikzcd" LaTeX-env-label)))
+   '("tikzcd" LaTeX-env-label))
+  (zenith/reftex-label-alist-toggle t))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 

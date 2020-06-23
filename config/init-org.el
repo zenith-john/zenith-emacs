@@ -99,6 +99,7 @@
    org-src-fontify-natively t
    org-src-preserve-indentation t
    org-src-tab-acts-natively t
+   org-src-window-setup 'split-window-below
    org-startup-folded t
    org-startup-indented t
    org-startup-with-inline-images nil
@@ -119,7 +120,7 @@
 
   ;; seems that default open method is not by default usable in org-file-apps
   (setcdr (assoc "\\.pdf\\'" org-file-apps) "/usr/bin/zathura %s")
-  (add-to-list 'org-file-apps '(t . "nohup /usr/bin/xdg-open %s"))
+  (add-to-list 'org-file-apps '(t . "nohup /usr/bin/xdg-open >/dev/null 2&>1 %s"))
   ;; Make emphasis clear when using bold font
   (add-to-list 'org-emphasis-alist
                '("*" (:foreground "pink")))
@@ -161,6 +162,10 @@
           ("Question" . ?q)
           ("Idea" . ?d)))
 
+  ;; Org habit
+  (require 'org-habit)
+  (setq org-habit-show-habits-only-for-today nil)
+
   ;; Org agenda settings
   (setq org-agenda-start-on-weekday nil
         org-agenda-skip-scheduled-if-deadline-is-shown t
@@ -171,7 +176,7 @@
         org-agenda-compact-blocks t
         org-agenda-show-all-dates nil
         org-deadline-warning-days 365
-        org-agenda-show-future-repeats t
+        org-agenda-show-future-repeats 'next
         org-agenda-window-setup 'only-window)
 
 
@@ -223,6 +228,11 @@
                  "\\documentclass{article}
 [DEFAULT-PACKAGES]
 [PACKAGES]
+\\usepackage{xcoloar}
+\\usepackage{minted}
+\\usepackage{fontspec}
+\\usepackage{xeCJK}
+\\usepackage{etoolbox}
 \\usepackage[backend=biber,style=alphabetic]{biblatex}
 \\addbibresource[location=local]{~/Dropbox/Library.bib}
 \\setCJKmainfont{Source Han Sans CN}
@@ -238,17 +248,13 @@
         org-latex-default-class "myart"
         org-export-with-sub-superscripts nil
         org-latex-listings 'minted
+        org-latex-remove-logfiles nil
         org-latex-minted-options '(("breaklines" "true")
                                    ("frame" "single")
                                    ("breakanywhere" "true")
                                    ("fontsize" "\\footnotesize"))
         org-latex-pdf-process
-        '("latexmk -g -pdf -pdflatex=\"%latex\" -shell-escape -outdir=%o %f"))
-  (setq org-latex-packages-alist '(("" "minted")
-                                   ("" "xcolor")
-                                   ("" "xeCJK")
-                                   ("" "fontspec")
-                                   ("" "etoolbox"))))
+        '("latexmk -g -pdf -pdflatex=\"%latex\" -shell-escape -outdir=%o %f")))
 
 ;; org-edit-latex
 (with-eval-after-load 'org-edit-latex

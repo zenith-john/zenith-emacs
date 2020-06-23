@@ -15,6 +15,7 @@
 \usepackage{graphicx}
 \usepackage{indentfirst}
 \usepackage{mathrsfs}
+\usepackage{mathtools}
 \usepackage{xspace}
 \usepackage{tikz-cd}
 \setlength{\parindent}{2em}
@@ -35,12 +36,16 @@
 \newcommand*{\dif}{\mathop{}\!\mathrm{d}}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\grad}{{\rm grad}\;}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\defeq}{\coloneqq}
 
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}
 
 \title{$1}
 \author{张南涛\ 2017012502\ Bio72}
