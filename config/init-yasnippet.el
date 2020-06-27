@@ -53,7 +53,8 @@ and `nil' otherwise."
   (when
       (and
        yas-minor-mode
-       (eq last-command 'self-insert-command)
+       (or (eq last-command 'self-insert-command)
+           (eq last-command 'org-self-insert-command))
        (eq (char-before) ?\s))
     (delete-backward-char 1)
     (unless (zenith/may-expand)

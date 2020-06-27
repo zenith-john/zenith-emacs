@@ -228,7 +228,7 @@
                  "\\documentclass{article}
 [DEFAULT-PACKAGES]
 [PACKAGES]
-\\usepackage{xcoloar}
+\\usepackage{xcolor}
 \\usepackage{minted}
 \\usepackage{fontspec}
 \\usepackage{xeCJK}
