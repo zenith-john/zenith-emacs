@@ -32,7 +32,7 @@
 
 (defun zenith/is-space (char)
   "Check a char is whether a space character."
-  (string-match (char-to-string char) "\t\n\r "))
+  (string-match (regexp-quote (char-to-string char)) "\t\n\r "))
 
 (defun zenith/get-bare-file-name (&optional buffer)
   (let ((file (buffer-file-name buffer)))

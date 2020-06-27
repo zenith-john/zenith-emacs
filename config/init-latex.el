@@ -26,15 +26,9 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; Get ReTeX working with biblatex
 ;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992
-(setq reftex-cite-format
-      '((?a . "\\autocite[]{%l}")
-        (?b . "\\blockcquote[]{%l}{}")
-        (?c . "\\cite[]{%l}")
-        (?f . "\\footcite[]{%l}")
-        (?n . "\\nocite{%l}")
-        (?p . "\\parencite[]{%l}")
-        (?s . "\\smartcite[]{%l}")
-        (?t . "\\textcite[]{%l}"))
+(setq LaTeX-reftex-cite-format-auto-activate nil
+      reftex-cite-format 'default
+      reftex-toc-split-windows-horizontally t
       reftex-plug-into-AUCTeX t
       reftex-toc-split-windows-fraction 0.3
       reftex-bibpath-environment-variables '("/home/zenith-john/Dropbox/")
@@ -46,7 +40,8 @@
         ("remark"      ?r "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
         ("definition"  ?d "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
         ("corollary"   ?c "cor:"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3)
-        ("equation"  ?e "eq:" "~(\\eqref{%s})" nil (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+        ("exercise"    ?x "ex:"   "~\\ref{%s}" nil (regexp "[Ex]ercise" "[Ee]x.") -3)
+        ("equation"  ?e "eq:" "~\\eqref{%s}" nil (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
         ("eqnarray"  ?e "eq:" nil eqnarray-like))
       reftex-ref-macro-prompt nil)
 
@@ -60,7 +55,7 @@
                     ("remark"      ?r "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
                     ("definition"  ?d "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
                     ("corollary"   ?c "cor:"  "~\\ref{%s}" t (regexp "[Cc]orollary" "[Cc]or\\.") -3)
-                    ("equation"  ?e "eq:" "~(\\eqref{%s})" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+                    ("equation"  ?e "eq:" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
                     ("eqnarray"  ?e "eq:" nil eqnarray-like)))
     (setq-local reftex-label-alist
                 '(("theorem" ?h "thm:%f-" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
@@ -69,11 +64,11 @@
                   ("remark"      ?r "rmk:%f-"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
                   ("definition"  ?d "def:%f-"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
                   ("corollary"   ?c "cor:%f-"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3)
-                  ("equation"  ?e "eq:%f-" "~(\\eqref{%s})" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+                  ("equation"  ?e "eq:%f-" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
                   ("eqnarray"  ?e "eq:%f-" nil eqnarray-like)))))
 
 (defvar zenith/label-kinds
-  (rx (or "thm:" "lem:" "prop:" "rmk:" "def:" "cor:" "eq:")))
+  (rx (or "thm:" "lem:" "prop:" "rmk:" "def:" "cor:" "eq:" "ex:")))
 
 (defun zenith/update-label-and-reference ()
   (interactive)
