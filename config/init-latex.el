@@ -353,7 +353,7 @@
 
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
-(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
 
 (provide 'init-latex)
 ;;; init-latex.el ends here

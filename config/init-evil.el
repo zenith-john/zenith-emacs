@@ -16,6 +16,8 @@
       evil-want-fine-undo t    ; Don not aggregate changes when exiting insert state
       evil-want-C-w-delete t   ; Use emacs's C-w
       evil-toggle-key ""       ; C-z not entering emacs state
+      evil-respect-visual-line-mode t ; integration with visual-line-mode
+      evil-move-beyond-eol t          ; emacs-like cursor movement
       )
 
 (require 'evil)

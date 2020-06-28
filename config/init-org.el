@@ -30,8 +30,7 @@
 ;;
 ;;; Bootstrap
 (defun zenith/org-mode-hook ()
-  (org-indent-mode)
-  (auto-fill-mode)
+  (visual-line-mode)
   ;; cdlatex
   ;; Enable cdlatex mode
   ;; TODO configure cdlatex-command-alist

@@ -17,6 +17,8 @@
   (liberime-start liberime-shared-data-dir liberime-user-data-dir)
   (liberime-select-schema "luna_pinyin_simp")
   (add-to-list 'pyim-punctuation-dict '("\\" "、"))
+  ;; (liberime-sync)
+  ;; The sync do not work, do manual sync
   (setq pyim-default-scheme 'rime-quanpin)
   (pyim-isearch-mode 1))
 
