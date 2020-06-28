@@ -178,16 +178,17 @@ otherwise."
 (defun zenith/fill-and-indent-region ()
   "Fill paragraph and indent region at once"
   (interactive)
-  (when (or
-         (derived-mode-p 'text-mode)
-         (nth 4 (syntax-ppss))
-         (nth 8 (syntax-ppss)))
-    (call-interactively 'fill-paragraph))
-  (call-interactively 'indent-region))
+  (message "Never fill again, use format all"))
+  ;; (when (or
+  ;;        (derived-mode-p 'text-mode)
+  ;;        (nth 4 (syntax-ppss))
+  ;;        (nth 8 (syntax-ppss)))
+  ;;   (call-interactively 'fill-paragraph))
+  ;; (call-interactively 'indent-region))
 
 ;; visual fill column
 (autoload 'visual-fill-column-mode "visual-fill-column" "" t)
-(setq-default visual-fill-column-width (+ fill-column 20))
+(setq-default visual-fill-column-width fill-column)
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 (add-hook 'auto-fill-mode-hook 'visual-line-mode)
 
@@ -243,5 +244,28 @@ otherwise."
       (shackle--display-buffer-aligned-window buffer alist plist))))
 
 (shackle-mode)
+
+(defmacro ins-val (val)
+  `(lambda () (interactive) (self-insert-command 1 ,val)))
+
+(define-minor-mode special-char-mode
+  "Toggle Special Character mode"
+  nil
+  " SpecialChar"
+  `(
+    (,(kbd "1") . ,(ins-val ?!)) (,(kbd "!") . ,(ins-val ?1)) (,[kp-1] . ,(ins-val ?1))
+    (,(kbd "2") . ,(ins-val ?@)) (,(kbd "@") . ,(ins-val ?2)) (,[kp-2] . ,(ins-val ?2))
+    (,(kbd "3") . ,(ins-val ?#)) (,(kbd "#") . ,(ins-val ?3)) (,[kp-3] . ,(ins-val ?3))
+    (,(kbd "4") . ,(ins-val ?$)) (,(kbd "$") . ,(ins-val ?4)) (,[kp-4] . ,(ins-val ?4))
+    (,(kbd "5") . ,(ins-val ?%)) (,(kbd "%") . ,(ins-val ?5)) (,[kp-5] . ,(ins-val ?5))
+    (,(kbd "6") . ,(ins-val ?^)) (,(kbd "^") . ,(ins-val ?6)) (,[kp-6] . ,(ins-val ?6))
+    (,(kbd "7") . ,(ins-val ?&)) (,(kbd "&") . ,(ins-val ?7)) (,[kp-7] . ,(ins-val ?7))
+    (,(kbd "8") . ,(ins-val ?*)) (,(kbd "*") . ,(ins-val ?8)) (,[kp-8] . ,(ins-val ?8))
+    (,(kbd "9") . ,(ins-val ?\()) (,(kbd "(") . ,(ins-val ?9)) (,[kp-9] . ,(ins-val ?9))
+    (,(kbd "0") . ,(ins-val ?\))) (,(kbd ")") . ,(ins-val ?0)) (,[kp-0] . ,(ins-val ?0))
+    (,[kp-multiply] . ,(ins-val ?*))
+    )
+  :global 'true)
+
 
 (provide 'init-utils)

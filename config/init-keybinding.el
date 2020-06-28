@@ -49,6 +49,7 @@
  "M-."                             'xref-find-definitions
  "C-v"                             'nil
  "M-v"                             'evil-visual-block
+ "C-e"                             'nil
  "C-w"                             'zenith/hydra-window/body
  [remap evil-search-next]          'zenith/ctrlf-next-match
  [remap evil-search-previous]      'zenith/ctrlf-previous-match
@@ -62,15 +63,23 @@
  [remap goto-line]             'goto-line-preview
  [remap list-buffers]          'ibuffer
  "C-."                         'yas-insert-snippet
+ "C-f"                         'isearch-forward
+ "C-r"                         'isearch-backward
+ "C-s"                         'save-buffer
  "C-x C-j"                     'company-complete-common
  "M-;"                         'evilnc-comment-or-uncomment-lines
  "M-/"                         'pyim-convert-string-at-point
  "M-o"                         'ace-window
  "M-k"                         'ace-delete-window
  "M-TAB"                       'counsel-company
+ "<menu>"                      'nil
  [remap backward-kill-word]    'zenith/delete-word-or-space
  [remap xref-pop-marker-stack] 'evil-jump-backward
  [remap fill-paragraph]        'zenith/fill-and-indent-region)
+
+(general-define-key
+ :prefix "<menu>"
+ "<menu>" 'special-char-mode)
 
 (general-define-key
  :prefix "C-x"
@@ -133,6 +142,8 @@
  "C-c *"  'LaTeX-star-environment-dwim
  "["      (lambda ()(interactive)(self-insert-command 1 ?{))
  "{"      (lambda ()(interactive)(self-insert-command 1 ?\[))
+ "]"      (lambda ()(interactive)(self-insert-command 1 ?\())
+ "("      (lambda ()(interactive)(self-insert-command 1 ?\]))
  "C-c ]"  'zenith/cycle-equation
  )
 
@@ -167,6 +178,24 @@
 (general-define-key
  :keymaps 'minibuffer-local-map
  [escape] 'minibuffer-keyboard-quit)
+
+;; don't bother to expand in expansion by tab.
+(general-define-key
+ :keymaps 'yas-keymap
+ [(tab)]  'yas-next-field
+ "TAB"    'yas-next-field)
+
+(general-define-key
+ :keymaps 'LaTeX-mode-map
+ :prefix "<menu>"
+ "a" 'TeX-command-run-all
+ "c" 'TeX-command-master
+ "e" 'LaTeX-environment
+ "s" 'LaTeX-section
+ "9" 'reftex-label
+ "0" 'reftex-reference
+ "[" 'reftex-citation
+ "]" 'zenith/cycle-equation)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

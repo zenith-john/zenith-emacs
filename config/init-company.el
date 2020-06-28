@@ -88,14 +88,14 @@
 
 ;; company-tabnine
 ;; dependencies: company dash s unicode-escape names
-(require 'company-tabnine)
-(unless (file-exists-p company-tabnine-binaries-folder)
-    (company-tabnine-install-binary))
+;; (require 'company-tabnine)
+;; (unless (file-exists-p company-tabnine-binaries-folder)
+;;     (company-tabnine-install-binary))
 
-(setq company-tabnine-auto-fallback t
-      company-tabnine-auto-balance nil
-      company-tabnine-max-num-results 10
-      company-tabnine-always-trigger nil)
+;; (setq company-tabnine-auto-fallback t
+;;       company-tabnine-auto-balance nil
+;;       company-tabnine-max-num-results 10
+;;       company-tabnine-always-trigger nil)
 
 ;; fuz.el
 (require 'fuz)
@@ -143,7 +143,7 @@
     ))
 
 
-(defvar zenith/common-company-backends '(company-capf company-tabnine)
+(defvar zenith/common-company-backends '(company-capf)
   "Company backends for common buffers")
 
 (defvar-local zenith/local-company-backends zenith/common-company-backends
