@@ -140,10 +140,6 @@
  :keymaps 'LaTeX-mode-map
  "、"     (lambda ()(interactive)(self-insert-command 1 ?\\))
  "C-c *"  'LaTeX-star-environment-dwim
- "["      (lambda ()(interactive)(self-insert-command 1 ?{))
- "{"      (lambda ()(interactive)(self-insert-command 1 ?\[))
- "]"      (lambda ()(interactive)(self-insert-command 1 ?\())
- "("      (lambda ()(interactive)(self-insert-command 1 ?\]))
  "C-c ]"  'zenith/cycle-equation
  )
 

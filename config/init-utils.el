@@ -264,8 +264,9 @@ otherwise."
     (,(kbd "9") . ,(ins-val ?\()) (,(kbd "(") . ,(ins-val ?9)) (,[kp-9] . ,(ins-val ?9))
     (,(kbd "0") . ,(ins-val ?\))) (,(kbd ")") . ,(ins-val ?0)) (,[kp-0] . ,(ins-val ?0))
     (,[kp-multiply] . ,(ins-val ?*))
+    (,(kbd "[") . ,(ins-val ?\{)) (,(kbd "]") . ,(ins-val ?\[))
+    (,(kbd "{") . ,(ins-val ?\])) (,(kbd "}") . ,(ins-val ?\]))
     )
   :global 'true)
-
 
 (provide 'init-utils)
