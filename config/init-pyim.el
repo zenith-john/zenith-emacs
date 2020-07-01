@@ -8,41 +8,72 @@
 ;; pyim
 (require 'pyim)
 
-;; liberime
-(setq liberime-shared-data-dir "/usr/share/rime-data"
-      liberime-user-data-dir (concat zenith-emacs-local-dir "pyim/rime"))
-
 (with-eval-after-load 'pyim
-  (require 'liberime nil t)
-  (liberime-start liberime-shared-data-dir liberime-user-data-dir)
-  (liberime-select-schema "luna_pinyin_simp")
-  (add-to-list 'pyim-punctuation-dict '("\\" "、"))
-  ;; (liberime-sync)
-  ;; The sync do not work, do manual sync
-  (setq pyim-default-scheme 'rime-quanpin)
-  (pyim-isearch-mode 1))
+  (add-to-list 'pyim-punctuation-dict '("\\" "、")))
 
-(setq pyim-dcache-directory (concat zenith-emacs-local-dir "pyim/dcache/")
-      pyim-page-tooltip 'posframe
-      default-input-method "pyim"
-      pyim-liberime-search-limit 100)
+;; emacs-rime use emacs-rime to replace pyim because it is simpler faster but
+;; pyim provides some useful functions, so I won't throw it away, instead I make
+;; some minor changes to make it usable to emacs-rime
+(require 'rime)
 
-(setq-default pyim-english-input-switch-functions
-              '(pyim-probe-dynamic-english
-                pyim-probe-isearch-mode
-                pyim-probe-program-mode))
+(setq
+ rime-user-data-dir (concat zenith-emacs-local-dir "pyim/rime")
+ default-input-method "rime"
+ rime-show-candidate 'posframe)
 
-(setq-default pyim-punctuation-half-width-functions
-              '(pyim-probe-punctuation-line-beginning
-                pyim-probe-punctuation-after-punctuation))
+(setq rime-disable-predicates
+      '(rime-predicate-evil-mode-p
+        rime-predicate-after-ascii-char-p
+        rime-predicate-space-after-ascii-p
+        rime-predicate-prog-in-code-p
+        rime-predicate-ace-window-p
+        rime-predicate-hydra-p
+        rime-predicate-current-uppercase-letter-p
+        rime-predicate-tex-math-or-command-p))
 
-;; temporarily using emacs-rime as liberime not usable yet in emacs27
-;; (require 'rime)
+;;; support shift-l, shift-r, control-l, control-r
+(setq rime-inline-ascii-trigger 'shift-l)
 
-;; (setq
-;;  rime-user-data-dir "~/.config/fcitx/rime"
-;;  default-input-method "rime"
-;;  rime-show-candidate 'posframe)
+(defun zenith/rime-force-enable ()
+  (interactive)
+  (activate-input-method "rime")
+  (rime-force-enable))
+
+                                        ;；Adapted from pyim
+(defun zenith/rime-convert-string-at-point ()
+  "将光标前的用户输入的字符串转换为中文."
+  (interactive)
+  (zenith/rime-force-enable)
+  (let* ((case-fold-search nil)
+         (string (if mark-active
+                     (buffer-substring-no-properties
+                      (region-beginning) (region-end))
+                   (buffer-substring (point) (line-beginning-position))))
+         code length)
+    (cond
+     ((string-match
+       "[a-z]+"
+       string)
+      (setq code
+            ;; 一些编程语言使用单引号 ' 做为字符串的标记，这里需要特殊处理。
+            (replace-regexp-in-string
+             "^[-']" ""
+             (match-string 0 string)))
+      (setq length (length code))
+      (setq code (replace-regexp-in-string " +" "" code))
+      (when mark-active
+        (delete-region
+         (region-beginning) (region-end)))
+      (when (and (not mark-active) (> length 0))
+        (delete-char (- 0 length)))
+      (when (> length 0)
+        (setq unread-command-events
+              (append (listify-key-sequence code)
+                      unread-command-events))))
+     ((pyim-string-match-p "[[:punct:]：－]" (pyim-char-before-to-string 0))
+      ;; 当光标前的一个字符是标点符号时，半角/全角切换。
+      (call-interactively 'pyim-punctuation-translate-at-point))
+     (t (message "Rime: rime-convert-string-at-point do noting.")))))
 
 (provide 'init-pyim)
 ;;; init-pyim.el ends here

@@ -335,3 +335,6 @@
 [submodule "extensions/shackle"]
 	path = extensions/shackle
 	url = https://depp.brause.cc/shackle.git
+[submodule "extensions/emacs-rime"]
+	path = extensions/emacs-rime
+	url = https://github.com/DogLooksGood/emacs-rime

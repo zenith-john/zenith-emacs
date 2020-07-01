@@ -67,11 +67,11 @@
  "C-r"                         'isearch-backward
  "C-x C-j"                     'company-complete-common
  "M-;"                         'evilnc-comment-or-uncomment-lines
- "M-/"                         'pyim-convert-string-at-point
+ "M-/"                         'zenith/rime-convert-string-at-point
  "M-o"                         'ace-window
  "M-k"                         'ace-delete-window
  "M-TAB"                       'counsel-company
- "<menu>"                      'nil
+ [menu]                        'nil
  [remap backward-kill-word]    'zenith/delete-word-or-space
  [remap xref-pop-marker-stack] 'evil-jump-backward
  [remap fill-paragraph]        'zenith/fill-and-indent-region)
