@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: textbfandindex
+# key: bfi
+# condition: t
+# --
+
+\textbf{$1}\index{$1}$0

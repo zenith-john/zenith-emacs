@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: inline
+# key: 9
+# condition: t
+# --
+
+\\[$1\\]

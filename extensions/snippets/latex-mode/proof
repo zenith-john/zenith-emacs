@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: proof
+# key: pf
+# condition: t
+# --
+
+\begin{proof}
+  $0
+\end{proof}

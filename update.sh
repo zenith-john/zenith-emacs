@@ -39,6 +39,3 @@ make -C $root/extensions/magit
 
 # compile .elc
 emacs --batch -l $root/init.el --eval "(byte-recompile-directory (expand-file-name \"./extensions\") 0)"
-
-# do not generate *.elc file for snails
-rm extensions/snails/*.elc || true
