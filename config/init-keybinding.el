@@ -65,7 +65,6 @@
  "C-."                         'yas-insert-snippet
  "C-f"                         'isearch-forward
  "C-r"                         'isearch-backward
- "C-s"                         'save-buffer
  "C-x C-j"                     'company-complete-common
  "M-;"                         'evilnc-comment-or-uncomment-lines
  "M-/"                         'pyim-convert-string-at-point
@@ -141,6 +140,8 @@
  "、"     (lambda ()(interactive)(self-insert-command 1 ?\\))
  "C-c *"  'LaTeX-star-environment-dwim
  "C-c ]"  'zenith/cycle-equation
+ "["      'zenith/latex-magic-bracket
+ "-"      'zenith/magic-underscore
  )
 
 (general-define-key

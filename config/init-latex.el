@@ -45,6 +45,20 @@
         ("eqnarray"  ?e "eq:" nil eqnarray-like))
       reftex-ref-macro-prompt nil)
 
+(defun reftex-select-read-label ()
+  "Use minibuffer to read a label to reference, with completion."
+  (interactive)
+  (let ((label (completing-read
+                "Label: " (symbol-value reftex-docstruct-symbol)
+                nil nil (zenith/reftex-get-prefix reftex-prefix))))
+    (unless (or (equal label "") (equal label reftex-prefix))
+      (throw 'myexit label))))
+
+(defun zenith/reftex-get-prefix (str)
+  (save-match-data
+    (string-match ".+:" str)
+    (match-string-no-properties 0 str)))
+
 (defun zenith/reftex-label-alist-toggle (&optional multi)
   (interactive)
   (if (and (not multi) (string-suffix-p "%f" (nth 3 (first reftex-label-alist))))
@@ -348,6 +362,25 @@
   (LaTeX-add-environments
    '("tikzcd" LaTeX-env-label))
   (zenith/reftex-label-alist-toggle t))
+
+(defun zenith/latex-magic-bracket ()
+  (interactive)
+  (let ((char (char-before)))
+    (if (or (zenith/is-space char)
+            (and (eq char ?\\) (not (texmathp))))
+        (funcall-interactively 'self-insert-command 1 ?\[)
+      (funcall-interactively 'self-insert-command 1 ?\{))))
+
+(defun zenith/magic-underscore ()
+  (interactive)
+  (if (and (texmathp)
+           (not (zenith/is-space (char-before))))
+      (progn
+        (funcall-interactively 'self-insert-command 1 ?_)
+        (when (and TeX-electric-sub-and-superscript (texmathp))
+          (insert (concat TeX-grop TeX-grcl))
+          (backward-char)))
+    (funcall-interactively 'self-insert-command 1 ?-)))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 
