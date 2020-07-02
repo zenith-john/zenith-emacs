@@ -338,3 +338,6 @@
 [submodule "extensions/emacs-rime"]
 	path = extensions/emacs-rime
 	url = https://github.com/DogLooksGood/emacs-rime
+[submodule "extensions/auctex-latexmk"]
+	path = extensions/auctex-latexmk
+	url = https://github.com/tom-tan/auctex-latexmk/

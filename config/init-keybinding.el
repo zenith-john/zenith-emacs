@@ -191,8 +191,9 @@
  "s" 'LaTeX-section
  "9" 'reftex-label
  "0" 'reftex-reference
+ "v" 'TeX-view
  "[" 'reftex-citation
- "]" 'zenith/cycle-equation)
+ "{" 'zenith/cycle-equation)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

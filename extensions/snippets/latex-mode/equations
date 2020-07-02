@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: equation_group
+# key: eqs
+# expand-env: ((yas-indent-line 'fixed))
+# --
+\begin{equation}
+  \left\\{
+    \begin{aligned}
+      $0
+    \end{aligned}
+  \right.
+\end{equation}

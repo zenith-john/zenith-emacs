@@ -45,19 +45,22 @@
         ("eqnarray"  ?e "eq:" nil eqnarray-like))
       reftex-ref-macro-prompt nil)
 
-(defun reftex-select-read-label ()
-  "Use minibuffer to read a label to reference, with completion."
-  (interactive)
-  (let ((label (completing-read
-                "Label: " (symbol-value reftex-docstruct-symbol)
-                nil nil (zenith/reftex-get-prefix reftex-prefix))))
-    (unless (or (equal label "") (equal label reftex-prefix))
-      (throw 'myexit label))))
+(with-eval-after-load 'reftex-sel
+  (defun reftex-select-read-label ()
+    "Use minibuffer to read a label to reference, with completion."
+    (interactive)
+    (let ((label (completing-read
+                  "Label: " (symbol-value reftex-docstruct-symbol)
+                  nil nil (zenith/reftex-get-prefix reftex-prefix))))
+      (unless (or (equal label "") (equal label reftex-prefix))
+        (throw 'myexit label))))
 
-(defun zenith/reftex-get-prefix (str)
-  (save-match-data
-    (string-match ".+:" str)
-    (match-string-no-properties 0 str)))
+  (defun zenith/reftex-get-prefix (str)
+    (if str
+        (save-match-data
+          (string-match ".+:" str)
+          (match-string-no-properties 0 str))
+      "")))
 
 (defun zenith/reftex-label-alist-toggle (&optional multi)
   (interactive)
@@ -100,16 +103,10 @@
 
 (with-eval-after-load 'tex
   ;; the order of company-backend is important.
-  ;; company-auctex
-  ;; dependencies: yasnippet company auctex
-  (require 'company-auctex)
   ;; company-math
   ;; dependencies: company math-symbol-lists
   (require 'company-math)
-
-  (add-to-list '+latex-company-backends 'company-auctex-labels)
-  (add-to-list '+latex-company-backends 'company-math-symbols-latex)
-  (add-to-list '+latex-company-backends '(company-auctex-macros company-auctex-environments)))
+  (add-to-list '+latex-company-backends 'company-math-symbols-latex))
 
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
@@ -240,7 +237,11 @@
   ;; set default pdf viewer
   (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
   ;; set-up chktex
-  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s"))
+  (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s")
+  ;; Set-up latexmk
+  (require 'auctex-latexmk)
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  (auctex-latexmk-setup))
 
 ;; tell emacs how to parse tex files
 (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
@@ -381,6 +382,8 @@
           (insert (concat TeX-grop TeX-grcl))
           (backward-char)))
     (funcall-interactively 'self-insert-command 1 ?-)))
+
+(setq LaTeX-math-abbrev-prefix "5")
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 

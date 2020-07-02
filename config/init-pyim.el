@@ -52,7 +52,7 @@
          code length)
     (cond
      ((string-match
-       "[a-z]+"
+       "[a-z]+ *$"
        string)
       (setq code
             ;; 一些编程语言使用单引号 ' 做为字符串的标记，这里需要特殊处理。
