@@ -341,3 +341,6 @@
 [submodule "extensions/auctex-latexmk"]
 	path = extensions/auctex-latexmk
 	url = https://github.com/tom-tan/auctex-latexmk/
+[submodule "extensions/counsel-projectile"]
+	path = extensions/counsel-projectile
+	url = https://github.com/ericdanan/counsel-projectile

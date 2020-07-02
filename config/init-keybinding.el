@@ -47,6 +47,7 @@
  "gr"                              'counsel-recentf
  "gR"                              'rg-dwim-project-dir
  "M-."                             'xref-find-definitions
+ "C-r"                             'ctrlf-backward-literal
  "C-v"                             'nil
  "M-v"                             'evil-visual-block
  "C-e"                             'nil
@@ -66,6 +67,7 @@
  "C-f"                         'isearch-forward
  "C-r"                         'isearch-backward
  "C-x C-j"                     'company-complete-common
+ "C-x C-s"                     (lambda ()(interactive)(message "Don't use C-x C-s to save, it hurts."))
  "M-;"                         'evilnc-comment-or-uncomment-lines
  "M-/"                         'zenith/rime-convert-string-at-point
  "M-o"                         'ace-window
@@ -146,7 +148,7 @@
 
 (general-define-key
  :keymaps                              'ivy-mode-map
- [remap switch-to-buffer]              'ivy-switch-buffer
+ [remap switch-to-buffer]              'zenith/switch-buffer
  [remap switch-to-buffer-other-window] 'ivy-switch-buffer-other-window
  [remap imenu-anywhere]                'ivy-imenu-anywhere
  [remap apropos]                       'counsel-apropos
@@ -156,7 +158,7 @@
  [remap describe-variable]             'counsel-describe-variable
  [remap describe-bindings]             'counsel-descbinds
  [remap set-variable]                  'counsel-set-variable
- [remap find-file]                     'counsel-find-file
+ [remap find-file]                     'zenith/find-file
  [remap find-library]                  'counsel-find-library
  [remap info-lookup-symbol]            'counsel-info-lookup-symbol
  [remap imenu]                         'counsel-imenu
@@ -164,12 +166,14 @@
  [remap org-capture]                   'counsel-org-capture
  [remap swiper]                        'counsel-grep-or-swiper
  "M-y"                                 'counsel-yank-pop
+ "M-p"                                 'counsel-projectile-switch-project
  "C-h f"                               'helpful-callable
  "C-h v"                               'helpful-variable
  "C-h k"                               'helpful-key)
 
 (general-define-key
  :keymaps 'ivy-minibuffer-map
+ [menu]    'zenith/toggle-projectile-and-normal
  [escape] 'keyboard-escape-quit)
 
 (general-define-key

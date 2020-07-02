@@ -12,6 +12,7 @@
 
 (setq ivy-height 20
       ivy-wrap t
+      ivy-extra-directories nil
       ivy-fixed-height-minibuffer t
       projectile-completion-system 'ivy
       ;; Don't use ^ as initial input
