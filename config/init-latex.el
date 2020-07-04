@@ -241,7 +241,17 @@
   ;; Set-up latexmk
   (require 'auctex-latexmk)
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-  (auctex-latexmk-setup))
+  (auctex-latexmk-setup)
+
+  (defun zenith/latexmk-compile ()
+    (interactive)
+    (TeX-command "LatexMk" 'TeX-master-file))
+
+  (defun zenith/latex-watch ()
+    (interactive)
+    (let ((display-buffer-alist '(("*Async Shell Command*" . (display-buffer-no-window)))))
+      (async-shell-command (format "latexmk -pvc %s"
+                                   (expand-file-name (TeX-master-file)))))))
 
 ;; tell emacs how to parse tex files
 (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
@@ -367,23 +377,21 @@
 (defun zenith/latex-magic-bracket ()
   (interactive)
   (let ((char (char-before)))
-    (if (or (zenith/is-space char)
-            (and (eq char ?\\) (not (texmathp))))
-        (funcall-interactively 'self-insert-command 1 ?\[)
-      (funcall-interactively 'self-insert-command 1 ?\{))))
+    (if (or (zenith/is-char char)
+            (and (eq char ?\\) (texmathp)))
+        (funcall-interactively 'self-insert-command 1 ?\{)
+      (funcall-interactively 'self-insert-command 1 ?\[))))
 
-(defun zenith/magic-underscore ()
+(defun zenith/latex-magic-underscore ()
   (interactive)
   (if (and (texmathp)
-           (not (zenith/is-space (char-before))))
+           (zenith/is-space (char-before)))
       (progn
         (funcall-interactively 'self-insert-command 1 ?_)
         (when (and TeX-electric-sub-and-superscript (texmathp))
           (insert (concat TeX-grop TeX-grcl))
           (backward-char)))
     (funcall-interactively 'self-insert-command 1 ?-)))
-
-(setq LaTeX-math-abbrev-prefix "5")
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 

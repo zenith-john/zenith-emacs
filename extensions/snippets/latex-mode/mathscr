@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: mathscr
 # key: s
+# condition: (texmathp)
 # --
 \mathscr{$1}

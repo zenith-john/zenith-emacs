@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: exercise
+# key: ex
+# condition: t
+# --
+
+\begin{exercise}
+  $0
+\end{exercise}

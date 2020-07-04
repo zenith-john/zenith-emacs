@@ -55,7 +55,10 @@
 
 ;; rg.el
 ;; dependencies: s transient wgrep
-(zenith/autoload '(rg rg-project rg-dwim-project-dir) "rg")
+(require 'rg)
+(rg-define-search rg-my-project
+  :dir project
+  :files "everything")
 
 ;; ace-window
 ;; dependencies: avy
@@ -255,6 +258,7 @@ otherwise."
   " SpecialChar"
   `(
     (,(kbd "6") . zenith/latex-super-script)
+    (,(kbd "%") . ,(ins-val ?5))
     (,(kbd "^") . ,(ins-val ?6))
     (,(kbd "7") . ,(ins-val ?&)) (,(kbd "&") . ,(ins-val ?7))
     (,(kbd "8") . ,(ins-val ?*)) (,(kbd "*") . ,(ins-val ?8))
@@ -267,6 +271,15 @@ otherwise."
 (defun zenith/latex-super-script ()
   (interactive)
   (funcall-interactively 'self-insert-command 1 ?^)
+  (when (and (eq major-mode 'latex-mode)
+             TeX-electric-sub-and-superscript
+             (texmathp))
+    (insert (concat TeX-grop TeX-grcl))
+    (backward-char)))
+
+(defun zenith/latex-sub-script ()
+  (interactive)
+  (funcall-interactively 'self-insert-command 1 ?_)
   (when (and (eq major-mode 'latex-mode)
              TeX-electric-sub-and-superscript
              (texmathp))

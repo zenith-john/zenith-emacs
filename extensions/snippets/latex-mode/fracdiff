@@ -3,5 +3,4 @@
 # key: d2
 # condition: t
 # --
-
-\frac{d $1}{d $2}
+\frac{\dif $1}{\dif $2}

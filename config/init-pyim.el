@@ -21,10 +21,18 @@
  default-input-method "rime"
  rime-show-candidate 'posframe)
 
+(defun rime-predicate-line-start ()
+  "Check whether the point is beginning of the line"
+  (save-excursion
+    (let ((pt (point)))
+      (beginning-of-line)
+      (equal (point) pt))))
+
 (setq rime-disable-predicates
       '(rime-predicate-evil-mode-p
         rime-predicate-after-ascii-char-p
         rime-predicate-space-after-ascii-p
+        rime-predicate-line-start
         rime-predicate-prog-in-code-p
         rime-predicate-ace-window-p
         rime-predicate-hydra-p
@@ -39,11 +47,11 @@
   (activate-input-method "rime")
   (rime-force-enable))
 
-                                        ;；Adapted from pyim
+;;；Adapted from pyim
 (defun zenith/rime-convert-string-at-point ()
   "将光标前的用户输入的字符串转换为中文."
   (interactive)
-  (zenith/rime-force-enable)
+  (activate-input-method "rime")
   (let* ((case-fold-search nil)
          (string (if mark-active
                      (buffer-substring-no-properties
@@ -66,6 +74,7 @@
          (region-beginning) (region-end)))
       (when (and (not mark-active) (> length 0))
         (delete-char (- 0 length)))
+      (rime-force-enable)
       (when (> length 0)
         (setq unread-command-events
               (append (listify-key-sequence code)

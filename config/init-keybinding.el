@@ -37,7 +37,7 @@
  "f"     'format-all-buffer
  "g"     'magit-status
  "r"     'counsel-rg
- "R"     'rg-project)
+ "R"     'rg-my-project)
 
 ;; Use remap instead of direct key to reduce conflicts with other package name
 ;; in particular evil-collection.
@@ -143,7 +143,7 @@
  "C-c *"  'LaTeX-star-environment-dwim
  "C-c ]"  'zenith/cycle-equation
  "["      'zenith/latex-magic-bracket
- "-"      'zenith/magic-underscore
+ "-"      'zenith/latex-magic-underscore
  )
 
 (general-define-key
@@ -189,15 +189,17 @@
 (general-define-key
  :keymaps 'LaTeX-mode-map
  :prefix "<menu>"
- "a" 'TeX-command-run-all
+ "a" 'zenith/latexmk-compile
  "c" 'TeX-command-master
  "e" 'LaTeX-environment
  "s" 'LaTeX-section
+ "w" 'zenith/latex-watch
  "9" 'reftex-label
  "0" 'reftex-reference
  "v" 'TeX-view
  "[" 'reftex-citation
- "{" 'zenith/cycle-equation)
+ "]" 'zenith/cycle-equation
+ "m" 'TeX-insert-macro)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

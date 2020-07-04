@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: mathfrak
-# key: f
+# name: mathcal
+# key: c
 # condition: (texmathp)
 # --
-\mathfrak{$1}$0
+\mathcal{$1}$0
