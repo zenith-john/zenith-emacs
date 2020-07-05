@@ -385,7 +385,8 @@
 (defun zenith/latex-magic-underscore ()
   (interactive)
   (if (and (texmathp)
-           (zenith/is-space (char-before)))
+           (not (zenith/is-space (char-before)))
+           (not (zenith/is-bra (char-before))))
       (progn
         (funcall-interactively 'self-insert-command 1 ?_)
         (when (and TeX-electric-sub-and-superscript (texmathp))
