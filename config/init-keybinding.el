@@ -54,6 +54,7 @@
  "gr"                              'counsel-recentf
  "gR"                              'rg-dwim-project-dir
  "s"                               (general-simulate-key ('evil-ex "%s/"))
+ "S"                               'swiper
  "M-."                             'xref-find-definitions
  "C-v"                             'nil
  "M-v"                             'evil-visual-block

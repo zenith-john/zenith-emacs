@@ -204,6 +204,7 @@ otherwise."
 
 (shackle-mode)
 
+;; Special Char Mode
 (defmacro ins-val (val)
   `(lambda () (interactive)
      (funcall-interactively 'self-insert-command 1 ,val)))

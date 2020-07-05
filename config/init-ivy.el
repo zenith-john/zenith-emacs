@@ -124,10 +124,20 @@
 (defun zenith/ivy-cregexp-ignore-order (str)
   (let ((str-list (split-string str)))
     (if str-list
-      (mapcar 'zenith/ivy-cregexp-helper (split-string str))
+        (mapcar 'zenith/ivy-cregexp-helper str-list)
       "")))
 
-(setq ivy-re-builders-alist '((counsel-company . ivy--regex-fuzzy)
+(defun zenith/ivy-fuzzy-ignore-order-helper (str)
+  (cons (ivy--regex-fuzzy str) t))
+
+(defun zenith/ivy-fuzzy-ignore-order (str)
+  (let ((str-list (split-string str)))
+    (if str-list
+        (mapcar 'zenith/ivy-fuzzy-ignore-order-helper str-list)
+      "")))
+
+
+(setq ivy-re-builders-alist '((counsel-company . zenith/ivy-fuzzy-ignore-order)
                               (t . zenith/ivy-cregexp-ignore-order)))
 
 ;; amx
