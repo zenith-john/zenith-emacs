@@ -188,13 +188,13 @@
 
 (defun zenith/get-candidates-fuzzy (backend)
   (save-excursion
-    (let* ((prefix (funcall backend 'prefix))
-           (zenith/fuzzy-matching-prefix (zenith/extract-prefix prefix))
-           (new-prefix (if (equal zenith/fuzzy-matching-prefix "")
-                           ""
-                         (substring zenith/fuzzy-matching-prefix 0 1)))
-           (company-backend backend)
-           (candidates))
+    (when-let* ((prefix (funcall backend 'prefix))
+                (zenith/fuzzy-matching-prefix (zenith/extract-prefix prefix))
+                (new-prefix (if (equal zenith/fuzzy-matching-prefix "")
+                                ""
+                              (substring zenith/fuzzy-matching-prefix 0 1)))
+                (company-backend backend)
+                (candidates t))
       (setq candidates (company--preprocess-candidates
                         (company--fetch-candidates new-prefix)))
       (cl-remove-if-not 'zenith/fuzzy-matching-candidate candidates))))

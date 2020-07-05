@@ -106,14 +106,14 @@
   ;; company-math
   ;; dependencies: company math-symbol-lists
   (require 'company-math)
+  (require 'company-auctex)
+  (add-to-list '+latex-company-backends 'company-auctex-environments)
+  (add-to-list '+latex-company-backends 'company-auctex-macros)
   (add-to-list '+latex-company-backends 'company-math-symbols-latex))
 
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
-  (make-local-variable 'company-backends)
-  (setq zenith/local-company-backends nil)
-  (dolist (backend +latex-company-backends)
-    (add-to-list 'company-backends backend)))
+  (setq-local zenith/local-company-backends +latex-company-backends))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-company-setup)
 
@@ -250,8 +250,8 @@
   (defun zenith/latex-watch ()
     (interactive)
     (let ((display-buffer-alist '(("*Async Shell Command*" . (display-buffer-no-window)))))
-      (async-shell-command (format "latexmk -pvc %s"
-                                   (expand-file-name (TeX-master-file)))))))
+      (async-shell-command (format "latexmk -pvc -view=none -cd -r ~/.latexmkrc %s"
+                                   (expand-file-name (TeX-master-file t)))))))
 
 ;; tell emacs how to parse tex files
 (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
