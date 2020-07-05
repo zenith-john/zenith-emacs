@@ -14,7 +14,7 @@
 
 (yas-global-mode +1)
 
-;; Make yasnippet expandsion easy for me.
+;; Make yasnippet expansion easy for me.
 (defvar zenith/snippet-prefix ?,
   "The first character of expanding yasnippet")
 

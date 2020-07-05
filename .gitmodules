@@ -302,9 +302,6 @@
 [submodule "extensions/rust-mode"]
 	path = extensions/rust-mode
 	url = https://github.com/rust-lang/rust-mode
-[submodule "extensions/ctrlf"]
-	path = extensions/ctrlf
-	url = https://github.com/raxod502/ctrlf
 [submodule "extensions/emacs-mini-frame"]
 	path = extensions/emacs-mini-frame
 	url = https://github.com/muffinmad/emacs-mini-frame

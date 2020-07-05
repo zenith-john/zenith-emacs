@@ -309,7 +309,7 @@
             ("subparagraph" 6)))))
 
 (defvar zenith/equation-env-list
-  '(("\\begin{equation}\n" . "\n\\end{equation}")
+  '(("\\begin{equation}" . "\\end{equation}")
     ("\\[" . "\\]")
     ("\\(" . "\\)"))
   "The pairs of equation environment")

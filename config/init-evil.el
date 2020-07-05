@@ -18,6 +18,7 @@
       evil-toggle-key ""       ; C-z not entering emacs state
       evil-respect-visual-line-mode t ; integration with visual-line-mode
       evil-move-beyond-eol t          ; emacs-like cursor movement
+      evil-ex-substitute-global t     ; subtitute global by default
       )
 
 (require 'evil)
