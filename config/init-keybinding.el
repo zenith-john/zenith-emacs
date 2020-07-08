@@ -190,20 +190,18 @@
 
 (general-define-key
  :keymaps 'LaTeX-mode-map
- [menu]
- (general-key-dispatch 'ignore
-   :timeout 0.25
-   "a" 'zenith/latexmk-compile
-   "c" 'TeX-command-master
-   "e" 'LaTeX-environment
-   "s" 'LaTeX-section
-   "w" 'zenith/latex-watch
-   "9" 'reftex-label
-   "0" 'reftex-reference
-   "v" 'TeX-view
-   "[" 'reftex-citation
-   "]" 'zenith/cycle-equation
-   "m" 'TeX-insert-macro))
+ :prefix [menu]
+ "a" 'zenith/latexmk-compile
+ "c" 'TeX-command-master
+ "e" 'LaTeX-environment
+ "s" 'LaTeX-section
+ "w" 'zenith/latex-watch
+ "9" 'reftex-label
+ "0" 'reftex-reference
+ "v" 'TeX-view
+ "[" 'reftex-citation
+ "]" 'zenith/cycle-equation
+ "m" 'TeX-insert-macro)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

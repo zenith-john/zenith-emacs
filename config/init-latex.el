@@ -377,10 +377,14 @@
 (defun zenith/latex-magic-bracket ()
   (interactive)
   (let ((char (char-before)))
-    (if (or (zenith/is-char char)
-            (and (eq char ?\\) (texmathp)))
-        (funcall-interactively 'self-insert-command 1 ?\{)
-      (funcall-interactively 'self-insert-command 1 ?\[))))
+    (if (eq char ?\{)
+        (progn
+          (backward-delete-char 1)
+          (funcall-interactively 'self-insert-command 1 ?\[))
+      (if (or (zenith/is-char char)
+              (and (eq char ?\\) (texmathp)))
+          (funcall-interactively 'self-insert-command 1 ?\{)
+        (funcall-interactively 'self-insert-command 1 ?\[)))))
 
 (defun zenith/latex-magic-underscore ()
   (interactive)
