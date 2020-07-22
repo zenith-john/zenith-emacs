@@ -10,13 +10,17 @@
 ;; helm-bibtex
 ;; dependencies: swiper parsebib s dash f biblio
 (autoload 'ivy-bibtex "ivy-bibtex" "" t)
-(add-to-list 'ivy-re-builders-alist '(ivy-bibtex . ivy--regex-ignore-order))
+
+(defun zenith/ivy-bibtex-insert-citation (candidate)
+  (insert (format "\\cite{%s}" (cdr (assoc "=key=" (cdr candidate))))))
+
 (setq bibtex-completion-bibliography zenith/bibtex-library
       bibtex-completion-additional-search-fields '("abstract")
       bibtex-autokey-year-length 4
       bibtex-autokey-name-year-separator ""
       bibtex-autokey-year-title-separator ""
-      bibtex-autokey-titlewords 0)
+      bibtex-autokey-titlewords 0
+      ivy-bibtex-default-action 'zenith/ivy-bibtex-insert-citation)
 
 ;; ebib
 ;; depedencies: parsebib
@@ -25,7 +29,11 @@
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; Get ReTeX working with biblatex
-;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992
+;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#3199
+
+(defun reftex-format-cref (label form style)
+  (format "~\\cref{%s}" label))
+
 (setq LaTeX-reftex-cite-format-auto-activate nil
       reftex-cite-format 'default
       reftex-toc-split-windows-horizontally t
@@ -43,7 +51,8 @@
         ("exercise"    ?x "ex:"   "~\\ref{%s}" nil (regexp "[Ex]ercise" "[Ee]x.") -3)
         ("equation"  ?e "eq:" "~\\eqref{%s}" nil (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
         ("eqnarray"  ?e "eq:" nil eqnarray-like))
-      reftex-ref-macro-prompt nil)
+      reftex-ref-macro-prompt nil
+      reftex-format-ref-function 'reftex-format-cref)
 
 (with-eval-after-load 'reftex-sel
   (defun reftex-select-read-label ()
@@ -58,9 +67,11 @@
   (defun zenith/reftex-get-prefix (str)
     (if str
         (save-match-data
-          (string-match ".+:" str)
-          (match-string-no-properties 0 str))
-      "")))
+          (if
+              (string-match ".+:" str)
+              (match-string-no-properties 0 str)
+            str)
+      ""))))
 
 (defun zenith/reftex-label-alist-toggle (&optional multi)
   (interactive)
@@ -107,9 +118,12 @@
   ;; dependencies: company math-symbol-lists
   (require 'company-math)
   (require 'company-auctex)
+  (require 'company-reftex)
   (add-to-list '+latex-company-backends 'company-auctex-environments)
   (add-to-list '+latex-company-backends 'company-auctex-macros)
-  (add-to-list '+latex-company-backends 'company-math-symbols-latex))
+  (add-to-list '+latex-company-backends 'company-math-symbols-latex)
+  (add-to-list '+latex-company-backends 'company-reftex-labels)
+  (add-to-list '+latex-company-backends 'company-reftex-citations))
 
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
@@ -386,6 +400,13 @@
           (funcall-interactively 'self-insert-command 1 ?\{)
         (funcall-interactively 'self-insert-command 1 ?\[)))))
 
+(defun zenith/insert-underscore ()
+  (interactive)
+  (funcall-interactively 'self-insert-command 1 ?_)
+  (when (and TeX-electric-sub-and-superscript (texmathp))
+    (insert (concat TeX-grop TeX-grcl))
+    (backward-char)))
+
 (defun zenith/latex-magic-underscore ()
   (interactive)
   (if (and (texmathp)
@@ -397,6 +418,29 @@
           (insert (concat TeX-grop TeX-grcl))
           (backward-char)))
     (funcall-interactively 'self-insert-command 1 ?-)))
+
+(defvar-local counsel-reftex-labels-candidates nil
+  "Store the candidates for counsel-reftex-labels")
+
+(defun counsel-reftex-labels--candidates ()
+  "Find all label candidates"
+  (reftex-parse-one)
+  (cl-loop for entry in (symbol-value reftex-docstruct-symbol)
+           if (stringp (car entry))
+           collect
+           (propertize (concat (car entry) "  " (cl-caddr entry)) 'label (car entry))))
+
+(defun counsel-reftex-labels-cref (str)
+  (delete-horizontal-space t)
+  (insert (format "~\\cref{%s}" (get-text-property 0 'label str))))
+
+(defun counsel-reftex-labels ()
+  "Choose label"
+  (interactive)
+  (setq counsel-reftex-labels-candidates (counsel-reftex-labels--candidates))
+  (ivy-read "Choose label: " counsel-reftex-labels-candidates
+            :action #'counsel-reftex-labels-cref
+            :caller 'counsel-reftex-labels))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 

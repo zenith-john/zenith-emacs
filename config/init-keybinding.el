@@ -23,6 +23,10 @@
   ("+" balance-windows)
   ("u" winner-undo)
   ("r" winner-redo)
+  ("j" windmove-down)
+  ("k" windmove-up)
+  ("h" windmove-left)
+  ("l" windmove-right)
   ("q" nil :color blue))
 
 ;; unset ',' keybinding for motion state.
@@ -55,6 +59,7 @@
  "gR"                              'rg-dwim-project-dir
  "s"                               (general-simulate-key ('evil-ex "%s/"))
  "S"                               'swiper
+ ";"                               'evil-ex
  "M-."                             'xref-find-definitions
  "C-v"                             'nil
  "M-v"                             'evil-visual-block
@@ -81,7 +86,9 @@
  "<menu> <menu>"               'special-char-mode
  [remap backward-kill-word]    'zenith/delete-word-or-space
  [remap xref-pop-marker-stack] 'evil-jump-backward
- [remap fill-paragraph]        'zenith/fill-and-indent-region)
+ [remap fill-paragraph]        'zenith/fill-and-indent-region
+ [remap beginning-of-buffer]   'evil-goto-first-line
+ [remap end-of-buffer]         'evil-goto-line)
 
 (general-define-key
  :prefix "C-c"
@@ -181,11 +188,13 @@
 ;; Exchange position of { and [ in latex mode to reduce the injury of the finger
 (general-define-key
  :keymaps 'LaTeX-mode-map
- "、"     (lambda ()(interactive)(self-insert-command 1 ?\\))
- "C-c *"  'LaTeX-star-environment-dwim
- "C-c ]"  'zenith/cycle-equation
- "["      'zenith/latex-magic-bracket
- "-"      'zenith/latex-magic-underscore
+ "、"                     (lambda ()(interactive)(self-insert-command 1 ?\\))
+ "C-c *"                  'LaTeX-star-environment-dwim
+ "C-c ]"                  'zenith/cycle-equation
+ "["                      'zenith/latex-magic-bracket
+ "-"                      'zenith/latex-magic-underscore
+ [remap reftex-citation]  'ivy-bibtex
+ [remap reftex-reference] 'counsel-reftex-labels
  )
 
 (general-define-key
@@ -197,7 +206,7 @@
  "s" 'LaTeX-section
  "w" 'zenith/latex-watch
  "9" 'reftex-label
- "0" 'reftex-reference
+ "0" 'counsel-reftex-labels
  "v" 'TeX-view
  "[" 'reftex-citation
  "]" 'zenith/cycle-equation
