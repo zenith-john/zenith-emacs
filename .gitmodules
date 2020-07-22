@@ -341,3 +341,9 @@
 [submodule "extensions/counsel-projectile"]
 	path = extensions/counsel-projectile
 	url = https://github.com/ericdanan/counsel-projectile
+[submodule "extensions/evil-anzu"]
+	path = extensions/evil-anzu
+	url = https://github.com/emacsorphanage/evil-anzu
+[submodule "extensions/anzu"]
+	path = extensions/anzu
+	url = https://github.com/emacsorphanage/anzu

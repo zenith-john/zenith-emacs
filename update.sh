@@ -3,7 +3,7 @@
 # update git submodule
 if [ -d "./extensions/yasnippet" ]; then
     echo "Update Submodules"
-    git submodule update --remote
+#    git submodule update --remote
 else
     echo "Initializing Submodules"
     git submodule update --init --recursive --depth 1
@@ -38,4 +38,5 @@ make
 make -C $root/extensions/magit
 
 # compile .elc
+cd $root
 emacs --batch -l $root/init.el --eval "(byte-recompile-directory (expand-file-name \"./extensions\") 0)"

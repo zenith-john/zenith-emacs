@@ -8,7 +8,7 @@
 ;; evil
 ;; dependencies: undo-tree goto-chg
 (setq evil-want-integration t  ; This is optional since it's already set to t by default.
-      evil-want-keybinding nil ; loading keybindings
+      evil-want-keybinding nil ; not loading keybindings
       evil-disable-insert-state-bindings t ; Use emacs's binding in insert state
       evil-want-C-d-scroll nil ; Use emacs's C-d
       evil-want-C-u-scroll nil ; Use emacs's C-u
@@ -18,12 +18,17 @@
       evil-toggle-key ""       ; C-z not entering emacs state
       evil-respect-visual-line-mode t ; integration with visual-line-mode
       evil-move-beyond-eol t          ; emacs-like cursor movement
-      evil-ex-substitute-global t     ; subtitute global by default
+      evil-ex-substitute-global t     ; substitute global by default
       )
 
 (require 'evil)
 
 (evil-mode 1)
+
+;; evil-anzu
+;; dependencies: evil anzu
+(require 'evil-anzu)
+(global-anzu-mode 1)
 
 ;; evil-collection
 ;; dependencies: evil
