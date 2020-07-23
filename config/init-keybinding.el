@@ -192,7 +192,9 @@
  "C-c *"                  'LaTeX-star-environment-dwim
  "C-c ]"                  'zenith/cycle-equation
  "["                      'zenith/latex-magic-bracket
+ "^"                      (lambda ()(interactive)(self-insert-command 1 ?6))
  "-"                      'zenith/latex-magic-underscore
+ "\""                     'nil
  [remap reftex-citation]  'ivy-bibtex
  [remap reftex-reference] 'counsel-reftex-labels
  )

@@ -324,8 +324,8 @@
 
 (defvar zenith/equation-env-list
   '(("\\begin{equation}" . "\\end{equation}")
-    ("\\[" . "\\]")
-    ("\\(" . "\\)"))
+    ("\\(" . "\\)")
+    ("\\[" . "\\]"))
   "The pairs of equation environment")
 
 (defun zenith/regex-or (l)

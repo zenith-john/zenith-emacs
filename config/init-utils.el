@@ -14,6 +14,20 @@
 
 (setq-default sp-autoskip-closing-pair t) ;; manually add closing pair work as I like
 
+(with-eval-after-load 'smartparens-latex
+  (sp-with-modes '(
+                   tex-mode
+                   plain-tex-mode
+                   latex-mode
+                   LaTeX-mode
+                   )
+    (sp-local-pair "``" "''" :actions :rem)
+    ;; Temporarily disable that pair for more details see
+    ;; https://github.com/Fuco1/smartparens/issues/772
+
+    (sp-local-pair "\"" "\""
+                   :unless '(sp-latex-point-after-backslash))))
+
 (zenith/add-hook '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook) 'smartparens-mode)
 
 ;; format-all
@@ -204,25 +218,50 @@ otherwise."
 
 (shackle-mode)
 
+(defun zenith/special-char-environment-p ()
+  ;; In LaTeX math environment, or in code environment.
+  (if (eq major-mode 'latex-mode)
+      t
+    (if (derived-mode-p 'prog-mode)
+        (if (or (nth 4 (syntax-ppss))
+                  (nth 8 (syntax-ppss)))
+            nil
+          t)
+      nil)))
+
 ;; Special Char Mode
-(defmacro ins-val (val)
+(defmacro ins-val (origin-val special-var)
   `(lambda () (interactive)
-     (funcall-interactively 'self-insert-command 1 ,val)))
+     (funcall-interactively 'self-insert-command 1
+                             (if (zenith/special-char-environment-p)
+                                 ,(string-to-char special-var)
+                               ,(string-to-char origin-val)))))
+
+(defvar special-char-mode-map
+  (make-sparse-keymap)
+  "Keymap for special-char-mode")
 
 (define-minor-mode special-char-mode
   "Toggle Special Character mode"
   nil
   " SpecialChar"
-  `(
-    (,(kbd "6") . zenith/latex-super-script)
-    (,(kbd "^") . ,(ins-val ?6))
-    (,(kbd "7") . ,(ins-val ?&)) (,(kbd "&") . ,(ins-val ?7))
-    (,(kbd "8") . ,(ins-val ?*)) (,(kbd "*") . ,(ins-val ?8))
-    (,(kbd "9") . ,(ins-val ?\()) (,(kbd "(") . ,(ins-val ?9))
-    (,[kp-multiply] . ,(ins-val ?*))
-    (,(kbd "]") . ,(ins-val ?\{))
-    (,(kbd "{") . ,(ins-val ?\])))
+  special-char-mode-map
   :global 'true)
+
+(general-define-key
+ :keymaps 'special-char-mode-map
+ "6" 'zenith/smart-super-script
+ "^" (ins-val "^" "6")
+ "7" (ins-val "7" "&")
+ "&" (ins-val "&" "7")
+ "8" (ins-val "8" "*")
+ "*" (ins-val "*" "8")
+ "9" (ins-val "9" "(")
+ "(" (ins-val "(" "9")
+ "{" (lambda ()(interactive)(self-insert-command 1 ?\]))
+ "]" (lambda ()(interactive)(self-insert-command 1 ?\{)))
+
+(special-char-mode 1)
 
 (defun zenith/latex-super-script ()
   (interactive)
@@ -232,6 +271,12 @@ otherwise."
              (texmathp))
     (insert (concat TeX-grop TeX-grcl))
     (backward-char)))
+
+(defun zenith/smart-super-script ()
+  (interactive)
+  (if (zenith/special-char-environment-p)
+      (zenith/latex-super-script)
+    (self-insert-command 1 ?6)))
 
 (defun zenith/latex-sub-script ()
   (interactive)
