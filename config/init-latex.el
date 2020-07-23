@@ -388,6 +388,31 @@
    '("tikzcd" LaTeX-env-label))
   (zenith/reftex-label-alist-toggle t))
 
+;; counsel-reftex-labels
+(defvar-local counsel-reftex-labels-candidates nil
+  "Store the candidates for counsel-reftex-labels")
+
+(defun counsel-reftex-labels--candidates ()
+  "Find all label candidates"
+  (reftex-parse-one)
+  (cl-loop for entry in (symbol-value reftex-docstruct-symbol)
+           if (stringp (car entry))
+           collect
+           (propertize (concat (car entry) "  " (cl-caddr entry)) 'label (car entry))))
+
+(defun counsel-reftex-labels-cref (str)
+  (delete-horizontal-space t)
+  (insert (format "~\\cref{%s}" (get-text-property 0 'label str))))
+
+(defun counsel-reftex-labels ()
+  "Choose label"
+  (interactive)
+  (setq counsel-reftex-labels-candidates (counsel-reftex-labels--candidates))
+  (ivy-read "Choose label: " counsel-reftex-labels-candidates
+            :action #'counsel-reftex-labels-cref
+            :caller 'counsel-reftex-labels))
+
+;; Some useful utilities to reduce the usage of shift.
 (defun zenith/latex-magic-bracket ()
   (interactive)
   (let ((char (char-before)))
@@ -419,28 +444,17 @@
           (backward-char)))
     (funcall-interactively 'self-insert-command 1 ?-)))
 
-(defvar-local counsel-reftex-labels-candidates nil
-  "Store the candidates for counsel-reftex-labels")
-
-(defun counsel-reftex-labels--candidates ()
-  "Find all label candidates"
-  (reftex-parse-one)
-  (cl-loop for entry in (symbol-value reftex-docstruct-symbol)
-           if (stringp (car entry))
-           collect
-           (propertize (concat (car entry) "  " (cl-caddr entry)) 'label (car entry))))
-
-(defun counsel-reftex-labels-cref (str)
-  (delete-horizontal-space t)
-  (insert (format "~\\cref{%s}" (get-text-property 0 'label str))))
-
-(defun counsel-reftex-labels ()
-  "Choose label"
+(defun zenith/latex-insert-quote ()
+  "Baby version insert quote for latex-mode"
   (interactive)
-  (setq counsel-reftex-labels-candidates (counsel-reftex-labels--candidates))
-  (ivy-read "Choose label: " counsel-reftex-labels-candidates
-            :action #'counsel-reftex-labels-cref
-            :caller 'counsel-reftex-labels))
+  (if (equal (char-before) ?\\)
+      (insert "\"")
+    (if (texmathp)
+        (progn
+          (insert "\"\"")
+          (backward-char))
+      (insert "``''")
+      (backward-char 2))))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 

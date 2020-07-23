@@ -194,7 +194,7 @@
  "["                      'zenith/latex-magic-bracket
  "^"                      (lambda ()(interactive)(self-insert-command 1 ?6))
  "-"                      'zenith/latex-magic-underscore
- "\""                     'nil
+ "\""                     'zenith/latex-insert-quote
  [remap reftex-citation]  'ivy-bibtex
  [remap reftex-reference] 'counsel-reftex-labels
  )
