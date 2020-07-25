@@ -46,7 +46,7 @@
  "A"     'zenith/my-org-agenda
  "f"     'format-all-buffer
  "g"     'magit-status
- "r"     'counsel-rg
+ "r"     'counsel-recentf
  "R"     'rg-my-project
  "s"     'save-buffer)
 
@@ -55,19 +55,18 @@
 (general-define-key
  :states                           '(normal motion visual)
  "gs"                              'avy-goto-char
- "gr"                              'counsel-recentf
- "gR"                              'rg-dwim-project-dir
  "s"                               (general-simulate-key ('evil-ex "%s/"))
  "S"                               'swiper
  ";"                               'evil-ex
+ ":"                               'evil-repeat-find-char
  "M-."                             'xref-find-definitions
  "C-v"                             'nil
  "M-v"                             'evil-visual-block
  "C-e"                             'nil
+ "C-t"                             'nil
  "C-w"                             'zenith/hydra-window/body
  [remap evil-replace]              'zenith/jump
- [remap evil-paste-after]          'yank
- [remap evil-paste-before]         'counsel-yank-pop
+ [remap evil-paste-pop]            'counsel-yank-pop
  [remap isearch-forward]           'evil-search-forward
  [remap isearch-backward]          'evil-search-backward)
 
