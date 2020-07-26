@@ -90,6 +90,13 @@
  [remap end-of-buffer]         'evil-goto-line)
 
 (general-define-key
+ :states '(insert emacs)
+ "M-h"   'evil-backward-char
+ "M-j"   'evil-next-line
+ "M-k"   'evil-previous-line
+ "M-l"   'evil-forward-char)
+
+(general-define-key
  :prefix "C-c"
  "1" (general-simulate-key "C-c !")
  "2" (general-simulate-key "C-c @")
@@ -191,11 +198,16 @@
  "C-c *"                  'LaTeX-star-environment-dwim
  "C-c ]"                  'zenith/cycle-equation
  "["                      'zenith/latex-magic-bracket
- "^"                      (lambda ()(interactive)(self-insert-command 1 ?6))
  "-"                      'zenith/latex-magic-underscore
- "\""                     'zenith/latex-insert-quote
  [remap reftex-citation]  'ivy-bibtex
  [remap reftex-reference] 'counsel-reftex-labels
+ "M-9"                    (lambda ()(interactive)
+                            (self-insert-command 1 ?\\)
+                            (self-insert-command 1 ?\())
+ "M-["                    (lambda ()(interactive)
+                            (self-insert-command 1 ?\\)
+                            (self-insert-command 1 ?\[))
+ [XF86Launch2]            (lambda ()(interactive)(self-insert-command 1 ?\\))
  )
 
 (general-define-key

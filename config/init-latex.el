@@ -435,7 +435,6 @@
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-mode-hook)
 
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 
