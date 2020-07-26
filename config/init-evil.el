@@ -43,7 +43,7 @@
   "open file with external program"
   (interactive "<f>")
   (zenith/open-by-external-program (or path (buffer-file-name (current-buffer)))))
-(evil-ex-define-cmd "eo[pen]" #'evil-external-open)
+(evil-ex-define-cmd "eo[pen]"    #'evil-external-open)
 
 (evil-ex-define-cmd "git"        #'magit-status)
 (evil-ex-define-cmd "gs[tage]"   #'magit-stage)
@@ -52,6 +52,26 @@
 (evil-ex-define-cmd "gp[rev]"    #'git-gutter:previous-hunk)
 (evil-ex-define-cmd "gn[ext]"    #'git-gutter:next-hunk)
 (evil-ex-define-cmd "gr[evert]"  #'git-gutter:revert-hunk)
+
+(evil-ex-define-cmd "bm[ark]"    #'bookmark-set)
+(evil-ex-define-cmd "bj[ump]"    #'bookmark-jump)
+(evil-ex-define-cmd "bl[ist]"    #'bookmark-bmenu-list)
+
+(evil-ex-define-cmd "bb"         #'ibuffer)
+
+(evil-define-command evil-dired (&optional path)
+  "open directory in dired"
+  (interactive "<f>")
+  (if path
+      (dired path)
+    (dired ".")))
+(evil-ex-define-cmd "dir"        #'evil-dired)
+
+(evil-define-command evil-fd-dired (&optional search)
+  "Search file matches search"
+  (interactive "<a>")
+  (fd-dired "." search))
+(evil-ex-define-cmd "fd"          #'evil-fd-dired)
 
 ;; evil-anzu
 ;; dependencies: evil anzu
@@ -67,6 +87,12 @@
 ;; dependencies: evil
 (require 'evil-collection)
 (setq evil-collection-company-use-tng nil)
+
+(defun zenith/prefix-translations (_mode mode-keymaps &rest _rest)
+  (evil-collection-swap-key 'normal mode-keymaps ";" ":"))
+
+(add-hook 'evil-collection-setup-hook 'zenith/prefix-translations)
+
 (evil-collection-init)
 
 ;; evil-surround

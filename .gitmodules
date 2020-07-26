@@ -350,3 +350,9 @@
 [submodule "extensions/evil-pinyin"]
 	path = extensions/evil-pinyin
 	url = https://github.com/laishulu/evil-pinyin
+[submodule "extensions/dired-hacks"]
+	path = extensions/dired-hacks
+	url = https://github.com/Fuco1/dired-hacks
+[submodule "extensions/evil-magit"]
+	path = extensions/evil-magit
+	url = https://github.com/emacs-evil/evil-magit

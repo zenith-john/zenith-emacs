@@ -308,4 +308,9 @@ otherwise."
   (let ((special-char-mode-map nil))
     (insert (read-from-minibuffer "Insert Number: "))))
 
+;; Dired enhancement
+(require 'dired-filter)
+(require 'dired-open)
+(require 'dired-subtree)
+
 (provide 'init-utils)
