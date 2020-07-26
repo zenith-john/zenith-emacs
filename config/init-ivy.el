@@ -110,12 +110,6 @@
            (target (read-file-name (format "%s %s to:" prompt source))))
       (funcall cmd source target 1))))
 
-(defun zenith/open-by-external-program (path)
-  "Open file in external program"
-  (let ((display-buffer-alist '(("*Async Shell Command*" . (display-buffer-no-window)))))
-    (async-shell-command (format "nohup xdg-open \"%s\" >/dev/null 2>&1"
-                                 (file-relative-name path default-directory)))))
-
 ;; Configure `counsel-find-file'
 (ivy-add-actions
  'counsel-find-file

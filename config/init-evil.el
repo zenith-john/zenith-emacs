@@ -25,6 +25,34 @@
 
 (evil-mode 1)
 
+(evil-define-command evil-swiper (&optional search)
+  "Invoke `swiper' with SEARCH"
+  (interactive "<a>")
+  (swiper search))
+(evil-ex-define-cmd "sw[iper]" #'evil-swiper)
+
+(evil-define-command evil-rg (&optional search)
+  "Invoke `my-rg-project' with SEARCH"
+  (interactive "<a>")
+  (if search
+      (rg-my-project search)
+    (rg-dwim-project-dir)))
+(evil-ex-define-cmd "rg" #'evil-rg)
+
+(evil-define-command evil-external-open (&optional path)
+  "open file with external program"
+  (interactive "<f>")
+  (zenith/open-by-external-program (or path (buffer-file-name (current-buffer)))))
+(evil-ex-define-cmd "eo[pen]" #'evil-external-open)
+
+(evil-ex-define-cmd "git"        #'magit-status)
+(evil-ex-define-cmd "gs[tage]"   #'magit-stage)
+(evil-ex-define-cmd "gu[nstage]" #'magit-unstage)
+(evil-ex-define-cmd "gb[lame]"   #'magit-blame)
+(evil-ex-define-cmd "gp[rev]"    #'git-gutter:previous-hunk)
+(evil-ex-define-cmd "gn[ext]"    #'git-gutter:next-hunk)
+(evil-ex-define-cmd "gr[evert]"  #'git-gutter:revert-hunk)
+
 ;; evil-anzu
 ;; dependencies: evil anzu
 (require 'evil-anzu)
