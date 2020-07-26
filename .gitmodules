@@ -347,3 +347,6 @@
 [submodule "extensions/anzu"]
 	path = extensions/anzu
 	url = https://github.com/emacsorphanage/anzu
+[submodule "extensions/evil-pinyin"]
+	path = extensions/evil-pinyin
+	url = https://github.com/laishulu/evil-pinyin

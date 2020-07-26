@@ -58,6 +58,11 @@
 (require 'evil-anzu)
 (global-anzu-mode 1)
 
+;; evil-pinyin
+(require 'evil-pinyin)
+(evil-select-search-module 'evil-search-module 'evil-search)
+(global-evil-pinyin-mode 1)
+
 ;; evil-collection
 ;; dependencies: evil
 (require 'evil-collection)
