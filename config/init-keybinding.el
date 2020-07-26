@@ -151,7 +151,10 @@
 
 (general-define-key
  :keymaps 'ivy-minibuffer-map
- [menu]    'zenith/toggle-projectile-and-normal
+ "M-a"    'ivy-read-action
+ "M-m"    'ivy-mark
+ "M-u"    'ivy-unmark
+ [menu]   'zenith/toggle-projectile-and-normal
  [escape] 'keyboard-escape-quit)
 
 (general-define-key
@@ -206,9 +209,7 @@
                             (self-insert-command 1 ?\())
  "M-["                    (lambda ()(interactive)
                             (self-insert-command 1 ?\\)
-                            (self-insert-command 1 ?\[))
- [XF86Launch2]            (lambda ()(interactive)(self-insert-command 1 ?\\))
- )
+                            (self-insert-command 1 ?\[)))
 
 (general-define-key
  :keymaps 'LaTeX-mode-map

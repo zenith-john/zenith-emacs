@@ -95,31 +95,12 @@
       counsel-ag-base-command "ag -S --nocolor --nogroup %s"
       counsel-pt-base-command "pt -S --nocolor --nogroup -e %s")
 
-;; Record in jumplist when opening files via counsel-{ag,rg,pt,git-grep}
-;; (add-hook 'counsel-grep-post-action-hook #'better-jumper-set-jump)
-
-;; Factories
-(defun +ivy-action-reloading (cmd)
-  (lambda (x)
-    (funcall cmd x)
-    (ivy--reset-state ivy-last)))
-
-(defun +ivy-action-given-file (cmd prompt)
-  (lambda (source)
-    (let* ((enable-recursive-minibuffers t)
-           (target (read-file-name (format "%s %s to:" prompt source))))
-      (funcall cmd source target 1))))
-
 ;; Configure `counsel-find-file'
 (ivy-add-actions
  'counsel-find-file
- `(("b" counsel-find-file-cd-bookmark-action "cd bookmark")
+ '(("b" counsel-find-file-cd-bookmark-action "cd bookmark")
    ("s" counsel-find-file-as-root "open as root")
    ("m" counsel-find-file-mkdir-action "mkdir")
-   ("c" ,(+ivy-action-given-file #'copy-file "Copy file") "copy file")
-   ("d" ,(+ivy-action-reloading #'+ivy-confirm-delete-file) "delete")
-   ("r" (lambda (path) (rename-file path (read-string "New name: "))) "rename")
-   ("R" ,(+ivy-action-reloading (+ivy-action-given-file #'rename-file "Move")) "move")
    ("e" zenith/open-by-external-program "external program")
    ("f" find-file-other-window "other window")
    ("F" find-file-other-frame "other frame")

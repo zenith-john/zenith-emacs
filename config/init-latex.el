@@ -93,17 +93,45 @@
            collect
            (propertize (concat (car entry) "  " (cl-caddr entry)) 'label (car entry))))
 
+(defun counsel-reftex-labels--get-labels (str)
+  (or (get-text-property 0 'label str)
+      str))
+
 (defun counsel-reftex-labels-cref (str)
   (delete-horizontal-space t)
-  (insert (format "~\\cref{%s}" (get-text-property 0 'label str))))
+  (insert (format "~\\cref{%s}"
+                  (counsel-reftex-labels--get-labels str))))
+
+(defun counsel-reftex-labels-multi-action (candidates)
+  "Multi action for counsel-reftex-labels"
+  (let ((action (ivy--get-action ivy-last))
+        (str ""))
+    (dolist (cand candidates)
+      (setq str
+            (concat str (counsel-reftex-labels--get-labels cand) ",")))
+    (funcall action (substring-no-properties str 0 (- (length str) 1)))))
 
 (defun counsel-reftex-labels ()
   "Choose label"
   (interactive)
   (setq counsel-reftex-labels-candidates (counsel-reftex-labels--candidates))
   (ivy-read "Choose label: " counsel-reftex-labels-candidates
+            :multi-action #'counsel-reftex-labels-multi-action
             :action #'counsel-reftex-labels-cref
             :caller 'counsel-reftex-labels))
+
+(defun counsel-reftex-labels-pageref (str)
+  (delete-horizontal-space t)
+  (insert (format "~\\cpageref{%s}"
+                  (counsel-reftex-labels--get-labels str))))
+
+(defun counsel-reftex-labels-plain-string (str)
+  (insert (counsel-reftex-labels--get-labels str)))
+
+(ivy-add-actions
+ 'counsel-reftex-labels
+ '(("p" counsel-reftex-labels-pageref "cpageref" counsel-reftex-labels-multi-action)
+   ("s" counsel-reftex-labels-plain-string "plain string" counsel-reftex-labels-multi-action)))
 
 ;; set up mode for bib files
 (with-eval-after-load 'bibtex
