@@ -49,9 +49,13 @@
      (zenith/pyenv-init-global))))
 
 ;; pyimport
-;; depedencies: s shut-up
+;; dependencies: s shut-up
 (zenith/autoload
  '(pyimport-remove-unused pyimport-insert-missing) "pyimport")
+
+;; emacs-juypter
+;; dependencies: emacs-zmq simple-httpd emacs-websocket
+(require 'jupyter)
 
 (provide 'init-python)
 ;;; init-python.el ends here

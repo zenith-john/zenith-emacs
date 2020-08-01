@@ -356,3 +356,15 @@
 [submodule "extensions/evil-magit"]
 	path = extensions/evil-magit
 	url = https://github.com/emacs-evil/evil-magit
+[submodule "extensions/emacs-jupyter"]
+	path = extensions/emacs-jupyter
+	url = https://github.com/nnicandro/emacs-jupyter
+[submodule "extensions/emacs-zmq"]
+	path = extensions/emacs-zmq
+	url = https://github.com/nnicandro/emacs-zmq
+[submodule "extensions/emacs-web-server"]
+	path = extensions/emacs-web-server
+	url = https://github.com/skeeto/emacs-web-server
+[submodule "extensions/emacs-websocket"]
+	path = extensions/emacs-websocket
+	url = https://github.com/ahyatt/emacs-websocket
