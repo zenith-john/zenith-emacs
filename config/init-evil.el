@@ -42,7 +42,10 @@
 (evil-define-command evil-external-open (&optional path)
   "open file with external program"
   (interactive "<f>")
-  (zenith/open-by-external-program (or path (buffer-file-name (current-buffer)))))
+  (zenith/open-by-external-program (or path
+                                       (if (eq major-mode 'dired-mode)
+                                           (dired-get-file-for-visit)
+                                         (buffer-file-name (current-buffer))))))
 (evil-ex-define-cmd "eo[pen]"    #'evil-external-open)
 
 (evil-ex-define-cmd "git"        #'magit-status)

@@ -202,6 +202,7 @@
  "C-c ]"                  'zenith/cycle-equation
  "["                      'zenith/latex-magic-bracket
  "-"                      'zenith/latex-magic-underscore
+ "\""                     'zenith/latex-insert-quote
  [remap reftex-citation]  'ivy-bibtex
  [remap reftex-reference] 'counsel-reftex-labels
  "M-9"                    (lambda ()(interactive)
@@ -209,7 +210,8 @@
                             (self-insert-command 1 ?\())
  "M-["                    (lambda ()(interactive)
                             (self-insert-command 1 ?\\)
-                            (self-insert-command 1 ?\[)))
+                            (self-insert-command 1 ?\[))
+ "M-RET"                  'latex-insert-item)
 
 (general-define-key
  :keymaps 'LaTeX-mode-map
