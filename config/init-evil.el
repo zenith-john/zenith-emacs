@@ -70,10 +70,12 @@
     (dired ".")))
 (evil-ex-define-cmd "dir"        #'evil-dired)
 
-(evil-define-command evil-fd-dired (&optional search)
+(evil-define-command evil-fd-dired (file-name &optional bang)
   "Search file matches search"
-  (interactive "<a>")
-  (fd-dired "." search))
+  (interactive "<a><!>")
+  (if (not bang)
+      (fd-dired "." file-name)
+    (fd-dired (getenv "HOME") file-name)))
 (evil-ex-define-cmd "fd"          #'evil-fd-dired)
 
 ;; evil-anzu

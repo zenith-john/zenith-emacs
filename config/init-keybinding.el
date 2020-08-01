@@ -46,9 +46,11 @@
  "A"     'zenith/my-org-agenda
  "f"     'format-all-buffer
  "g"     'magit-status
+ "o"     'ace-window
  "r"     'counsel-recentf
  "R"     'rg-my-project
- "s"     'save-buffer)
+ "s"     'save-buffer
+ "t"     'zenith/vterm-toggle)
 
 ;; Use remap instead of direct key to reduce conflicts with other package name
 ;; in particular evil-collection.

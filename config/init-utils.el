@@ -313,4 +313,15 @@ otherwise."
 (require 'dired-open)
 (require 'dired-subtree)
 
+;; emacs-libvterm
+(require 'vterm)
+(require 'multi-vterm)
+
+(defun zenith/vterm-toggle ()
+  "Toggle vterm."
+  (interactive)
+  (if (projectile-project-p)
+      (multi-vterm-projectile)
+    (multi-vterm-dedicated-toggle)))
+
 (provide 'init-utils)

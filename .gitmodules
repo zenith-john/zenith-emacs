@@ -368,3 +368,9 @@
 [submodule "extensions/emacs-websocket"]
 	path = extensions/emacs-websocket
 	url = https://github.com/ahyatt/emacs-websocket
+[submodule "extensions/emacs-libvterm"]
+	path = extensions/emacs-libvterm
+	url = https://github.com/akermu/emacs-libvterm
+[submodule "extensions/multi-vterm"]
+	path = extensions/multi-vterm
+	url = https://github.com/suonlight/multi-vterm
