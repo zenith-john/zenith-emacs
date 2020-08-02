@@ -93,10 +93,7 @@
 
 (general-define-key
  :states '(insert emacs)
- "M-h"   'evil-backward-char
- "M-j"   'evil-next-line
- "M-k"   'evil-previous-line
- "M-l"   'evil-forward-char)
+ "M-k"   'evil-normal-state)
 
 (general-define-key
  :prefix "C-c"
@@ -146,16 +143,22 @@
  "M-y"                                 'counsel-yank-pop
  "M-p"                                 'counsel-projectile-switch-project)
 
-;; Use escape to escape everywhere.
+;; Use escape and M-k to escape everywhere.
 (general-define-key
  :keymaps 'isearch-mode-map
+ "M-k"    'isearch-abort
  [escape] 'isearch-abort)
+
+(general-define-key
+ :keymaps 'evil-ex-search-keymap
+ "M-k" 'keyboard-escape-quit)
 
 (general-define-key
  :keymaps 'ivy-minibuffer-map
  "M-a"    'ivy-read-action
  "M-m"    'ivy-mark
  "M-u"    'ivy-unmark
+ "M-k"    'keyboard-escape-quit
  [menu]   'zenith/toggle-projectile-and-normal
  [escape] 'keyboard-escape-quit)
 
@@ -202,6 +205,7 @@
  "、"                     (lambda ()(interactive)(self-insert-command 1 ?\\))
  "C-c *"                  'LaTeX-star-environment-dwim
  "C-c ]"                  'zenith/cycle-equation
+ "k"                      'zenith/latex-magic-k
  "["                      'zenith/latex-magic-bracket
  "-"                      'zenith/latex-magic-underscore
  "\""                     'zenith/latex-insert-quote

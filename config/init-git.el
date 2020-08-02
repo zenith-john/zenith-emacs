@@ -44,8 +44,9 @@
     git-timemachine-toggle) "git-timemachine")
 
 ;; evil-magit
-(setq evil-magit-use-y-for-yank nil)
-(require 'evil-magit)
+(with-eval-after-load 'magit
+  (setq evil-magit-use-y-for-yank nil)
+  (require 'evil-magit))
 
 (provide 'init-git)
 ;;; init-git.el ends here

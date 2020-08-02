@@ -420,6 +420,20 @@
             (backward-char)))
       (funcall-interactively 'self-insert-command 1 ?-)))
 
+  (defun zenith/latex-magic-k ()
+    (interactive)
+    (if (equal (char-before) ?k)
+        (progn
+          (backward-delete-char 1)
+          (insert "\\k"))
+      (if (equal (char-before) ?\\)
+          (progn
+            (backward-delete-char 1)
+            (self-insert-command 1 ?k))
+        (if (zenith/is-space (char-before))
+            (self-insert-command 1 ?\\)
+          (self-insert-command 1 ?k)))))
+
   (defun zenith/latex-insert-quote ()
     "Baby version insert quote for latex-mode"
     (interactive)

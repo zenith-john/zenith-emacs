@@ -55,7 +55,12 @@
 
 ;; emacs-juypter
 ;; dependencies: emacs-zmq simple-httpd emacs-websocket
-(require 'jupyter)
+(zenith/autoload
+ '(jupyter-run-repl
+   jupyter-eval-buffer
+   jupyter-eval-defun
+   jupyter-eval-region)
+ "jupyter")
 
 (provide 'init-python)
 ;;; init-python.el ends here
