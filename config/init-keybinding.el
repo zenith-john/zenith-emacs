@@ -35,7 +35,7 @@
 (general-define-key
  :states '(normal motion visual insert)
  :prefix ","
- :non-normal-prefix "C-,"
+ :non-normal-prefix "<menu> ,"
  :prefix-command 'zenith/leader-map
  ","     'switch-to-buffer
  "."     'find-file
@@ -50,7 +50,21 @@
  "r"     'counsel-recentf
  "R"     'rg-my-project
  "s"     'save-buffer
- "t"     'zenith/vterm-toggle)
+ "t"     'zenith/vterm-toggle
+ "1"     'winum-select-window-1
+ "2"     'winum-select-window-2
+ "3"     'winum-select-window-3
+ "4"     'winum-select-window-4
+ "5"     'winum-select-window-5
+ "6"     'winum-select-window-6
+ "7"     'winum-select-window-7
+ "8"     'winum-select-window-8
+ "9"     'winum-select-window-9
+ "0"     'delete-window
+ "'"     'delete-other-windows
+ "\\"    'evil-window-vsplit
+ "-"     'evil-window-split
+ )
 
 ;; Use remap instead of direct key to reduce conflicts with other package name
 ;; in particular evil-collection.
@@ -93,6 +107,9 @@
 
 (general-define-key
  :states '(insert emacs)
+ "M-h"   'backward-char
+ "M-l"   'forward-char
+ "M-j"   'backward-delete-char
  "M-k"   'evil-normal-state)
 
 (general-define-key
@@ -110,6 +127,7 @@
 
 (general-define-key
  :keymaps 'company-active-map
+ "M-k"   'company-abort
  "M-RET" (lambda ()
            (interactive)
            (company-abort)

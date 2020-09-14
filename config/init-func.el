@@ -32,7 +32,7 @@
 
 (defun zenith/is-space (char)
   "Check a char is whether a space character."
-  (string-match-p "[[:space:]]" (char-to-string char)))
+  (string-match-p "[\f\n\t\r ]" (char-to-string char)))
 
 (defun zenith/is-char (char)
   (string-match-p "[[:alpha:]]" (char-to-string char)))

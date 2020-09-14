@@ -422,17 +422,20 @@
 
   (defun zenith/latex-magic-k ()
     (interactive)
-    (if (equal (char-before) ?k)
-        (progn
-          (backward-delete-char 1)
-          (insert "\\k"))
-      (if (equal (char-before) ?\\)
+    (let ((char (or (char-before) ?\ )))
+      (if (equal char ?k)
           (progn
             (backward-delete-char 1)
-            (self-insert-command 1 ?k))
-        (if (zenith/is-space (char-before))
-            (self-insert-command 1 ?\\)
-          (self-insert-command 1 ?k)))))
+            (insert "\\k"))
+        (if (equal char ?\\)
+            (progn
+              (backward-delete-char 1)
+              (self-insert-command 1 ?k))
+          (if (or
+               (zenith/is-space char)
+               (zenith/is-bra char))
+              (self-insert-command 1 ?\\)
+            (self-insert-command 1 ?k))))))
 
   (defun zenith/latex-insert-quote ()
     "Baby version insert quote for latex-mode"

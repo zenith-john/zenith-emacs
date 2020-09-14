@@ -161,7 +161,8 @@ otherwise."
 
 ;; visual fill column
 (autoload 'visual-fill-column-mode "visual-fill-column" "" t)
-(setq-default visual-fill-column-width fill-column)
+(setq-default visual-fill-column-width fill-column
+              word-wrap-by-category t)
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 (add-hook 'auto-fill-mode-hook 'visual-line-mode)
 
@@ -323,5 +324,10 @@ otherwise."
   (if (projectile-project-p)
       (multi-vterm-projectile)
     (multi-vterm-dedicated-toggle)))
+
+;; emacs-winum
+;; dependencies: cl-lib dash
+(require 'winum)
+(winum-mode)
 
 (provide 'init-utils)
