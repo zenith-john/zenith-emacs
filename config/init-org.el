@@ -195,6 +195,7 @@
                                     ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
                               (agenda ""
                                       ((org-agenda-show-all-dates t)
+                                       (org-agenda-show-future-repeats t)
                                        (org-agenda-span 6)
                                        (org-agenda-start-day "+1d")))
                               (tags "BEFOREDEADLINE"

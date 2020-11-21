@@ -3,49 +3,199 @@
 # key: article
 # condition: t
 # --
-\documentclass[UTF8]{article}
+\documentclass{article}
+
+\usepackage{adjustbox}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{bm}
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{etoc}
 \usepackage{float}
 \usepackage{geometry}
 \usepackage{graphicx}
+\usepackage[unicode,psdextra]{hyperref}
 \usepackage{indentfirst}
+\usepackage{interval}
+\usepackage{makeidx}
 \usepackage{mathrsfs}
 \usepackage{mathtools}
-\usepackage{xspace}
+\usepackage{refcount}
+\usepackage{subfiles}
 \usepackage{tikz-cd}
+\usepackage{titlesec}
+\usepackage[titles]{tocloft}
+\usepackage{xspace}
 \setlength{\parindent}{2em}
-\usepackage[backend=biber,style=alphabetic,citestyle=alphabetic]{biblatex}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
 \addbibresource[location=local]{~/Dropbox/Library.bib}
 \geometry{a4paper,centering,scale=0.8}
 \usepackage{xeCJK}
-\setCJKmainfont{SimSun}
+\setCJKmainfont{Source Han Sans CN}
+\setCJKmonofont{Source Han Sans CN}
+\intervalconfig{soft open fences}
 
-\newcommand{\id}{{\rm Id}}
-\newcommand{\ho}{{\rm Hom}}
-\newcommand{\group}{\mathbf{Group}}
-\newcommand{\set}{\mathbf{Set}}
-\newcommand{\ring}{\mathbf{Ring}}
-\newcommand{\topo}{\mathbf{Top}}
-\newcommand{\htop}{\mathbf{hTop}}
-\newcommand{\cp}[1]{\mathbb{P}^{#1}(\mathbb{C})}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\ass}{Ass}
+\DeclareMathOperator{\ann}{Ann}
+\DeclareMathOperator{\aut}{Aut}
+\DeclareMathOperator{\card}{card}
+\DeclareMathOperator{\cl}{Cl}
+\DeclareMathOperator{\clos}{clos}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\conj}{conj}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\diff}{Diff}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\disc}{disc}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator{\ext}{Ext}
+\DeclareMathOperator{\fl}{Fl}
+\DeclareMathOperator{\gal}{Gal}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\hess}{Hess}
+\DeclareMathOperator{\ho}{Hom}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\inj}{inj}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\isom}{Isom}
+\DeclareMathOperator{\ke}{Ker}
+\DeclareMathOperator{\lip}{Lip}
+\DeclareMathOperator{\Mod}{Mod}
+\DeclareMathOperator{\map}{Map}
+\DeclareMathOperator{\nil}{nil}
+\DeclareMathOperator{\nm}{Nm}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\obj}{Obj}
+\DeclareMathOperator{\pic}{Pic}
+\DeclareMathOperator{\proj}{Proj}
+\DeclareMathOperator{\PSL}{PSL}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\res}{Res}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\ric}{Ric}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\supp}{Supp}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\sym}{Sym}
+\DeclareMathOperator{\teich}{Teich}
+\DeclareMathOperator{\tor}{Tor}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\val}{val}
+\DeclareMathOperator{\weil}{Weil}
 \newcommand*{\dif}{\mathop{}\!\mathrm{d}}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\grad}{{\rm grad}\;}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\DD}{\mathbb{D}}
+\newcommand{\HH}{\mathscr{H}}
+\newcommand{\KK}{\mathbb{K}}
+\newcommand{\MM}{\mathfrak{M}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\W}{\mathscr{W}}
+\newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\bk}{\bm{k}}
+\newcommand{\bp}{\bar{\partial}}
+\newcommand{\cat}[1]{\underline{\textbf{#1}}\xspace}
+\newcommand{\cech}{\v{C}ech\xspace}
+\newcommand{\chh}{\check{H}}
+\newcommand{\ck}{\mathcal{K}}
+\newcommand{\cp}[1]{\mathbb{C}P^{#1}}
+\newcommand{\dd}{\bullet}
 \newcommand{\defeq}{\coloneqq}
+\newcommand{\etale}{\'etale\xspace}
+\newcommand{\group}{\underline{\textbf{Group}}\xspace}
+\newcommand{\groupoid}{\underline{\textbf{Groupoid}}\xspace}
+\newcommand{\hh}{\mathbb{H}}
+\newcommand{\holder}{H\"older\xspace}
+\newcommand{\htop}{\underline{\textbf{hTop}}\xspace}
+\newcommand{\important}[1]{\textbf{#1}}
+\newcommand{\ind}{\mathrm{Ind}}
+\newcommand{\kah}{K\"ahler\xspace}
+\newcommand{\kunneth}{K\"unneth\xspace}
+\newcommand{\mobius}{M\"obius\xspace}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\poincare}{Poincar\'e\xspace}
+\newcommand{\pp}{\mathfrak{p}}
+\newcommand{\qq}{\mathfrak{q}}
+\newcommand{\question}{\textcolor{red}{Question:}\xspace}
+\newcommand{\ring}{\underline{\textbf{Ring}}\xspace}
+\newcommand{\rto}{\dashrightarrow}
+\newcommand{\set}{\underline{\textbf{Set}}\xspace}
+\newcommand{\ssubset}{\subset\subset}
+\newcommand{\tK}{\widetilde{K}}
+\newcommand{\teichmuller}{Teichm\"uller\xspace}
+\newcommand{\topo}{\underline{\textbf{Top}}\xspace}
+\newcommand{\epi}{\mathrm{epi}}
+\newcommand{\Int}{\mathrm{Int}}
+\newcommand{\dis}{\mathrm{dist}}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\overset{*}{\rightharpoonup}}
+\newcommand{\weaks}{weak\(^{*}\)\xspace}
+\newcommand{\transv}{\mathrel{\text{\tpitchfork}}}
+\makeatletter
+\newcommand{\tpitchfork}{%
+  \vbox{
+    \baselineskip\z@skip
+    \lineskip-.52ex
+    \lineskiplimit\maxdimen
+    \m@th
+    \ialign{##\crcr\hidewidth\smash{$-$}\hidewidth\crcr$\pitchfork$\crcr}
+  }%
+}
+\makeatother
+
+\usepackage{tocbasic}
+\DeclareTOCStyleEntry[dynnumwidth]{tocline}{chapter}
+\DeclareTOCStyleEntry[dynnumwidth]{tocline}{section}
+\DeclareTOCStyleEntry[dynnumwidth]{tocline}{subsection}
+
+\def\Xint#1{\mathchoice {\XXint\displaystyle\textstyle{#1}}%
+  {\XXint\textstyle\scriptstyle{#1}}%
+  {\XXint\scriptstyle\scriptscriptstyle{#1}}%
+  {\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+  \!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$ } \vcenter{\hbox{$#2#3$
+      }}\kern-.6\wd0}}
+\def\ddashint{\Xint=} \def\dashint{\Xint-}
+\numberwithin{equation}{section}
+
+\makeatletter
+\def\term{\@ifnextchar[{\@with}{\@without}}
+\def\@with[#1]#2{\textbf{#2}\index{#1}}
+\def\@without#1{\textbf{#1}\index{#1}}
+
+\def\@pnumwidth{2.55em}
+\makeatother
+
+\overfullrule=2cm
+
+\usepackage[capitalise,nameinlink]{cleveref}
 
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{exercise}[theorem]{Exercise}
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-\newtheorem{remark}{Remark}
+\newtheorem*{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \title{$1}
 \author{张南涛\ 2017012502\ Bio72}

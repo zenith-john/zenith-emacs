@@ -377,3 +377,6 @@
 [submodule "extensions/emacs-winum"]
 	path = extensions/emacs-winum
 	url = https://github.com/deb0ch/emacs-winum
+[submodule "extensions/ESS"]
+	path = extensions/ESS
+	url = https://github.com/emacs-ess/ESS

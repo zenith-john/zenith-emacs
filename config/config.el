@@ -33,6 +33,7 @@
 (require 'init-cc)
 (require 'init-latex)
 (require 'init-rust)
+(require 'init-R)
 
 (provide 'config)
 ;;; config.el ends here

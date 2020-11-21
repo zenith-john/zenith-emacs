@@ -314,7 +314,7 @@
 
   (defun zenith/latex-toggle-section-with-star ()
     (interactive)
-    (if (member '("section" 2) LaTeX-section-list) ;; TODO: Make it more robust.
+    (if (not (member '("section*" 2) LaTeX-section-list)) ;; TODO: Make it more robust.
         (setq LaTeX-section-list
               '(("part" 0)
                 ("chapter" 1)
@@ -420,22 +420,22 @@
             (backward-char)))
       (funcall-interactively 'self-insert-command 1 ?-)))
 
-  (defun zenith/latex-magic-k ()
+  (defun zenith/latex-magic-j ()
     (interactive)
     (let ((char (or (char-before) ?\ )))
-      (if (equal char ?k)
+      (if (equal char ?j)
           (progn
             (backward-delete-char 1)
-            (insert "\\k"))
+            (insert "\\j"))
         (if (equal char ?\\)
             (progn
               (backward-delete-char 1)
-              (self-insert-command 1 ?k))
+              (self-insert-command 1 ?j))
           (if (or
                (zenith/is-space char)
                (zenith/is-bra char))
               (self-insert-command 1 ?\\)
-            (self-insert-command 1 ?k))))))
+            (self-insert-command 1 ?j))))))
 
   (defun zenith/latex-insert-quote ()
     "Baby version insert quote for latex-mode"

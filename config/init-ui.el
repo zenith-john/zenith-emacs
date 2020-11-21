@@ -16,7 +16,7 @@
 
 ;; darkroom
 (zenith/autoload '(darkroom-mode darkroom-tentative-mode) "darkroom")
-(setq darkroom-text-scale-increase 1)
+(setq darkroom-text-scale-increase 0)
 
 ;; doom-themes
 (require 'doom-themes)

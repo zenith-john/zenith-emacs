@@ -216,6 +216,19 @@
  :keymaps  'org-src-mode-map
  "C-c C-c" 'org-edit-src-exit)
 
+(general-define-key
+ :keymaps 'org-mode-map
+ :prefix [menu]
+ "b" 'org-insert-structure-template
+ "c" 'org-ctrl-c-ctrl-c
+ "d" 'org-deadline
+ "e" 'org-export-dispatch
+ "s" 'org-schedule
+ "t" 'org-todo
+ "," 'org-priority
+ "." 'org-time-stamp
+ )
+
 ;; LaTeX-mode
 ;; Exchange position of { and [ in latex mode to reduce the injury of the finger
 (general-define-key
@@ -223,7 +236,7 @@
  "、"                     (lambda ()(interactive)(self-insert-command 1 ?\\))
  "C-c *"                  'LaTeX-star-environment-dwim
  "C-c ]"                  'zenith/cycle-equation
- "k"                      'zenith/latex-magic-k
+ "j"                      'zenith/latex-magic-j
  "["                      'zenith/latex-magic-bracket
  "-"                      'zenith/latex-magic-underscore
  "\""                     'zenith/latex-insert-quote
