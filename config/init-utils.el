@@ -255,7 +255,7 @@ otherwise."
   nil
   " SpecialChar"
   special-char-mode-map
-  :global 'true)
+  :global nil)
 
 (general-define-key
  :keymaps 'special-char-mode-map
