@@ -275,7 +275,8 @@ otherwise."
  "{"   (lambda ()(interactive)(self-insert-command 1 ?\]))
  "]"   (lambda ()(interactive)(self-insert-command 1 ?\{)))
 
-(special-char-mode 1)
+(add-hook 'prog-mode-hook 'special-char-mode)
+(add-hook 'LaTeX-mode-hook 'special-char-mode)
 
 (defun zenith/latex-super-script ()
   (interactive)
@@ -329,5 +330,15 @@ otherwise."
 ;; dependencies: cl-lib dash
 (require 'winum)
 (winum-mode)
+
+;; auto-capitalize-el
+(require 'auto-capitalize)
+(setq auto-capitalize-words nil)
+(add-hook 'after-change-major-mode-hook 'auto-capitalize-mode)
+
+;; tramp
+(require 'tramp)
+(setq tramp-default-method "sshx")
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 (provide 'init-utils)

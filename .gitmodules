@@ -380,3 +380,6 @@
 [submodule "extensions/ESS"]
 	path = extensions/ESS
 	url = https://github.com/emacs-ess/ESS
+[submodule "extensions/auto-capitalize-el"]
+	path = extensions/auto-capitalize-el
+	url = https://github.com/yuutayamada/auto-capitalize-el

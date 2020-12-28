@@ -131,7 +131,26 @@
         (mapcar 'zenith/ivy-fuzzy-ignore-order-helper str-list)
       "")))
 
+(defun zenith/toggle-char (char)
+  (cond
+   ((and (<= char ?Z) (>= char ?A)) (+ char 32))
+   ((and (<= char ?z) (>= char ?a)) (- char 32))
+   (t char)))
 
+(defun zenith/toggle-case (str)
+  (let (ret)
+    (dolist (char (string-to-list str))
+      (setq ret (concat ret (char-to-string (zenith/toggle-char char)))))
+    ret))
+
+(defun zenith/string< (x y)
+  (string< (zenith/toggle-case (if (consp x) (car x) x))
+           (zenith/toggle-case (if (consp y) (car y) y))))
+
+(defun zenith/sort (_name cands)
+  (cl-sort (copy-sequence cands) #'zenith/string<))
+
+(add-to-list 'ivy-sort-matches-functions-alist '(LaTeX-environment . zenith/sort))
 (setq ivy-re-builders-alist '((counsel-company . zenith/ivy-fuzzy-ignore-order)
                               (t . zenith/ivy-cregexp-ignore-order)))
 
