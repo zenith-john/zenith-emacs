@@ -78,6 +78,28 @@
 ;; dependencies: ivy all-the-icons
 (require 'all-the-icons-ivy)
 
+;; Redefine `all-the-icons-ivy-file-transformer' and
+;; `all-the-icons-ivy-buffer-transformer' to adjust it to work in terminal.
+(defun all-the-icons-ivy-file-transformer (s)
+  "Return a candidate string for filename S preceded by an icon."
+  (if (window-system)
+      (format (concat "%s" all-the-icons-spacer "%s")
+              (propertize "\t" 'display (all-the-icons-ivy-icon-for-file s))
+              s)
+    s))
+
+(defun all-the-icons-ivy-buffer-transformer (s)
+  "Return a candidate string for buffer named S.
+Assume that sometimes the buffer named S might not exists.
+That can happen if `ivy-switch-buffer' does not find the buffer and it
+falls back to `ivy-recentf' and the same transformer is used."
+  (if (window-system)
+      (let ((b (get-buffer s)))
+        (if b
+            (all-the-icons-ivy--buffer-transformer b s)
+          (all-the-icons-ivy-file-transformer s)))
+    s))
+
 (all-the-icons-ivy-setup)
 (with-eval-after-load 'counsel-projectile
   (let ((all-the-icons-ivy-file-commands '(counsel-projectile
