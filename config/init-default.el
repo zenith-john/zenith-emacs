@@ -19,6 +19,9 @@
  autoload-compute-prefixes nil
  ffap-machine-p-known 'reject     ; don't ping things that look like domain names
  find-file-visit-truename t       ; resolve symlinks when opening files
+ frame-title-format '(multiple-frames ("" invocation-name "@" system-name "@" "%b")
+                                      ("" invocation-name "@" system-name))
+ icon-title-format frame-title-format
  idle-update-delay 2              ; update ui less often
  ;; be quiet at startup; don't load or display anything unnecessary
  inhibit-startup-message t
@@ -31,6 +34,7 @@
  create-lockfiles nil
  history-length 500
  make-backup-files nil  ; don't create backup~ files
+ ring-bell-function 'ignore
  ;; byte compilation
  byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local)
  ;; security

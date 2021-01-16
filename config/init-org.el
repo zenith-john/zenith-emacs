@@ -51,6 +51,7 @@
   ;; manually load org-id
   (require 'org-id)
   ;; load org-mind-map
+  (require 'ox-org)
   (require 'org-mind-map))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
@@ -123,7 +124,22 @@
   ;; Make emphasis clear when using bold font
   (add-to-list 'org-emphasis-alist
                '("*" (:foreground "pink")))
-  (setcar (nthcdr 4 org-emphasis-regexp-components) 4)
+  (setq org-emphasis-regexp-components
+        ;; markup 记号前后允许中文
+        (list (concat " \t('\"{"            "[:nonascii:]")
+              (concat "- \t.,:!?;'\")}\\["  "[:nonascii:]")
+              " \t\r\n,\"'"
+              "."
+              1)
+        org-match-substring-regexp
+        (concat
+         ;; 限制上标和下标的匹配范围，org 中对其的介绍见：(org) Subscripts and superscripts
+         "\\([0-9a-zA-Zα-γΑ-Ω]\\)\\([_^]\\)\\("
+         "\\(?:" (org-create-multibrace-regexp "{" "}" org-match-sexp-depth) "\\)"
+         "\\|"
+         "\\(?:" (org-create-multibrace-regexp "(" ")" org-match-sexp-depth) "\\)"
+         "\\|"
+         "\\(?:\\*\\|[+-]?[[:alnum:].,\\]*[[:alnum:]]\\)\\)"))
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords
@@ -262,7 +278,7 @@
 
 ;; org-mind-map
 ;; dependencies: dash org
-(with-eval-after-load 'ox-org
+(with-eval-after-load 'org-mind-map
   (setq org-mind-map-engine "dot"
         org-mind-map-dot-output '("pdf" "png" "eps")
         org-mind-map-include-text nil

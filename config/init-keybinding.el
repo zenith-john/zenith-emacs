@@ -178,6 +178,7 @@
  "M-u"    'ivy-unmark
  "M-k"    'keyboard-escape-quit
  [menu]   'zenith/toggle-projectile-and-normal
+ "M-h"    'zenith/toggle-projectile-and-normal
  [escape] 'keyboard-escape-quit)
 
 (general-define-key
@@ -253,6 +254,8 @@
 (general-define-key
  :keymaps 'LaTeX-mode-map
  :prefix [menu]
+ :prefix-command 'LaTeX-prefix-command
+ :prefix-map 'LaTeX-prefix-map
  "a" 'zenith/latexmk-compile
  "c" 'TeX-command-master
  "e" 'LaTeX-environment
@@ -264,6 +267,11 @@
  "[" 'reftex-citation
  "]" 'zenith/cycle-equation
  "m" 'TeX-insert-macro)
+
+(general-define-key
+ :keymaps 'LaTeX-mode-map
+ :states '(normal insert)
+ "M-h" 'LaTeX-prefix-command)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

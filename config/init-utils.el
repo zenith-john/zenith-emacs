@@ -341,4 +341,10 @@ otherwise."
 (setq tramp-default-method "sshx")
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
+(defun unfill-paragraph ()
+  "Do the inverse of `fill-paragraph'."
+  (interactive)
+  (let ((fill-column most-positive-fixnum))
+    (call-interactively 'fill-paragraph)))
+
 (provide 'init-utils)
