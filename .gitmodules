@@ -233,9 +233,6 @@
 [submodule "extensions/evil-org-mode"]
 	path = extensions/evil-org-mode
 	url = https://github.com/Somelauw/evil-org-mode
-[submodule "extensions/awesome-tray"]
-	path = extensions/awesome-tray
-	url = https://github.com/manateelazycat/awesome-tray
 [submodule "extensions/flycheck-posframe"]
 	path = extensions/flycheck-posframe
 	url = https://github.com/alexmurray/flycheck-posframe
@@ -353,9 +350,6 @@
 [submodule "extensions/dired-hacks"]
 	path = extensions/dired-hacks
 	url = https://github.com/Fuco1/dired-hacks
-[submodule "extensions/evil-magit"]
-	path = extensions/evil-magit
-	url = https://github.com/emacs-evil/evil-magit
 [submodule "extensions/emacs-jupyter"]
 	path = extensions/emacs-jupyter
 	url = https://github.com/nnicandro/emacs-jupyter
