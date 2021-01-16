@@ -383,3 +383,6 @@
 [submodule "extensions/auto-capitalize-el"]
 	path = extensions/auto-capitalize-el
 	url = https://github.com/yuutayamada/auto-capitalize-el
+[submodule "extensions/frame-local"]
+	path = extensions/frame-local
+	url = https://github.com/sebastiencs/frame-local
