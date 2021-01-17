@@ -53,9 +53,6 @@
 [submodule "extensions/pyimport"]
 	path = extensions/pyimport
 	url = https://github.com/Wilfred/pyimport
-[submodule "extensions/company-lsp"]
-	path = extensions/company-lsp
-	url = https://github.com/tigersoldier/company-lsp
 [submodule "extensions/avy"]
 	path = extensions/avy
 	url = https://github.com/abo-abo/avy
@@ -299,9 +296,6 @@
 [submodule "extensions/rust-mode"]
 	path = extensions/rust-mode
 	url = https://github.com/rust-lang/rust-mode
-[submodule "extensions/emacs-mini-frame"]
-	path = extensions/emacs-mini-frame
-	url = https://github.com/muffinmad/emacs-mini-frame
 [submodule "extensions/qt-pro-mode"]
 	path = extensions/qt-pro-mode
 	url = https://github.com/EricCrosson/qt-pro-mode
