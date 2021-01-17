@@ -19,6 +19,7 @@
       evil-respect-visual-line-mode t ; integration with visual-line-mode
       evil-move-beyond-eol t          ; emacs-like cursor movement
       evil-ex-substitute-global t     ; substitute global by default
+      evil-undo-system 'undo-redo     ; Use emacs-28 undo-redo
       )
 
 (require 'evil)

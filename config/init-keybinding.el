@@ -273,5 +273,10 @@
  :states '(normal insert)
  "M-h" 'LaTeX-prefix-command)
 
+(general-define-key
+ :states '(normal motion)
+ :keymaps 'inferior-ess-r-mode-map
+ "," 'zenith/leader-map)
+
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

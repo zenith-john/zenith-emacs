@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar zenith-emacs-root-dir (file-truename "~/zenith-emacs/"))
+(defvar zenith-emacs-root-dir user-emacs-directory)
 (defvar zenith-emacs-extension-dir (expand-file-name "extensions/" zenith-emacs-root-dir))
 (defvar zenith-emacs-config-dir (expand-file-name "config/" zenith-emacs-root-dir))
 (defvar zenith-emacs-local-dir (expand-file-name "local/" zenith-emacs-root-dir))
