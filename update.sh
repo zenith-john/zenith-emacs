@@ -12,30 +12,30 @@ fi
 root=$(pwd)
 
 # build org-mode
-cd $root/extensions/org-mode
-make autoloads
-make all
-sudo make install
+# cd $root/extensions/org-mode
+# make autoloads
+# make all
+# sudo make install
 
 # build auctex
-cd $root/extensions/auctex
-./configure
-make
-sudo make install
+# cd $root/extensions/auctex
+# ./configure
+# make
+# sudo make install
 
 # build liberime
-make -C $root/extensions/liberime
+# make -C $root/extensions/liberime
 
 # build magit
-cd $root/extensions/libgit
-git submodule init
-git submodule update
-mkdir build
-cd build
-cmake ..
-make
+# cd $root/extensions/libgit
+# git submodule init
+# git submodule update
+# mkdir build
+# cd build
+# cmake ..
+# make
 
-make -C $root/extensions/magit
+# make -C $root/extensions/magit
 
 # compile .elc
 cd $root

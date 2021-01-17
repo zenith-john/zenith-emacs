@@ -45,7 +45,7 @@
  "a"     'org-agenda
  "A"     'zenith/my-org-agenda
  "f"     'format-all-buffer
- "g"     'magit-status
+ ;; "g"     'magit-status
  "o"     'ace-window
  "r"     'counsel-recentf
  "R"     'rg-my-project
@@ -272,6 +272,10 @@
  :keymaps 'LaTeX-mode-map
  :states '(normal insert)
  "M-h" 'LaTeX-prefix-command)
+
+(general-define-key
+ :keymaps 'inferior-ess-r-mode-map
+ "," nil)
 
 (provide 'init-keybinding)
 ;;; init-keybinding ends here

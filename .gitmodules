@@ -19,10 +19,6 @@
 [submodule "extensions/helm-bibtex"]
 	path = extensions/helm-bibtex
 	url = https://github.com/tmalsburg/helm-bibtex
-[submodule "extensions/liberime"]
-	path = extensions/liberime
-	url = https://gitlab.com/liberime/liberime
-	ignore = dirty
 [submodule "extensions/expand-region"]
 	path = extensions/expand-region
 	url = https://github.com/magnars/expand-region.el

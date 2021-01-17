@@ -4,15 +4,15 @@
 ;;;
 
 ;;; Code:
-(defvar zenith-font (font-spec :family "Iosevka Term SS09" :size 16 :weight 'semi-bold))
-(defvar zenith-unicode-font (font-spec :family "Sarasa Term SC" :weight 'bold))
-(setq inhibit-x-resources t)
+;; (defvar zenith-font (font-spec :family "Iosevka Term SS09" :size 16 :weight 'semi-bold))
+;; (defvar zenith-unicode-font (font-spec :family "Sarasa Term SC" :weight 'bold))
+;; (setq inhibit-x-resources t)
 
-(defun zenith/init-font ()
-  (add-to-list 'default-frame-alist `(font . ,(font-xlfd-name zenith-font)))
-  (set-fontset-font t 'unicode zenith-unicode-font nil 'prepend))
+;; (defun zenith/init-font ()
+;;   (add-to-list 'default-frame-alist `(font . ,(font-xlfd-name zenith-font)))
+;;   (set-fontset-font t 'unicode zenith-unicode-font nil 'prepend))
 
-(zenith/init-font)
+;; (zenith/init-font)
 
 ;; darkroom
 (zenith/autoload '(darkroom-mode darkroom-tentative-mode) "darkroom")

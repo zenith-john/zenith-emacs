@@ -316,15 +316,15 @@ otherwise."
 (require 'dired-subtree)
 
 ;; emacs-libvterm
-(require 'vterm)
-(require 'multi-vterm)
+;; (require 'vterm)
+;; (require 'multi-vterm)
 
-(defun zenith/vterm-toggle ()
-  "Toggle vterm."
-  (interactive)
-  (if (projectile-project-p)
-      (multi-vterm-projectile)
-    (multi-vterm-dedicated-toggle)))
+;; (defun zenith/vterm-toggle ()
+;;   "Toggle vterm."
+;;   (interactive)
+;;   (if (projectile-project-p)
+;;       (multi-vterm-projectile)
+;;     (multi-vterm-dedicated-toggle)))
 
 ;; emacs-winum
 ;; dependencies: cl-lib dash

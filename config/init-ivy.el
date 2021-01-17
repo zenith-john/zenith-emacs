@@ -173,8 +173,8 @@ falls back to `ivy-recentf' and the same transformer is used."
   (cl-sort (copy-sequence cands) #'zenith/string<))
 
 (add-to-list 'ivy-sort-matches-functions-alist '(LaTeX-environment . zenith/sort))
-(setq ivy-re-builders-alist '((counsel-company . zenith/ivy-fuzzy-ignore-order)
-                              (t . zenith/ivy-cregexp-ignore-order)))
+;; (setq ivy-re-builders-alist '((counsel-company . zenith/ivy-fuzzy-ignore-order)
+;;                               (t . zenith/ivy-cregexp-ignore-order)))
 
 ;; amx
 ;; depednecies: s
