@@ -269,9 +269,13 @@
  "m" 'TeX-insert-macro)
 
 (general-define-key
- :keymaps 'LaTeX-mode-map
- :states '(normal insert)
- "M-h" 'LaTeX-prefix-command)
+ :keymaps    'LaTeX-mode-map
+ :states     '(normal insert)
+ "M-h"       'LaTeX-prefix-command
+ "M-<left>"  'zenith/left-cell-fallback
+ "M-<right>" 'zenith/right-cell-fallback
+ "M-<up>"    'zenith/up-cell-fallback
+ "M-<down>"  'zenith/down-cell-fallback)
 
 (general-define-key
  :states '(normal motion)

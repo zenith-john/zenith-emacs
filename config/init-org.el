@@ -154,15 +154,15 @@
   (setq org-capture-templates
         '(
           ("h" "Homework" entry (file+headline "~/Dropbox/task.org"  "Homework")
-           "* TODO %? :Homework:\n")
+           "* TODO %? :Homework:\n%U\n")
           ("s" "Schedule" entry (file+headline "~/Dropbox/task.org" "Schedule")
-           "* %?\n")
+           "* %?\n%U\n")
           ("r" "Project" entry (file+headline "~/Dropbox/task.org" "Project")
-           "* TODO %?\n")
+           "* TODO %?\n%U\n")
           ("q" "Question" entry (file+headline "~/Dropbox/task.org" "Question")
-           "* TODO %? :Question:\n")
+           "* TODO %? :Question:\n%U\n")
           ("d" "Idea" entry (file+headline "~/Dropbox/task.org" "Idea")
-           "* TODO %? :Idea:\n")))
+           "* TODO %? :Idea:\n%U\n")))
 
   ;; Org tag
   (setq org-tag-alist

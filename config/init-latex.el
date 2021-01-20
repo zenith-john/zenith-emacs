@@ -158,7 +158,6 @@
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-company-setup)
 
-
 (autoload 'TeX-latex-mode "tex-site" "" t)
 (add-hook 'latex-mode-hook 'TeX-latex-mode)
 
@@ -280,6 +279,179 @@
           ("setlistdepth" "{")
           ("restartlist" "{")
           ("crefname" "{")))
+
+  ;; Make upper and subscript no variant to keep the alignment
+  ;; Enhance the table editing of latex
+  (custom-set-faces
+   '(font-latex-subscript-face ((t nil)))
+   '(font-latex-superscript-face ((t nil)))
+   )
+
+  (defvar zenith/table-environments
+    '(
+      "bmatrix"
+      "Bmatrix"
+      "pmatrix"
+      "matrix"
+      "vmatrix"
+      "eqnarray"
+      "align"
+      "aligned"
+      "table"
+      "tabular"
+      "tikz-cd"
+      "bmatrix*"
+      "Bmatrix*"
+      "pmatrix*"
+      "matrix*"
+      "vmatrix*"
+      "eqnarray*"
+      "align*"
+      "aligned*"
+      "table*"
+      "tabular*"
+      )
+    "The environments that are table like")
+
+  (defun zenith/check-table-enviroment ()
+    "Check whether the current enviroment is table-like."
+    (if (member (LaTeX-current-environment) zenith/table-environments)
+        t
+      (message "Not in table-like environment")
+      nil))
+
+  (defun zenith/align-table ()
+    "Align columns by ampersand"
+    (interactive)
+    (when (zenith/check-table-enviroment)
+      (save-excursion
+        (let ((cur (point))
+              beg end)
+          (LaTeX-find-matching-begin)
+          (setq beg (point))
+          (goto-char cur)
+          (LaTeX-find-matching-end)
+          (setq end (point))
+          (indent-region beg end)
+          (align-regexp beg end
+                        "\\(\\s-*\\)\\(&\\|\\\\\\\\\\)" 1 1 t)))))
+
+  (defun zenith/narrow-to-line ()
+    "Narrow to the current line"
+    (interactive)
+    (let (beg
+          end
+          (cur (point)))
+      (beginning-of-line)
+      (setq beg (point))
+      (end-of-line)
+      (setq end (point))
+      (goto-char cur)
+      (narrow-to-region beg end)))
+
+  (defun zenith/begining-of-cell ()
+    "Go to the begining of the cell"
+    (interactive)
+    (widen)
+    (when (zenith/check-table-enviroment)
+      (save-restriction
+        (zenith/narrow-to-line)
+        (if (search-backward "&" nil t)
+            (forward-char)
+          (back-to-indentation)
+          (unless (bolp)
+            (backward-char)))
+        (let (bound)
+          (save-excursion
+            (if
+                (search-forward-regexp "\\(&\\|\\\\\\\\\\)" nil t)
+                (progn
+                  (search-backward-regexp "\\(&\\|\\\\\\\\\\)" nil t)
+                  (setq bound (- (point) 1)))
+              (end-of-line)
+              (setq bound (point))))
+          (when (search-forward-regexp "\\S-" bound t)
+            (backward-char)))
+        t)))
+
+
+  (defun zenith/left-cell ()
+    "Jump to the left cell of the current enviroment"
+    (interactive)
+    (when (zenith/check-table-enviroment)
+      (zenith/align-table)
+      (save-restriction
+        (zenith/narrow-to-line)
+        (if
+            (search-backward "&" nil t)
+            (progn
+              (backward-char 1)
+              (zenith/begining-of-cell))
+          (message "No left cell.")))))
+
+  (defun zenith/left-cell-fallback ()
+    "Jump to the left cell if in table environment, or go to the left word."
+    (interactive)
+    (if (zenith/check-table-enviroment)
+        (zenith/left-cell)
+      (left-word)))
+
+  (defun zenith/right-cell ()
+    "Jump to the right cell of the current enviroment"
+    (interactive)
+    (when (zenith/check-table-enviroment)
+      (zenith/align-table)
+      (save-restriction
+        (zenith/narrow-to-line)
+        (if
+            (search-forward "&" nil t)
+            (progn
+              (forward-char 1)
+              (zenith/begining-of-cell))
+          (message "No right cell.")))))
+
+  (defun zenith/right-cell-fallback ()
+    "Jump to the right cell if in table environment, or go to the right word."
+    (interactive)
+    (if (zenith/check-table-enviroment)
+        (zenith/right-cell)
+      (right-word)))
+
+  (defun zenith/up-cell ()
+    "Jump to the up cell of the current enviroment"
+    (interactive)
+    (when (zenith/check-table-enviroment)
+      (zenith/align-table)
+      (let ((cur (point)))
+        (previous-line)
+        (unless (zenith/begining-of-cell)
+          (goto-char cur)
+          (message "No up cell.")))))
+
+  (defun zenith/up-cell-fallback ()
+    "Jump to the up cell if in table environment, or go to the previous line."
+    (interactive)
+    (if (zenith/check-table-enviroment)
+        (zenith/up-cell)
+      (previous-line)))
+
+  (defun zenith/down-cell ()
+    "Jump to the down cell of the current enviroment"
+    (interactive)
+    (when (zenith/check-table-enviroment)
+      (zenith/align-table)
+      (let ((cur (point)))
+        (next-line)
+        (unless (zenith/begining-of-cell)
+          (goto-char cur)
+          (message "No down cell.")))))
+
+  (defun zenith/down-cell-fallback ()
+    "Jump to the down cell if in table environment, or go to the next line."
+    (interactive)
+    (if (zenith/check-table-enviroment)
+        (zenith/down-cell)
+      (next-line)))
 
   ;; prompt for master
   (setq-default TeX-master nil)
@@ -482,6 +654,7 @@
 
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 (provide 'init-latex)
 ;;; init-latex.el ends here
