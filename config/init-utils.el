@@ -248,6 +248,48 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
       (append-to-file word nil file)))
   (zenith/flyspell-check-region))
 
+;; Move point to previous error
+;; based on code by hatschipuh at
+;; http://emacs.stackexchange.com/a/14912/2017
+(defun flyspell-goto-previous-error (arg)
+  "Go to arg previous spelling error."
+  (interactive "p")
+  (backward-word 1)
+  (while (not (= 0 arg))
+    (let ((pos (point))
+          (min (point-min)))
+      (if (and (eq (current-buffer) flyspell-old-buffer-error)
+               (eq pos flyspell-old-pos-error))
+          (progn
+            (if (= flyspell-old-pos-error min)
+                ;; goto beginning of buffer
+                (progn
+                  (message "Restarting from end of buffer")
+                  (goto-char (point-max)))
+              (backward-word 1))
+            (setq pos (point))))
+      ;; seek the next error
+      (while (and (> pos min)
+                  (let ((ovs (overlays-at pos))
+                        (r '()))
+                    (while (and (not r) (consp ovs))
+                      (if (flyspell-overlay-p (car ovs))
+                          (setq r t)
+                        (setq ovs (cdr ovs))))
+                    (not r)))
+        (backward-word 1)
+        (setq pos (point)))
+      ;; save the current location for next invocation
+      (setq arg (1- arg))
+      (setq flyspell-old-pos-error pos)
+      (setq flyspell-old-buffer-error (current-buffer))
+      (goto-char pos)
+      (when (= pos min)
+          (progn
+            (message "No more miss-spelled word!")
+            (setq arg 0)))))
+  (forward-word))
+
 ;; Delete word in a more user friendly way
 (defun zenith/aggressive-delete-space ()
   "Remove all the space until non-space character."
@@ -271,6 +313,13 @@ otherwise."
   "Fill paragraph and indent region at once"
   (interactive)
   (unless visual-line-mode
+    (call-interactively 'fill-paragraph)))
+
+;; function to unfill
+(defun unfill-paragraph ()
+  "Do the inverse of `fill-paragraph'."
+  (interactive)
+  (let ((fill-column most-positive-fixnum))
     (call-interactively 'fill-paragraph)))
 
 ;; visual fill column
@@ -454,12 +503,5 @@ otherwise."
 (require 'tramp)
 (setq tramp-default-method "sshx")
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-
-;; function to unfill
-(defun unfill-paragraph ()
-  "Do the inverse of `fill-paragraph'."
-  (interactive)
-  (let ((fill-column most-positive-fixnum))
-    (call-interactively 'fill-paragraph)))
 
 (provide 'init-utils)

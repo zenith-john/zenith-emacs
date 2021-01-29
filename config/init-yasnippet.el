@@ -27,7 +27,7 @@ and `nil' otherwise."
          (word-start (save-excursion
                        (save-restriction
                          (narrow-to-region (line-beginning-position 0) (line-end-position))
-                         (search-backward-regexp "^\\|[[:blank:]]\\|(\\|)\\|\\[\\|]\\|{\\|}" nil t))))
+                         (search-backward-regexp "^\\|[[:blank:]]\\|(\\|)\\|\\[\\|]\\|{\\|}\\|\\$" nil t))))
          (word)
          (len))
 

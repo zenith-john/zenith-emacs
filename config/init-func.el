@@ -38,10 +38,10 @@
   (string-match-p "[[:alpha:]]" (char-to-string char)))
 
 (defun zenith/is-ket (char)
-  (string-match-p "[\]\}\)]" (char-to-string char)))
+  (string-match-p "[\]\}\)$]" (char-to-string char)))
 
 (defun zenith/is-bra (char)
-  (string-match-p "[\[\{\(]" (char-to-string char)))
+  (string-match-p "[\[\{\($]" (char-to-string char)))
 
 (defun zenith/get-bare-file-name (&optional buffer)
   (let ((file (buffer-file-name buffer)))
