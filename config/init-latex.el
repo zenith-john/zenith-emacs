@@ -280,6 +280,14 @@
           ("restartlist" "{")
           ("crefname" "{")))
 
+  (setq LaTeX-math-list
+        '(
+          (?\[ "subset" "Relational" 8834) ;; #X2282
+          (?\] "supset" "Relational" 8835) ;; #X2283
+          (?\{ "subseteq" "Relational" 8838) ;; #X2286
+          (?\} "supseteq" "Relational" 8839) ;; #X2287
+          ))
+
   ;; Make upper and subscript no variant to keep the alignment
   ;; Enhance the table editing of latex
   (custom-set-faces
@@ -509,7 +517,7 @@
 
   (defvar zenith/equation-env-list
     '(("\\begin{equation}" . "\\end{equation}")
-      ("\\(" . "\\)")
+      ("$" . "$")
       ("\\[" . "\\]"))
     "The pairs of equation environment")
 

@@ -253,7 +253,7 @@
 
 (general-define-key
  :keymaps 'LaTeX-mode-map
- :prefix [menu]
+ :prefix [f8]
  :prefix-command 'LaTeX-prefix-command
  :prefix-map 'LaTeX-prefix-map
  "a" 'zenith/latexmk-compile
@@ -265,12 +265,12 @@
  "0" 'counsel-reftex-labels
  "v" 'TeX-view
  "[" 'reftex-citation
- "]" 'zenith/cycle-equation
  "m" 'TeX-insert-macro)
 
 (general-define-key
  :keymaps    'LaTeX-mode-map
  :states     '(normal insert)
+ [menu]      LaTeX-math-keymap
  "M-h"       'LaTeX-prefix-command
  "M-<left>"  'zenith/left-cell-fallback
  "M-<right>" 'zenith/right-cell-fallback
