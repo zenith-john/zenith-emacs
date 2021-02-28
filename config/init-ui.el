@@ -4,8 +4,8 @@
 ;;;
 
 ;;; Code:
-(defvar zenith-font (font-spec :family "Iosevka Term SS09" :size 16 :weight 'semi-bold))
-(defvar zenith-unicode-font (font-spec :family "Sarasa Term SC" :weight 'bold))
+(defvar zenith-font (font-spec :family "Iosevka SS09" :size 16 :weight 'semi-bold))
+(defvar zenith-unicode-font (font-spec :family "Sarasa UI SC" :weight 'bold))
 (setq inhibit-x-resources t)
 
 (defun zenith/init-font ()

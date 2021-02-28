@@ -77,6 +77,7 @@
  delete-trailing-lines nil
  fill-column 80
  sentence-end-double-space nil
+ warning-suppress-types '((comp) (:warning))
  word-wrap t
  ;; Scrolling
  hscroll-margin 2

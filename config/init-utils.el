@@ -5,10 +5,6 @@
 
 ;;; Code:
 
-;; undo-tree
-(require 'undo-tree)
-(global-undo-tree-mode 1)
-
 ;; smartparens
 (require 'smartparens-config)
 
