@@ -154,7 +154,7 @@
 
 (defun zenith/latex-company-setup ()
   "Setup company backends for latex editing."
-  (setq-local company-combine-local-backends +latex-company-backends))
+  (setq-local company-backends +latex-company-backends))
 
 (add-hook 'LaTeX-mode-hook 'zenith/latex-company-setup)
 
