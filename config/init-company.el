@@ -86,8 +86,7 @@
 
 (global-company-mode +1)
 
-(require 'init-company-backend)
-(setq-default company-backends '(company-combine))
+(setq-default company-backends '(company-capf))
 
 (add-hook 'company-completion-started-hook (lambda (arg) (zenith/temp-no-gc)))
 (add-hook 'company-completion-cancelled-hook (lambda (arg) (zenith/restore-gc)))
