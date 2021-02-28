@@ -26,27 +26,27 @@
    python-pytest-popup
    ) "python-pytest")
 
-;; pyvenv
-(zenith/autoload
- '(pyvenv-activate
-   pyvenv-workon) "pyvenv")
+(when (executable-find "pyenv")
+  ;; pyvenv
+  (zenith/autoload
+   '(pyvenv-activate
+     pyvenv-workon) "pyvenv")
 
-;; pyenv-mode
-;; dependencies: pythonic
+  ;; pyenv-mode
+  ;; dependencies: pythonic
+  (zenith/delay-load
+   (lambda ()
+     (require 'pyenv-mode)
 
-(zenith/delay-load
- (lambda ()
-   (require 'pyenv-mode)
+     ;; It is worth noting that emacs read $HOME/.profile to load environment variables.
+     ;; From http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
+     (defun zenith/pyenv-init-global ()
+       "Initialize pyenv version to the global one"
+       (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
+         (pyenv-mode-set global-pyenv)))
 
-   ;; It is worth noting that emacs read $HOME/.profile to load environment variables.
-   ;; From http://rakan.me/emacs/python-dev-with-emacs-and-pyenv/
-   (defun zenith/pyenv-init-global ()
-     "Initialize pyenv version to the global one"
-     (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
-       (pyenv-mode-set global-pyenv)))
-
-   (ignore-errors
-     (zenith/pyenv-init-global))))
+     (ignore-errors
+       (zenith/pyenv-init-global)))))
 
 ;; pyimport
 ;; dependencies: s shut-up

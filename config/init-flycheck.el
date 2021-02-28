@@ -13,11 +13,12 @@
    c++-mode-hook
    c-mode-hook) 'flycheck-mode)
 
-;; flycheck-posframe
-;; dependencies: flycheck posframe
-(with-eval-after-load 'flycheck
-  (require 'flycheck-posframe)
-  (add-hook 'flycheck-mode-hook 'flycheck-posframe-mode))
+(when zenith/enable-posframe
+  ;; flycheck-posframe
+  ;; dependencies: flycheck posframe
+  (with-eval-after-load 'flycheck
+    (require 'flycheck-posframe)
+    (add-hook 'flycheck-mode-hook 'flycheck-posframe-mode)))
 
 (provide 'init-flycheck)
 ;;; init-flycheck.el ends here

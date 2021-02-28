@@ -37,42 +37,43 @@
 
 (ivy-mode +1)
 
-;; ivy-posframe
-;; dependencies: ivy posframe
-(require 'ivy-posframe)
+(when zenith/enable-posframe
+  ;; ivy-posframe
+  ;; dependencies: ivy posframe
+  (require 'ivy-posframe)
 
-(defun zenith/ivy-posframe-get-size ()
-  "Set size of by the posframe"
-  (list
-   :height (max (+ 3 ivy-height) ivy-posframe-height)
-   :width (round (* 0.5 (frame-width)))
-   :min-height (max (+ 3 ivy-height) ivy-posframe-height)
-   :min-width (max 80 (round (* 0.5 (frame-width))))))
+  (defun zenith/ivy-posframe-get-size ()
+    "Set size of by the posframe"
+    (list
+     :height (max (+ 3 ivy-height) ivy-posframe-height)
+     :width (round (* 0.5 (frame-width)))
+     :min-height (max (+ 3 ivy-height) ivy-posframe-height)
+     :min-width (max 80 (round (* 0.5 (frame-width))))))
 
-(defun ivy-posframe--display (str &optional poshandler)
-  "Show STR in ivy's posframe with POSHANDLER."
-  (if (not (posframe-workable-p))
-      (ivy-display-function-fallback str)
-    (with-ivy-window
-      (apply #'posframe-show
-             ivy-posframe-buffer
-             :font ivy-posframe-font
-             :string str
-             :position (point)
-             :poshandler poshandler
-             :lines-truncate t
-             :background-color (face-attribute 'ivy-posframe :background nil t)
-             :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-             :internal-border-width ivy-posframe-border-width
-             :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-             :override-parameters ivy-posframe-parameters
-             (funcall ivy-posframe-size-function))
-     (ivy-posframe--add-prompt 'ignore))))
+  (defun ivy-posframe--display (str &optional poshandler)
+    "Show STR in ivy's posframe with POSHANDLER."
+    (if (not (posframe-workable-p))
+        (ivy-display-function-fallback str)
+      (with-ivy-window
+        (apply #'posframe-show
+               ivy-posframe-buffer
+               :font ivy-posframe-font
+               :string str
+               :position (point)
+               :poshandler poshandler
+               :lines-truncate t
+               :background-color (face-attribute 'ivy-posframe :background nil t)
+               :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
+               :internal-border-width ivy-posframe-border-width
+               :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
+               :override-parameters ivy-posframe-parameters
+               (funcall ivy-posframe-size-function))
+        (ivy-posframe--add-prompt 'ignore))))
 
-(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
-      ivy-posframe-size-function #'zenith/ivy-posframe-get-size
-      ivy-posframe-height 20)
-(ivy-posframe-mode)
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
+        ivy-posframe-size-function #'zenith/ivy-posframe-get-size
+        ivy-posframe-height 20)
+  (ivy-posframe-mode))
 
 ;; all-the-icons-ivy
 ;; dependencies: ivy all-the-icons
@@ -133,17 +134,6 @@ falls back to `ivy-recentf' and the same transformer is used."
    ("L" (lambda (path) "Insert org-link with absolute path"
           (with-ivy-window (insert (format "[[%s]]" path)))) "insert org-link (abs. path)")))
 
-;; https://github.com/tumashu/emacs-helper/commit/1932a9e8a64f08bb9603cf244df41f6c0bbc3dac
-;; Search chinese with pinyin
-(defun zenith/ivy-cregexp-helper (str)
-  (cons (pyim-cregexp-build str) t))
-
-(defun zenith/ivy-cregexp-ignore-order (str)
-  (let ((str-list (split-string str)))
-    (if str-list
-        (mapcar 'zenith/ivy-cregexp-helper str-list)
-      "")))
-
 (defun zenith/ivy-fuzzy-ignore-order-helper (str)
   (cons (ivy--regex-fuzzy str) t))
 
@@ -152,6 +142,20 @@ falls back to `ivy-recentf' and the same transformer is used."
     (if str-list
         (mapcar 'zenith/ivy-fuzzy-ignore-order-helper str-list)
       "")))
+
+(if zenith/enable-pyim
+    (progn
+      ;; https://github.com/tumashu/emacs-helper/commit/1932a9e8a64f08bb9603cf244df41f6c0bbc3dac
+      ;; Search chinese with pinyin
+      (defun zenith/ivy-cregexp-helper (str)
+        (cons (pyim-cregexp-build str) t))
+
+      (defun zenith/ivy-cregexp-ignore-order (str)
+        (let ((str-list (split-string str)))
+          (if str-list
+              (mapcar 'zenith/ivy-cregexp-helper str-list)
+            ""))))
+  (defalias 'zenith/ivy-cregexp-ignore-order 'zenith/ivy-fuzzy-ignore-order))
 
 (defun zenith/toggle-char (char)
   (cond

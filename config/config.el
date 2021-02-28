@@ -10,9 +10,9 @@
 
 (require 'init-default)
 (require 'init-func)
+(require 'init-evil)
 (require 'init-utils)
 (require 'init-ui)
-(require 'init-evil)
 (require 'init-which-key)
 (require 'init-pyim)
 (require 'init-ivy)

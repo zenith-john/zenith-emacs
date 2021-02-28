@@ -66,8 +66,9 @@
 
 (defun zenith/c-flycheck-hook ()
   (flycheck-mode 1)
-  (require 'flycheck-clang-tidy)
-  (setq-local flycheck-checker 'c/c++-clang-tidy))
+  (when (executable-find "clang-tidy")
+    (require 'flycheck-clang-tidy)
+    (setq-local flycheck-checker 'c/c++-clang-tidy)))
 (add-hook 'c-mode-common-hook 'zenith/c-flycheck-hook)
 
 (with-eval-after-load 'projectile

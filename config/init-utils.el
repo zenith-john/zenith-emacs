@@ -67,10 +67,23 @@
 
 ;; rg.el
 ;; dependencies: s transient wgrep
-(require 'rg)
-(rg-define-search rg-my-project
-  :dir project
-  :files "everything")
+(if (executable-find "rg")
+    (progn
+      (require 'rg)
+      (rg-define-search rg-my-project
+        :dir project
+        :files "everything")
+
+      (evil-define-command evil-rg (&optional search)
+        "Invoke `my-rg-project' with SEARCH"
+        (interactive "<a>")
+        (if search
+            (rg-my-project search)
+          (rg-dwim-project-dir)))
+      (evil-ex-define-cmd "rg" #'evil-rg))
+  (defun rg-my-project ()
+    (interactive)
+    (message "Program rg is not found.")))
 
 ;; ace-window
 ;; dependencies: avy
@@ -94,197 +107,198 @@
               ispell-dictionary "en_US"
               ispell-silently-savep t)
 
-(setq wucuo-font-faces-to-check
-      '(font-lock-string-face
-        font-lock-doc-face
-        font-lock-comment-face))
+(when ispell-program-name
+  (setq wucuo-font-faces-to-check
+        '(font-lock-string-face
+          font-lock-doc-face
+          font-lock-comment-face))
 
-(require 'wucuo)
+  (require 'wucuo)
 
-(setq wucuo-flyspell-start-mode "fast")
+  (setq wucuo-flyspell-start-mode "fast")
 
-(defun zenith/flyspell-check-region ()
-  "Remove overlay and check region"
-  (interactive)
-  (let ((wucuo-flyspell-start-mode "fast"))
-    (wucuo-spell-check-buffer)))
+  (defun zenith/flyspell-check-region ()
+    "Remove overlay and check region"
+    (interactive)
+    (let ((wucuo-flyspell-start-mode "fast"))
+      (wucuo-spell-check-buffer)))
 
-(defun zenith/flyspell-check-buffer ()
-  "Remove overlay and check buffer"
-  (interactive)
-  (let ((wucuo-flyspell-start-mode "normal"))
-    (wucuo-spell-check-buffer)))
+  (defun zenith/flyspell-check-buffer ()
+    "Remove overlay and check buffer"
+    (interactive)
+    (let ((wucuo-flyspell-start-mode "normal"))
+      (wucuo-spell-check-buffer)))
 
-(add-hook 'text-mode-hook 'wucuo-start)
-(add-hook 'prog-mode-hook 'wucuo-start)
+  (add-hook 'text-mode-hook 'wucuo-start)
+  (add-hook 'prog-mode-hook 'wucuo-start)
 
-;; Redefine `flyspell-external-point-words'
-;;*---------------------------------------------------------------------*/
-;;*    flyspell-external-point-words ...                                */
-;;*---------------------------------------------------------------------*/
-(defun flyspell-external-point-words ()
-  "Mark words from a buffer listing incorrect words in order of appearance.
+  ;; Redefine `flyspell-external-point-words'
+  ;;*---------------------------------------------------------------------*/
+  ;;*    flyspell-external-point-words ...                                */
+  ;;*---------------------------------------------------------------------*/
+  (defun flyspell-external-point-words ()
+    "Mark words from a buffer listing incorrect words in order of appearance.
 The list of incorrect words should be in `flyspell-external-ispell-buffer'.
 \(We finish by killing that buffer and setting the variable to nil.)
 The buffer to mark them in is `flyspell-large-region-buffer'."
-  (let* (words-not-found
-         (flyspell-casechars (flyspell-get-casechars))
-         (ispell-otherchars (ispell-get-otherchars))
-         (ispell-many-otherchars-p (ispell-get-many-otherchars-p))
-         (word-chars (concat flyspell-casechars
-                             "+\\("
-                             (if (not (string= "" ispell-otherchars))
-                                 (concat ispell-otherchars "?"))
-                             flyspell-casechars
-                             "+\\)"
-                             (if ispell-many-otherchars-p
-                                 "*" "?")))
-         (buffer-scan-pos flyspell-large-region-beg)
-         case-fold-search)
-    (with-current-buffer flyspell-external-ispell-buffer
-      (goto-char (point-min))
-      ;; Loop over incorrect words, in the order they were reported,
-      ;; which is also the order they appear in the buffer being checked.
-      (while (re-search-forward "\\([^\n]+\\)\n" nil t)
-	;; Bind WORD to the next one.
-	(let ((word (match-string 1)) (wordpos (point)))
-	  ;; Here there used to be code to see if WORD is the same
-	  ;; as the previous iteration, and count the number of consecutive
-	  ;; identical words, and the loop below would search for that many.
-	  ;; That code seemed to be incorrect, and on principle, should
-	  ;; be unnecessary too. -- rms.
-	  (if flyspell-issue-message-flag
-	      (message "Spell Checking...%d%% [%s]"
-		       (floor (* 100.0 (point)) (point-max))
-		       word))
-	  (with-current-buffer flyspell-large-region-buffer
-	    (goto-char buffer-scan-pos)
-	    (let ((keep t))
-	      ;; Iterate on string search until string is found as word,
-	      ;; not as substring.
-	      (while keep
-		(if (search-forward word
-				    flyspell-large-region-end t)
-		    (let* ((found-list
-			    (save-excursion
-			      ;; Move back into the match
-			      ;; so flyspell-get-word will find it.
-			      (forward-char -1)
-                              ;; Is this a word that matches the
-                              ;; current dictionary?
-                              (if (looking-at word-chars)
-			          (flyspell-get-word))))
-			   (found (car found-list))
-			   (found-length (length found))
-			   (misspell-length (length word)))
-		      (when (or
-                             ;; Misspelled word is not from the
-                             ;; language supported by the current
-                             ;; dictionary.
-                             (null found)
-			     ;; Size matches, we really found it.
-			     (= found-length misspell-length)
-			     ;; Matches as part of a boundary-char separated
-			     ;; word.
-			     (member word
-				     (split-string found ispell-otherchars))
-			     ;; Misspelling has higher length than
-			     ;; what flyspell considers the word.
-                             ;; Caused by boundary-chars mismatch.
-                             ;; Validating seems safe.
-			     (< found-length misspell-length)
-			     ;; ispell treats beginning of some TeX
-			     ;; commands as nroff control sequences
-			     ;; and strips them in the list of
-			     ;; misspelled words thus giving a
-			     ;; non-existent word.  Skip if ispell
-			     ;; is used, string is a TeX command
-			     ;; (char before beginning of word is
-			     ;; backslash) and none of the previous
-			     ;; conditions match.
-			     (and (not ispell-really-aspell)
-                                  (not ispell-really-hunspell)
-                                  (not ispell-really-enchant)
-				  (save-excursion
-				    (goto-char (- (nth 1 found-list) 1))
-				    (if (looking-at "[\\]" )
-					t
-				      nil))))
-			(setq keep nil)
-                        ;; Don't try spell-checking words whose
-                        ;; characters don't match CASECHARS, because
-                        ;; flyspell-word will then consider as
-                        ;; misspelling the preceding word that matches
-                        ;; CASECHARS.
-                        (or (null found)
-			    (flyspell-word nil t))
-			;; Search for next misspelled word will begin from
-			;; end of last validated match.
-			(setq buffer-scan-pos (point))))
-		  ;; Record if misspelling is not found and try new one
-		  (cl-pushnew (concat " -> " word " - "
-				       (int-to-string wordpos))
-                              words-not-found :test #'equal)
-		  (setq keep nil)))))))
-      ;; we are done
-      (if flyspell-issue-message-flag (message "Spell Checking completed.")))
-    ;; Kill and forget the buffer with the list of incorrect words.
-    (kill-buffer flyspell-external-ispell-buffer)
-    (setq flyspell-external-ispell-buffer nil)))
+    (let* (words-not-found
+           (flyspell-casechars (flyspell-get-casechars))
+           (ispell-otherchars (ispell-get-otherchars))
+           (ispell-many-otherchars-p (ispell-get-many-otherchars-p))
+           (word-chars (concat flyspell-casechars
+                               "+\\("
+                               (if (not (string= "" ispell-otherchars))
+                                   (concat ispell-otherchars "?"))
+                               flyspell-casechars
+                               "+\\)"
+                               (if ispell-many-otherchars-p
+                                   "*" "?")))
+           (buffer-scan-pos flyspell-large-region-beg)
+           case-fold-search)
+      (with-current-buffer flyspell-external-ispell-buffer
+        (goto-char (point-min))
+        ;; Loop over incorrect words, in the order they were reported,
+        ;; which is also the order they appear in the buffer being checked.
+        (while (re-search-forward "\\([^\n]+\\)\n" nil t)
+          ;; Bind WORD to the next one.
+          (let ((word (match-string 1)) (wordpos (point)))
+            ;; Here there used to be code to see if WORD is the same
+            ;; as the previous iteration, and count the number of consecutive
+            ;; identical words, and the loop below would search for that many.
+            ;; That code seemed to be incorrect, and on principle, should
+            ;; be unnecessary too. -- rms.
+            (if flyspell-issue-message-flag
+                (message "Spell Checking...%d%% [%s]"
+                         (floor (* 100.0 (point)) (point-max))
+                         word))
+            (with-current-buffer flyspell-large-region-buffer
+              (goto-char buffer-scan-pos)
+              (let ((keep t))
+                ;; Iterate on string search until string is found as word,
+                ;; not as substring.
+                (while keep
+                  (if (search-forward word
+                                      flyspell-large-region-end t)
+                      (let* ((found-list
+                              (save-excursion
+                                ;; Move back into the match
+                                ;; so flyspell-get-word will find it.
+                                (forward-char -1)
+                                ;; Is this a word that matches the
+                                ;; current dictionary?
+                                (if (looking-at word-chars)
+                                    (flyspell-get-word))))
+                             (found (car found-list))
+                             (found-length (length found))
+                             (misspell-length (length word)))
+                        (when (or
+                               ;; Misspelled word is not from the
+                               ;; language supported by the current
+                               ;; dictionary.
+                               (null found)
+                               ;; Size matches, we really found it.
+                               (= found-length misspell-length)
+                               ;; Matches as part of a boundary-char separated
+                               ;; word.
+                               (member word
+                                       (split-string found ispell-otherchars))
+                               ;; Misspelling has higher length than
+                               ;; what flyspell considers the word.
+                               ;; Caused by boundary-chars mismatch.
+                               ;; Validating seems safe.
+                               (< found-length misspell-length)
+                               ;; ispell treats beginning of some TeX
+                               ;; commands as nroff control sequences
+                               ;; and strips them in the list of
+                               ;; misspelled words thus giving a
+                               ;; non-existent word.  Skip if ispell
+                               ;; is used, string is a TeX command
+                               ;; (char before beginning of word is
+                               ;; backslash) and none of the previous
+                               ;; conditions match.
+                               (and (not ispell-really-aspell)
+                                    (not ispell-really-hunspell)
+                                    (not ispell-really-enchant)
+                                    (save-excursion
+                                      (goto-char (- (nth 1 found-list) 1))
+                                      (if (looking-at "[\\]" )
+                                          t
+                                        nil))))
+                          (setq keep nil)
+                          ;; Don't try spell-checking words whose
+                          ;; characters don't match CASECHARS, because
+                          ;; flyspell-word will then consider as
+                          ;; misspelling the preceding word that matches
+                          ;; CASECHARS.
+                          (or (null found)
+                              (flyspell-word nil t))
+                          ;; Search for next misspelled word will begin from
+                          ;; end of last validated match.
+                          (setq buffer-scan-pos (point))))
+                    ;; Record if misspelling is not found and try new one
+                    (cl-pushnew (concat " -> " word " - "
+                                        (int-to-string wordpos))
+                                words-not-found :test #'equal)
+                    (setq keep nil)))))))
+        ;; we are done
+        (if flyspell-issue-message-flag (message "Spell Checking completed.")))
+      ;; Kill and forget the buffer with the list of incorrect words.
+      (kill-buffer flyspell-external-ispell-buffer)
+      (setq flyspell-external-ispell-buffer nil)))
 
-(defun zenith/add-word-to-dictionary (beg end)
-  "Add word at point to the dictionary"
-  (interactive "r")
-  (save-excursion
-    (let* ((word (concat (if (region-active-p)
-                             (buffer-substring-no-properties beg end)
-                           (word-at-point t))
-                         "\n"))
-           (file (expand-file-name (concat "~/.hunspell_" ispell-dictionary))))
-      (append-to-file word nil file)))
-  (zenith/flyspell-check-region))
+  (defun zenith/add-word-to-dictionary (beg end)
+    "Add word at point to the dictionary"
+    (interactive "r")
+    (save-excursion
+      (let* ((word (concat (if (region-active-p)
+                               (buffer-substring-no-properties beg end)
+                             (word-at-point t))
+                           "\n"))
+             (file (expand-file-name (concat "~/.hunspell_" ispell-dictionary))))
+        (append-to-file word nil file)))
+    (zenith/flyspell-check-region))
 
-;; Move point to previous error
-;; based on code by hatschipuh at
-;; http://emacs.stackexchange.com/a/14912/2017
-(defun flyspell-goto-previous-error (arg)
-  "Go to arg previous spelling error."
-  (interactive "p")
-  (backward-word 1)
-  (while (not (= 0 arg))
-    (let ((pos (point))
-          (min (point-min)))
-      (if (and (eq (current-buffer) flyspell-old-buffer-error)
-               (eq pos flyspell-old-pos-error))
-          (progn
-            (if (= flyspell-old-pos-error min)
-                ;; goto beginning of buffer
-                (progn
-                  (message "Restarting from end of buffer")
-                  (goto-char (point-max)))
-              (backward-word 1))
-            (setq pos (point))))
-      ;; seek the next error
-      (while (and (> pos min)
-                  (let ((ovs (overlays-at pos))
-                        (r '()))
-                    (while (and (not r) (consp ovs))
-                      (if (flyspell-overlay-p (car ovs))
-                          (setq r t)
-                        (setq ovs (cdr ovs))))
-                    (not r)))
-        (backward-word 1)
-        (setq pos (point)))
-      ;; save the current location for next invocation
-      (setq arg (1- arg))
-      (setq flyspell-old-pos-error pos)
-      (setq flyspell-old-buffer-error (current-buffer))
-      (goto-char pos)
-      (when (= pos min)
+  ;; Move point to previous error
+  ;; based on code by hatschipuh at
+  ;; http://emacs.stackexchange.com/a/14912/2017
+  (defun flyspell-goto-previous-error (arg)
+    "Go to arg previous spelling error."
+    (interactive "p")
+    (backward-word 1)
+    (while (not (= 0 arg))
+      (let ((pos (point))
+            (min (point-min)))
+        (if (and (eq (current-buffer) flyspell-old-buffer-error)
+                 (eq pos flyspell-old-pos-error))
+            (progn
+              (if (= flyspell-old-pos-error min)
+                  ;; goto beginning of buffer
+                  (progn
+                    (message "Restarting from end of buffer")
+                    (goto-char (point-max)))
+                (backward-word 1))
+              (setq pos (point))))
+        ;; seek the next error
+        (while (and (> pos min)
+                    (let ((ovs (overlays-at pos))
+                          (r '()))
+                      (while (and (not r) (consp ovs))
+                        (if (flyspell-overlay-p (car ovs))
+                            (setq r t)
+                          (setq ovs (cdr ovs))))
+                      (not r)))
+          (backward-word 1)
+          (setq pos (point)))
+        ;; save the current location for next invocation
+        (setq arg (1- arg))
+        (setq flyspell-old-pos-error pos)
+        (setq flyspell-old-buffer-error (current-buffer))
+        (goto-char pos)
+        (when (= pos min)
           (progn
             (message "No more miss-spelled word!")
             (setq arg 0)))))
-  (forward-word))
+    (forward-word)))
 
 ;; Delete word in a more user friendly way
 (defun zenith/aggressive-delete-space ()
@@ -475,15 +489,20 @@ otherwise."
 (require 'dired-subtree)
 
 ;; emacs-libvterm
-(require 'vterm)
-(require 'multi-vterm)
+(if zenith/enable-vterm
+    (progn
+      (require 'vterm)
+      (require 'multi-vterm)
 
-(defun zenith/vterm-toggle ()
-  "Toggle vterm."
-  (interactive)
-  (if (projectile-project-p)
-      (multi-vterm-project)
-    (multi-vterm-dedicated-toggle)))
+      (defun zenith/vterm-toggle ()
+        "Toggle vterm."
+        (interactive)
+        (if (projectile-project-p)
+            (multi-vterm-project)
+          (multi-vterm-dedicated-toggle))))
+  (defun zenith/vterm-toggle ()
+    (interactive)
+    (message "Vterm module is not enabled.")))
 
 ;; emacs-winum
 ;; dependencies: cl-lib dash

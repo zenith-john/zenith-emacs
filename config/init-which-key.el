@@ -17,13 +17,14 @@
 ;; general improvements to which-key readability
 (which-key-mode +1)
 
-;; which-key-posframe
-;; dependencies: which-key posframe
-(require 'which-key-posframe)
-(setq which-key-posframe-parameters
-      '((left-fringe . 0)
-        (right-fringe . 0)))
-(which-key-posframe-mode)
+(when zenith/enable-posframe
+  ;; which-key-posframe
+  ;; dependencies: which-key posframe
+  (require 'which-key-posframe)
+  (setq which-key-posframe-parameters
+        '((left-fringe . 0)
+          (right-fringe . 0)))
+  (which-key-posframe-mode))
 
 (provide 'init-which-key)
 ;;; init-which-key.el ends here
