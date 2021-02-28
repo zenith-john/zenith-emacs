@@ -26,9 +26,6 @@
 [submodule "extensions/expand-region"]
 	path = extensions/expand-region
 	url = https://github.com/magnars/expand-region.el
-[submodule "extensions/multiple-cursor"]
-	path = extensions/multiple-cursor
-	url = https://github.com/magnars/multiple-cursors.el
 [submodule "extensions/magit"]
 	path = extensions/magit
 	url = https://github.com/magit/magit
@@ -194,9 +191,6 @@
 [submodule "extensions/ibuffer-projectile"]
 	path = extensions/ibuffer-projectile
 	url = https://github.com/purcell/ibuffer-projectile
-[submodule "extensions/benchmark-init-el"]
-	path = extensions/benchmark-init-el
-	url = https://github.com/dholm/benchmark-init-el
 [submodule "extensions/ws-butler"]
 	path = extensions/ws-butler
 	url = https://github.com/lewang/ws-butler
