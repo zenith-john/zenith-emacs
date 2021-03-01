@@ -307,7 +307,7 @@
       "aligned"
       "table"
       "tabular"
-      "tikz-cd"
+      "tikzcd"
       "bmatrix*"
       "Bmatrix*"
       "pmatrix*"

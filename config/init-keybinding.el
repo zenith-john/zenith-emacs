@@ -253,7 +253,7 @@
 
 (general-define-key
  :keymaps 'LaTeX-mode-map
- :prefix [f8]
+ :prefix [f9]
  :prefix-command 'LaTeX-prefix-command
  :prefix-map 'LaTeX-prefix-map
  "a" 'zenith/latexmk-compile

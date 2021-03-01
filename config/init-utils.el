@@ -115,7 +115,9 @@
 
   (require 'wucuo)
 
-  (setq wucuo-flyspell-start-mode "fast")
+  (setq
+   wucuo-enable-camel-case-algorithm-p nil
+   wucuo-flyspell-start-mode "fast")
 
   (defun zenith/flyspell-check-region ()
     "Remove overlay and check region"
