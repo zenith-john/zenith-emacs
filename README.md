@@ -1,3 +1,5 @@
+# Update Git
+```bash
 #!/usr/bin/bash
 
 # update git submodule
@@ -6,9 +8,12 @@ if [ -d "./extensions/yasnippet" ]; then
 #    git submodule update --remote
 else
     echo "Initializing Submodules"
-    git submodule update --init --recursive --depth 1
+    git submodule update --init --depth 1
 fi
+```
 
+# Compile Elisp Files
+```
 root=$(pwd)
 
 # build org-mode
@@ -40,3 +45,4 @@ make -C $root/extensions/magit
 # compile .elc
 cd $root
 emacs --batch -l $root/init.el --eval "(byte-recompile-directory (expand-file-name \"./extensions\") 0)"
+```
