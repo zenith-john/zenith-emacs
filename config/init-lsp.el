@@ -23,7 +23,12 @@
 (with-eval-after-load 'nox
   (add-to-list 'nox-server-programs '(js-mode . ("typescript-language-server" "--stdio"))))
 
-(zenith/add-hook '(c-mode-hook c++-mode-hook js-mode-hook python-mode-hook) 'zenith/nox-load-and-ensure)
+(when (executable-find "ccls")
+  (zenith/add-hook '(c-mode-hook c++-mode-hook) 'zenith/nox-load-and-ensure))
+(when (executable-find "typescript-language-server")
+  (zenith/add-hook '(js-mode-hook) 'zenith/nox-load-and-ensure))
+(when (executable-find "mspyls")
+  (zenith/add-hook '(python-mode-hook) 'zenith/nox-load-and-ensure))
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here
