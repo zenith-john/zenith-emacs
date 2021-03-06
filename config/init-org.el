@@ -52,7 +52,8 @@
   (require 'org-id)
   ;; load org-mind-map
   (require 'ox-org)
-  (require 'org-mind-map))
+  (require 'org-mind-map)
+  (require 'org-download))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 

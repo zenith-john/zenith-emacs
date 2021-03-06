@@ -365,3 +365,6 @@
 [submodule "extensions/frame-local"]
 	path = extensions/frame-local
 	url = https://github.com/sebastiencs/frame-local
+[submodule "extensions/org-download"]
+	path = extensions/org-download
+	url = https://github.com/abo-abo/org-download
