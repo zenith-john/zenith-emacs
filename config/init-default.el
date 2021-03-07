@@ -119,7 +119,7 @@
 
 (global-auto-revert-mode 1)
 
-(cua-mode 1)
+;; (cua-mode 1)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
