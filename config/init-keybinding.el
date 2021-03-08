@@ -106,11 +106,12 @@
  [remap end-of-buffer]         'evil-goto-line)
 
 (general-define-key
- :states '(insert emacs)
- "M-h"   'backward-char
- "M-l"   'forward-char
- "M-j"   'backward-delete-char
- "M-k"   'evil-normal-state)
+ :states    '(insert emacs)
+ "M-h"      'backward-char
+ "M-l"      'forward-char
+ "M-j"      'backward-delete-char
+ "M-k"      'evil-normal-state
+ "<return>" 'newline-dwim)
 
 (general-define-key
  :prefix "C-c"

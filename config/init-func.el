@@ -53,5 +53,18 @@
     (async-shell-command (format "nohup xdg-open \"%s\" >/dev/null 2>&1"
                                  (file-relative-name path default-directory)))))
 
+(defun newline-dwim ()
+  (interactive)
+  (let ((break-open-pair (or (and (looking-back "{") (looking-at "}"))
+                             (and (looking-back ">") (looking-at "<"))
+                             (and (looking-back "(") (looking-at ")"))
+                             (and (looking-back "\\[") (looking-at "\\]")))))
+    (newline)
+    (when break-open-pair
+      (save-excursion
+        (newline)
+        (indent-for-tab-command)))
+    (indent-for-tab-command)))
+
 (provide 'init-func)
 ;;; init-func.el ends here

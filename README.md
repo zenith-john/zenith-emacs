@@ -46,3 +46,9 @@ make -C $root/extensions/magit
 cd $root
 emacs --batch -l $root/init.el --eval "(byte-recompile-directory (expand-file-name \"./extensions\") 0)"
 ```
+
+# Install Fonts
+```
+cp ~/.emacs.d/extensions/all-the-icons/fonts  ~/.fonts/
+fc-cache -fv
+```
