@@ -9,6 +9,7 @@
 (defvar zenith-emacs-extension-dir (expand-file-name "extensions/" zenith-emacs-root-dir))
 (defvar zenith-emacs-config-dir (expand-file-name "config/" zenith-emacs-root-dir))
 (defvar zenith-emacs-local-dir (expand-file-name "local/" zenith-emacs-root-dir))
+(defvar zenith/wsl-system t "Whether emacs starts in wsl. Some interaction with Windows are enabled")
 (defvar zenith/enable-vterm t "Whether enable vterm module.")
 (defvar zenith/enable-pyim t "Whether enable pyim and rime module.")
 (defvar zenith/enable-posframe t "Whether enable posframe module.")

@@ -35,5 +35,8 @@
 (require 'init-rust)
 (require 'init-R)
 
+(when zenith/wsl-system
+  (require 'init-wsl))
+
 (provide 'config)
 ;;; config.el ends here
