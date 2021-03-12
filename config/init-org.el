@@ -53,7 +53,8 @@
   ;; load org-mind-map
   (require 'ox-org)
   (require 'org-mind-map)
-  (require 'org-download))
+  (require 'org-download)
+  (setq org-download-image-org-width 600))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
