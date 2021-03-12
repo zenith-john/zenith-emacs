@@ -41,6 +41,7 @@
    (ess-R-fl-keyword:F&T . t)))
 
 (add-hook 'ess-r-mode-hook 'zenith/nox-load-and-ensure)
+(add-hook 'ess-r-mode-hook 'flycheck-mode)
 
 (provide 'init-R)
 ;;; init-R.el ends here

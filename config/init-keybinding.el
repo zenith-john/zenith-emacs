@@ -91,8 +91,10 @@
  [remap list-buffers]          'ibuffer
  "C-."                         'yas-insert-snippet
  "C-r"                         'evil-search-backward
+ "C-v"                         'yank
  "C-x C-j"                     'company-complete-common
  "C-x C-s"                     (lambda ()(interactive)(message "Don't use C-x C-s to save, it hurts."))
+ "C-z"                         'undo
  "M-;"                         'evilnc-comment-or-uncomment-lines
  "M-/"                         'zenith/rime-convert-string-at-point
  "M-o"                         'ace-window
@@ -110,8 +112,7 @@
  "M-h"      'backward-char
  "M-l"      'forward-char
  "M-j"      'backward-delete-char
- "M-k"      'evil-normal-state
- "<return>" 'newline-dwim)
+ "M-k"      'evil-normal-state)
 
 (general-define-key
  :prefix "C-c"
@@ -200,6 +201,11 @@
  "e" 'eval-last-sexp
  "[" 'backward-sexp
  "]" 'forward-sexp)
+
+(general-define-key
+ :keymaps   'prog-mode-map
+ :states    '(emacs insert)
+ "<return>" 'newline-dwim)
 
 ;; Org-mode
 (general-define-key
