@@ -12,7 +12,7 @@
 (defvar zenith/wsl-system t "Whether emacs starts in wsl. Some interaction with Windows are enabled")
 (defvar zenith/enable-vterm t "Whether enable vterm module.")
 (defvar zenith/enable-pyim t "Whether enable pyim and rime module.")
-(defvar zenith/enable-posframe t "Whether enable posframe module.")
+(defvar zenith/enable-posframe (display-graphic-p) "Whether enable posframe module.")
 
 ;; Do not load package
 (setq initial-major-mode 'fundamental-mode

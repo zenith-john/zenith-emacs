@@ -17,6 +17,9 @@
  apropos-do-all t                 ; make `apropos' more useful
  auto-mode-case-fold nil
  autoload-compute-prefixes nil
+ comint-prompt-read-only t
+ comint-scroll-to-bottom-on-input t
+ comint-scroll-to-bottom-on-output t
  ffap-machine-p-known 'reject     ; don't ping things that look like domain names
  find-file-visit-truename t       ; resolve symlinks when opening files
  frame-title-format '(multiple-frames ("" invocation-name "@" system-name "@" "%b")

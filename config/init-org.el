@@ -53,8 +53,7 @@
   ;; load org-mind-map
   (require 'ox-org)
   (require 'org-mind-map)
-  (require 'org-download)
-  (setq org-download-image-org-width 600))
+  (require 'org-download))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
@@ -335,6 +334,11 @@
     (interactive "fFile: ")
     (org-bibtex-read-buffer (find-file-noselect file 'nowarn))))
 
+;; org-downloads configuration
+(with-eval-after-load 'org-download
+  (setq org-download-image-org-width 600)
+  (setq-default org-download-image-dir "./img"
+                org-download-heading-lvl nil))
 ;; Org attach
 (setq org-attach-method 'lns)
 

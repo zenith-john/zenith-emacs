@@ -336,7 +336,7 @@ otherwise."
 
 ;; visual fill column
 (autoload 'visual-fill-column-mode "visual-fill-column" "" t)
-(setq-default visual-fill-column-width fill-column
+(setq-default visual-fill-column-width (+ fill-column 20)
               word-wrap-by-category t)
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 (add-hook 'auto-fill-mode-hook 'visual-line-mode)
