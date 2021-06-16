@@ -18,7 +18,19 @@
 ;;; Packages
 
 ;; delay load org-mode
-(zenith/delay-load (lambda ()(require 'org)))
+(zenith/delay-load (lambda ()
+                     (require 'org)
+                     ;; org-wild-notifier.el
+                     ;; dependencies: alert
+                     (require 'org-wild-notifier)
+                     (org-wild-notifier-mode)
+                     ))
+
+;; org-wild-notifier
+(with-eval-after-load 'org-wild-notifier
+  (require 'alert-toast)
+  (setq org-wild-notifier-alert-time '(15)
+        alert-default-style 'toast))
 
 ;; org-clock
 (zenith/autoload '(org-clock-load org-clock-save) "org-clock")

@@ -74,6 +74,14 @@
 (evil-select-search-module 'evil-search-module 'evil-search)
 (global-evil-pinyin-mode 1)
 
+(defun evil-ex-start-search-org-mode-advice (fn direction count)
+  (save-excursion
+    (when (eq major-mode 'org-mode)
+      (outline-show-all))
+    (funcall fn direction count)))
+
+(advice-add 'evil-ex-start-search :around 'evil-ex-start-search-org-mode-advice)
+
 ;; evil-collection
 ;; dependencies: evil
 (require 'evil-collection)

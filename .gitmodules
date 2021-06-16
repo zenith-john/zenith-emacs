@@ -368,3 +368,9 @@
 [submodule "extensions/org-download"]
 	path = extensions/org-download
 	url = https://github.com/abo-abo/org-download
+[submodule "extensions/alert"]
+	path = extensions/alert
+	url = https://github.com/jwiegley/alert
+[submodule "extensions/org-wild-notifier"]
+	path = extensions/org-wild-notifier
+	url = https://github.com/akhramov/org-wild-notifier.el
