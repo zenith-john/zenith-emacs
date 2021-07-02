@@ -44,6 +44,7 @@
  "="     'er/expand-region
  "a"     'org-agenda
  "A"     'zenith/my-org-agenda
+ "c"     'org-capture
  "f"     'format-all-buffer
  "g"     'magit-status
  "o"     'ace-window

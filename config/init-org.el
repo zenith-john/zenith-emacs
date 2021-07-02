@@ -36,9 +36,16 @@
 ;; org-clock
 (zenith/autoload '(org-clock-load org-clock-save) "org-clock")
 (add-hook 'org-mode-hook 'org-clock-load)
-(setq org-clock-persist 'history
+(setq org-clock-persist t
+      org-clock-in-resume t
+      org-clock-persist-query-resume nil
       org-clock-persist-file (concat zenith-emacs-local-dir "org-clock-save.el"))
 (add-hook 'kill-emacs-hook #'org-clock-save)
+
+(defun zenith/org-manual-clock ()
+  (interactive)
+  (org-clock-in)
+  (org-clock-out))
 
 ;;
 ;;; Bootstrap
@@ -161,16 +168,16 @@
 
   (setq org-capture-templates
         '(
-          ("h" "Homework" entry (file+headline "~/Dropbox/task.org"  "Homework")
-           "* TODO %? :Homework:\n%U\n")
-          ("s" "Schedule" entry (file+headline "~/Dropbox/task.org" "Schedule")
-           "* %?\n%U\n")
-          ("r" "Project" entry (file+headline "~/Dropbox/task.org" "Project")
+          ("d" "Deadline" entry (file+headline "~/Dropbox/Agenda.org"  "Deadline")
+           "* TODO %?\nDEADLINE:%^t\n%U\n")
+          ("m" "Meeting" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
+           "* %?\n%^t\n%U\n")
+          ("s" "Schedule" entry (file+headline "~/Dropbox/Agenda.org" "Schedule")
+           "* %?\nSCHEDULED:%^t\n%U\n")
+          ("p" "Project" entry (file "~/Dropbox/Projects.org")
            "* TODO %?\n%U\n")
-          ("q" "Question" entry (file+headline "~/Dropbox/task.org" "Question")
-           "* TODO %? :Question:\n%U\n")
-          ("d" "Idea" entry (file+headline "~/Dropbox/task.org" "Idea")
-           "* TODO %? :Idea:\n%U\n")))
+          ("n" "Notes" entry (file "~/Dropbox/tmp.org")
+           "* TODO %? \n%U\n")))
 
   ;; Org tag
   (setq org-tag-alist
@@ -196,8 +203,7 @@
         org-agenda-show-all-dates nil
         org-deadline-warning-days 365
         org-agenda-show-future-repeats 'next
-        org-agenda-window-setup 'only-window)
-
+        org-agenda-window-setup 'current-window)
 
   (setq org-agenda-custom-commands
         '(("b" "Agenda View" ((tags "AGENDAHEADER"
@@ -211,10 +217,12 @@
                                        (org-agenda-span 'day)
                                        (org-deadline-warning-days 0)
                                        (org-agenda-start-day "+0d")))
-                              (todo "NEXT"
+                              (tags-todo "CRUCIAL"
+                                         ((org-agenda-overriding-header "CRUCIAL:")))
+                              (tags-todo "Urgent"
+                                         ((org-agenda-overriding-header "Urgent:")))
+                              (tags-todo "-CRUCIAL-Urgent/+NEXT"
                                     ((org-agenda-overriding-header "========================================\nNext Tasks:")))
-                              (tags-todo "Must/!-NEXT"
-                                         ((org-agenda-overriding-header "========================================\nMust Do:")))
                               (tags "BEFOREWEEKGLANCE"
                                     ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
                               (agenda ""
@@ -229,12 +237,8 @@
                                        (org-agenda-time-grid nil)
                                        (org-agenda-show-all-dates nil)
                                        (org-agenda-entry-types '(:deadline :scheduled))
-                                       (org-agenda-start-day "+7d")))))
-          ("i" "Improvement" ((tags-todo "Question"
-                                         ((org-agenda-overriding-header "Unsolved Questions:")))
-                              (tags-todo "Improvement" ((org-agenda-overriding-header "\n\nImprovment:")))
-                              (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
-                                         ((org-agenda-overriding-header "\n\nPersonal Project:")))))))
+                                       (org-agenda-start-day "+7d")))))))
+
   (defun org-time-to-minutes (time)
     "Convert an HHMM time to minutes"
     (+ (* (/ time 100) 60) (% time 100)))
@@ -286,7 +290,17 @@
    '((emacs-lisp . t)
      (latex . t)
      (python . t)
-     (shell . t))))
+     (shell . t)))
+
+  (require 'org-tempo)
+  (setq org-structure-template-alist
+        '(("p" . "proof")
+          ("q" . "quote")
+          ("t" . "theorem")
+          ("c" . "corollary")
+          ("P" . "proposition")
+          ("s" . "src")
+          ("C" . "comment"))))
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
