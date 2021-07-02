@@ -29,7 +29,8 @@
 ;; org-wild-notifier
 (with-eval-after-load 'org-wild-notifier
   (require 'alert-toast)
-  (setq org-wild-notifier-alert-time '(15)
+  (setq org-wild-notifier-keyword-whitelist nil
+        org-wild-notifier-alert-time '(15)
         alert-default-style 'toast))
 
 ;; org-clock
@@ -156,13 +157,7 @@
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w@/!)" "PAUSE(p)" "SOMEDAY(s)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")
-          (sequence "[ ](T)" "[-](P)" "[?](m)" "|" "[X](D)"))
-        org-todo-keyword-faces
-        '(("[-]" :inherit (font-lock-constant-face bold))
-          ("[?]" :inherit (warning bold))
-          ("WAITING" :inherit bold)
-          ("LATER" :inherit (warning bold))))
+        '((sequence "TODO(t)" "WAITING(w@/!)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
 
   (setq org-capture-templates
         '(
@@ -179,16 +174,12 @@
 
   ;; Org tag
   (setq org-tag-alist
-        '(("Improvement" . ?i)
-          (:startgrouptag)
-          ("Must")
-          (:grouptags)
-          ("Homework" . ?h)
-          ("Job" . ?j)
-          (:endgrouptag)
-          ("Personal" . ?p)
-          ("Question" . ?q)
-          ("Idea" . ?d)))
+        '(
+          (:startgrouptag . nil)
+          ("CRUCIAL" . ?c)
+          ("Important" . ?i)
+          ("Urgent" . ?u)
+          (:endgrouptag . nil)))
 
   ;; Org habit
   (require 'org-habit)
@@ -213,6 +204,10 @@
                                     ((org-agenda-overriding-header "Today's Schedule:")))
                               (agenda ""
                                       ((org-agenda-show-all-dates t)
+                                       (org-agenda-use-time-grid t)
+                                       (org-agenda-time-grid '((daily today require-timed remove-match)
+                                                               (700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300)
+                                                               "......" "----Free----"))
                                        (org-agenda-span 'day)
                                        (org-deadline-warning-days 0)
                                        (org-agenda-start-day "+0d")))
@@ -240,6 +235,48 @@
                               (tags-todo "Improvement" ((org-agenda-overriding-header "\n\nImprovment:")))
                               (tags-todo "Idea+TODO<>\"NEXT\"|Personal+TODO<>\"NEXT\""
                                          ((org-agenda-overriding-header "\n\nPersonal Project:")))))))
+  (defun org-time-to-minutes (time)
+    "Convert an HHMM time to minutes"
+    (+ (* (/ time 100) 60) (% time 100)))
+
+  (defun org-time-from-minutes (minutes)
+    "Convert a number of minutes to an HHMM time"
+    (+ (* (/ minutes 60) 100) (% minutes 60)))
+
+  (defadvice org-agenda-add-time-grid-maybe (around mde-org-agenda-grid-tweakify
+                                                    (list ndays todayp))
+    (if (member 'remove-match (car org-agenda-time-grid))
+        (flet ((extract-window
+                (line)
+                (let ((start (get-text-property 1 'time-of-day line))
+                      (dur (get-text-property 1 'duration line)))
+                  (cond
+                   ((and start dur)
+                    (cons start
+                          (org-time-from-minutes
+                           (truncate
+                            (+ dur (org-time-to-minutes start))))))
+                   (start start)
+                   (t nil)))))
+          (let* ((windows (delq nil (mapcar 'extract-window list)))
+                 (org-agenda-time-grid
+                  (list
+                   (car org-agenda-time-grid)
+                   (remove-if
+                    (lambda (time)
+                      (find-if (lambda (w)
+                                 (if (numberp w)
+                                     (equal w time)
+                                   (and (>= time (car w))
+                                        (< time (cdr w)))))
+                               windows))
+                    (cadr org-agenda-time-grid) )
+                   (caddr org-agenda-time-grid)
+                   (cadddr org-agenda-time-grid)
+                   )))
+            ad-do-it))
+      ad-do-it))
+  (ad-activate 'org-agenda-add-time-grid-maybe)
 
   (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
 
@@ -306,7 +343,7 @@
         org-icalendar-use-scheduled '(event-if-not-todo todo-start)
         org-icalendar-alarm-time 15
         org-icalendar-store-UID t
-        org-agenda-default-appointment-duration 90))
+        org-agenda-default-appointment-duration nil))
 
 (with-eval-after-load 'org
   (require 'evil-org)
