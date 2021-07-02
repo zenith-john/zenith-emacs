@@ -374,3 +374,6 @@
 [submodule "extensions/org-wild-notifier"]
 	path = extensions/org-wild-notifier
 	url = https://github.com/akhramov/org-wild-notifier.el
+[submodule "extensions/org-super-links"]
+	path = extensions/org-super-links
+	url = https://github.com/toshism/org-super-links

@@ -217,7 +217,7 @@
 
 (general-define-key
  :keymaps 'org-mode-map
- "C-l" 'zenith/org-insert-link-by-id
+ "C-l" 'org-super-links-link
  "M-r" 'zenith/search-id-reverse-link)
 
 ;; I prefer C-c C-c over C-c ' (more consistent)

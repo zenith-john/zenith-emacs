@@ -171,13 +171,13 @@
           ("d" "Deadline" entry (file+headline "~/Dropbox/Agenda.org"  "Deadline")
            "* TODO %?\nDEADLINE:%^t\n%U\n")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
-           "* %?\n%^t\n%U\n")
+           "* TODO %?\n%^t\n%U\n")
           ("s" "Schedule" entry (file+headline "~/Dropbox/Agenda.org" "Schedule")
-           "* %?\nSCHEDULED:%^t\n%U\n")
+           "* TODO %?\nSCHEDULED:%^t\n%U\n")
           ("p" "Project" entry (file "~/Dropbox/Projects.org")
            "* TODO %?\n%U\n")
-          ("n" "Notes" entry (file "~/Dropbox/tmp.org")
-           "* TODO %? \n%U\n")))
+          ("n" "Notes" entry (file "~/Dropbox/Temp.org")
+           "* %? \n%U\n")))
 
   ;; Org tag
   (setq org-tag-alist
@@ -374,12 +374,14 @@
             (org-id-get-with-outline-path-completion org-refile-targets)))
   (org-link-set-parameters "id"
                            :complete 'org-id-complete-link)
+
   (defun zenith/search-id-reverse-link ()
     "Search the id in the directory"
     (interactive)
     (let ((query
            (cdr (first (org-entry-properties nil "ID")))))
       (rg-project query "*.org")))
+
   (defun zenith/org-insert-link-by-id ()
     "Insert the link by id"
     (interactive)
