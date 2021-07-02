@@ -11,4 +11,5 @@ session*
 /nox/
 /pyim/
 /.rgignore
+/projects
 eln-cache/*
