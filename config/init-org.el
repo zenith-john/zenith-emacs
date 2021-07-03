@@ -434,9 +434,7 @@
   (defun zenith/org-calc-clones (timestamp interval)
     "Calculate the clone numbers."
     (let ((time (org-time-stamp-to-now timestamp)))
-      (max (/ (- 7 time) interval) 0)))
-
-  (zenith/org-calc-clones "<2021-07-20 +1m>" 28)
+      (max (/ (- (+ interval 7) time) interval) 0)))
 
   (defun -zenith/org-clone-repeats ()
     "Repeat the daily task 7 times"

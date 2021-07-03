@@ -14,6 +14,7 @@
   (interactive)
   (when (and
          (not (minibufferp))
+         (buffer-file-name)
          (or (not (boundp 'yas--active-snippets))
              (not yas--active-snippets))
          (or (not (boundp 'company-candidates))
