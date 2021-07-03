@@ -238,6 +238,10 @@
  "." 'org-time-stamp
  )
 
+(general-define-key
+ :keymaps  'org-edna-edit-map
+ "C-c C-l" 'zenith/org-link-edna-id)
+
 ;; LaTeX-mode
 ;; Exchange position of { and [ in latex mode to reduce the injury of the finger
 (general-define-key

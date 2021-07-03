@@ -68,8 +68,6 @@
   ;; org-edit-latex
   (require 'org-edit-latex)
   (org-edit-latex-mode)
-  ;; manually load org-id
-  (require 'org-id)
   ;; load org-mind-map
   (require 'ox-org)
   (require 'org-mind-map)
@@ -78,8 +76,13 @@
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
 (with-eval-after-load 'org
+  ;; manually load org-id
+  (require 'org-id)
+  (require 'org-edna)
+
   (defun zenith/refile-targets-notes ()
     (directory-files zenith/note-directory t ".*\\.org\\'"))
+
   (setq-default
    org-adapt-indentation nil
    org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))
@@ -382,6 +385,12 @@
            (cdr (first (org-entry-properties nil "ID")))))
       (rg-project query "*.org")))
 
+  (defun zenith/org-link-edna-id ()
+    "Insert id as edna format"
+    (interactive)
+    (let ((link (org-link--try-special-completion "id")))
+      (insert (concat "ids(" (nth 1 (split-string link ":"))  ")"))))
+
   (defun zenith/org-insert-link-by-id ()
     "Insert the link by id"
     (interactive)
@@ -390,7 +399,70 @@
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+
+  (defun zenith/past-time-p (timestamp)
+    "Check whether the timestamp time is older than today."
+    (> 0 (org-time-stamp-to-now timestamp)))
+
+  (defun zenith/org-archive-old ()
+    "Remove the old events in file without repeats."
+    (let ((org-trust-scanner-tags t)
+          (timestamp (org-entry-get nil "TIMESTAMP")))
+      (when
+          (and timestamp (zenith/past-time-p timestamp)
+               (not (s-matches? "\\+" timestamp)))
+        (org-archive-subtree))))
+
+  (defun zenith/org-clean-agenda ()
+    "Remove the old events without repeats in agenda."
+    (interactive)
+    (org-map-entries 'zenith/org-archive-old t 'agenda))
+
+  (defun zenith/org-calc-interval (rep)
+    "Calculate the interval in reps."
+    (let ((day (string-to-number
+                   (or (car (s-match "\\+[0-9]+d" rep)) "0")))
+          (week (string-to-number
+                   (or (car (s-match "\\+[0-9]+w" rep)) "0")))
+          (month (string-to-number
+                   (or (car (s-match "\\+[0-9]+m" rep)) "0")))
+          (year (string-to-number
+                   (or (car (s-match "\\+[0-9]+y" rep)) "0"))))
+      (+ day (* 7 week) (* 28 month) (* 365 year))))
+
+  (defun zenith/org-calc-clones (timestamp interval)
+    "Calculate the clone numbers."
+    (let ((time (org-time-stamp-to-now timestamp)))
+      (max (/ (- 7 time) interval) 0)))
+
+  (zenith/org-calc-clones "<2021-07-20 +1m>" 28)
+
+  (defun -zenith/org-clone-repeats ()
+    "Repeat the daily task 7 times"
+    (when-let* ((org-trust-scanner-tags t)
+              (timestamp (org-entry-get nil "TIMESTAMP"))
+              (rep (car-safe (s-match "\\+[0-9]+[dwmy]" timestamp)))
+              (interval (zenith/org-calc-interval rep))
+              (times (zenith/org-calc-clones timestamp interval))
+              (check (> times 0)))
+      (save-restriction
+        (org-narrow-to-subtree)
+        (org-clone-subtree-with-time-shift times rep)
+        (end-of-buffer))
+      (org-next-visible-heading 1)
+      (setq org-map-continue-from (point))))
+
+  (defun zenith/org-clone-repeats ()
+    "Repeat the daily tasks."
+    (interactive)
+    (org-map-entries '-zenith/org-clone-repeats t 'agenda))
+
+  (defun zenith/org-next-week ()
+    "Prepare org-mode for next week"
+    (interactive)
+    (zenith/org-clean-agenda)
+    (zenith/org-clone-repeats)))
 
 (with-eval-after-load 'ol-bibtex
   ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.
