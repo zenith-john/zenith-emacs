@@ -68,6 +68,9 @@
   ;; org-edit-latex
   (require 'org-edit-latex)
   (org-edit-latex-mode)
+  ;; load org-id
+  (require 'org-id)
+  (require 'org-edna)
   ;; load org-mind-map
   (require 'ox-org)
   (require 'org-mind-map)
@@ -76,10 +79,6 @@
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
 (with-eval-after-load 'org
-  ;; manually load org-id
-  (require 'org-id)
-  (require 'org-edna)
-
   (defun zenith/refile-targets-notes ()
     (directory-files zenith/note-directory t ".*\\.org\\'"))
 

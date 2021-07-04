@@ -521,4 +521,8 @@ otherwise."
 (setq tramp-default-method "sshx")
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
+;; ledger-mode
+(with-eval-after-load 'org
+  (require 'ledger-mode))
+
 (provide 'init-utils)

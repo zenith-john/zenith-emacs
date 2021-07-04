@@ -377,3 +377,7 @@
 [submodule "extensions/org-super-links"]
 	path = extensions/org-super-links
 	url = https://github.com/toshism/org-super-links
+	branch = develop
+[submodule "extensions/ledger-mode"]
+	path = extensions/ledger-mode
+	url = https://github.com/ledger/ledger-mode
