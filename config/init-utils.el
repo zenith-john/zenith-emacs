@@ -413,7 +413,7 @@ otherwise."
 (defmacro ins-val (origin-var special-var)
   `(lambda () (interactive)
      (funcall-interactively 'self-insert-command 1
-                            (if (--is-number-or-dot (char-before))
+                            (if (and (char-before )(--is-number-or-dot (char-before)))
                                 ,(if (--is-number-or-dot origin-var)
                                      origin-var
                                    special-var)
@@ -512,9 +512,9 @@ otherwise."
 (winum-mode)
 
 ;; auto-capitalize-el
-(require 'auto-capitalize)
-(setq auto-capitalize-words nil)
-(add-hook 'after-change-major-mode-hook 'auto-capitalize-mode)
+;; (require 'auto-capitalize)
+;; (setq auto-capitalize-words nil)
+;; (add-hook 'after-change-major-mode-hook 'auto-capitalize-mode)
 
 ;; tramp
 (require 'tramp)

@@ -71,6 +71,7 @@
   ;; load org-id
   (require 'org-id)
   (require 'org-edna)
+  (org-edna-mode)
   ;; load org-mind-map
   (require 'ox-org)
   (require 'org-mind-map)
@@ -94,7 +95,6 @@
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t
    org-footnote-auto-label 'plain
-   org-goto-interface 'outline-path-completion
    org-hidden-keywords nil
    org-highlight-latex-and-related '(native)
    org-hide-emphasis-markers nil
@@ -239,7 +239,10 @@
                                        (org-agenda-time-grid nil)
                                        (org-agenda-show-all-dates nil)
                                        (org-agenda-entry-types '(:deadline :scheduled))
-                                       (org-agenda-start-day "+7d")))))))
+                                       (org-agenda-start-day "+7d")))))
+          ("c" "Todo Lists"
+           ((alltodo "" ((org-agenda-overriding-header "TODOs sorted by state, priority, effort")
+                       (org-agenda-sorting-strategy '(todo-state-down priority-down effort-up))))))))
 
   (defun org-time-to-minutes (time)
     "Convert an HHMM time to minutes"
@@ -300,6 +303,7 @@
           ("q" . "quote")
           ("t" . "theorem")
           ("c" . "corollary")
+          ("d" . "definition")
           ("P" . "proposition")
           ("s" . "src")
           ("C" . "comment"))))
@@ -411,6 +415,7 @@
       (when
           (and timestamp (zenith/past-time-p timestamp)
                (not (s-matches? "\\+" timestamp)))
+        (setq org-map-continue-from (point))
         (org-archive-subtree))))
 
   (defun zenith/org-clean-agenda ()

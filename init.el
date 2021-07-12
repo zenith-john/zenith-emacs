@@ -34,6 +34,7 @@
 
   (add-to-list 'load-path zenith-emacs-config-dir)
   (add-subdirs-to-load-path zenith-emacs-extension-dir)
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 
   (require 'benchmark-init)
   (require 'benchmark-init-modes)

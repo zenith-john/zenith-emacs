@@ -373,11 +373,14 @@
 	url = https://github.com/jwiegley/alert
 [submodule "extensions/org-wild-notifier"]
 	path = extensions/org-wild-notifier
-	url = https://github.com/akhramov/org-wild-notifier.el
+	url = https://github.com/zenith-john/org-wild-notifier.el
 [submodule "extensions/org-super-links"]
 	path = extensions/org-super-links
 	url = https://github.com/toshism/org-super-links
 	branch = develop
 [submodule "extensions/ledger-mode"]
 	path = extensions/ledger-mode
-	url = https://github.com/ledger/ledger-mode
+	url = https://github.com/zenith-john/ledger-mode
+[submodule "extensions/inheritenv"]
+	path = extensions/inheritenv
+	url = https://github.com/purcell/inheritenv

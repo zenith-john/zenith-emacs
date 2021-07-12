@@ -18,7 +18,8 @@
       '(not erc-mode message-mode help-mode gud-mode eshell-mode)
       company-frontends
       '(company-pseudo-tooltip-frontend
-        company-echo-metadata-frontend))
+        company-echo-metadata-frontend)
+      completion-styles '(basic emacs22 substring))
 
 (require 'company)
 
