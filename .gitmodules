@@ -384,3 +384,12 @@
 [submodule "extensions/inheritenv"]
 	path = extensions/inheritenv
 	url = https://github.com/purcell/inheritenv
+[submodule "extensions/burnt-toast"]
+	path = extensions/burnt-toast
+	url = https://github.com/cedarbaum/burnt-toast.el
+[submodule "extensions/mu4e-alert"]
+	path = extensions/mu4e-alert
+	url = https://github.com/iqbalansari/mu4e-alert
+[submodule "extensions/ht"]
+	path = extensions/ht
+	url = https://github.com/Wilfred/ht.el

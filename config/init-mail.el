@@ -64,6 +64,8 @@
   (add-hook 'mu4e-compose-pre-hook 'zenith/mu4e-set-account)
 
   (require 'smtpmail)
-  (require 'mu4e))
+  (require 'mu4e)
+  (require 'mu4e-alert)
+  (mu4e-alert-enable-notifications))
 
 (provide 'init-mail)
