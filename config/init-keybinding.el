@@ -207,6 +207,10 @@
  :states    '(emacs insert)
  "<return>" 'newline-dwim)
 
+;; flyspell-mode
+(general-define-key
+ :keymaps 'flyspell-mode-map
+ "C-;" nil)
 ;; Org-mode
 (general-define-key
  :states  '(normal motion)
@@ -216,7 +220,8 @@
 
 (general-define-key
  :keymaps 'org-mode-map
- "C-l" 'org-super-links-link
+ "C-l" 'zenith/org-super-links-link
+ "C-;" 'org-super-links-store-link
  "M-r" 'zenith/search-id-reverse-link)
 
 ;; I prefer C-c C-c over C-c ' (more consistent)

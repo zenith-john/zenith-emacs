@@ -75,7 +75,8 @@
   ;; load org-mind-map
   (require 'ox-org)
   (require 'org-mind-map)
-  (require 'org-download))
+  (require 'org-download)
+  (require 'org-super-links))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
@@ -109,14 +110,15 @@
    org-outline-path-complete-in-steps nil
    org-pretty-entities nil
    org-pretty-entities-include-sub-superscripts t
+   org-priority-default ?C
    org-priority-faces
-   '((?a . error)
-     (?b . warning)
-     (?c . success))
+   '((?A . error)
+     (?B . warning)
+     (?C . success))
    org-refile-targets
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3)
-     (zenith/refile-targets-notes :maxlevel . 3))
+     (zenith/refile-targets-notes :maxlevel . 4))
    org-refile-use-outline-path 'file
    org-special-ctrl-a/e t
    org-src-fontify-natively t
@@ -174,12 +176,16 @@
            "* TODO %?\nDEADLINE:%^t\n%U\n")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
            "* TODO %?\n%^t\n%U\n")
+          ("a" "Mails" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
+           "* TODO %?\n%a\n")
           ("s" "Schedule" entry (file+headline "~/Dropbox/Agenda.org" "Schedule")
            "* TODO %?\nSCHEDULED:%^t\n%U\n")
           ("p" "Project" entry (file "~/Dropbox/Projects.org")
            "* TODO %?\n%U\n")
           ("n" "Notes" entry (file "~/Dropbox/Temp.org")
-           "* %? \n%U\n")))
+           "* %? \n%U\n")
+          ("t" "Daily Review" entry (file "~/Dropbox/Temp.org")
+           "* %(format-time-string \"%Y-%m-%d\") Daily Review\n%U\n%?")))
 
   ;; Org tag
   (setq org-tag-alist
@@ -399,6 +405,16 @@
     (interactive)
     (let ((link (org-link--try-special-completion "id")))
       (org-insert-link nil link))))
+
+(with-eval-after-load 'org-super-links
+  (defun zenith/org-super-links-link ()
+    (interactive)
+    (let* ((target (get-register ?^)))
+      (if target
+	      (progn
+	        (org-super-links--insert-link target)
+	        (set-register ?^ nil))
+        (org-super-links-link)))))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
