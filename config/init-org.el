@@ -28,11 +28,13 @@
 
 ;; org-wild-notifier
 (with-eval-after-load 'org-wild-notifier
-  (require 'burnt-toast-alert)
-  (setq burnt-toast-powershell-command "powershell.exe")
+  (if (not zenith/wsl-system)
+      (setq alert-default-style 'notifications)
+    (require 'burnt-toast-alert)
+    (setq burnt-toast-powershell-command "powershell.exe"
+          alert-default-style 'burnt-toast))
   (setq org-wild-notifier-keyword-whitelist nil
-        org-wild-notifier-alert-time '(15)
-        alert-default-style 'burnt-toast))
+        org-wild-notifier-alert-time '(15)))
 
 ;; org-clock
 (zenith/autoload '(org-clock-load org-clock-save) "org-clock")
