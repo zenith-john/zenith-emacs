@@ -18,72 +18,64 @@
 ;;; Packages
 
 ;; delay load org-mode
-(zenith/delay-load (lambda ()
-                     (require 'org)
-                     ;; org-wild-notifier.el
-                     ;; dependencies: alert
-                     (require 'org-wild-notifier)
-                     (org-wild-notifier-mode)
-                     ))
+(require 'org)
+
+;; org-wild-notifier.el
+;; dependencies: alert
+(zenith/autoload '(org-wild-notifier-mode) "org-wild-notifier")
+(zenith/delay-load 'org-wild-notifier-mode)
 
 ;; org-wild-notifier
-(with-eval-after-load 'org-wild-notifier
+(with-eval-after-load 'alert
   (if (not zenith/wsl-system)
       (setq alert-default-style 'libnotify)
     (require 'burnt-toast-alert)
     (setq burnt-toast-powershell-command "powershell.exe"
-          alert-default-style 'burnt-toast))
+          alert-default-style 'burnt-toast)))
+(with-eval-after-load 'org-wild-notifier
   (setq org-wild-notifier-keyword-whitelist nil
         org-wild-notifier-alert-time '(15)))
 
-;; org-clock
-(zenith/autoload '(org-clock-load org-clock-save) "org-clock")
-(add-hook 'org-mode-hook 'org-clock-load)
-(setq org-clock-persist t
-      org-clock-in-resume t
-      org-clock-persist-query-resume nil
-      org-clock-persist-file (concat zenith-emacs-local-dir "org-clock-save.el"))
-(add-hook 'kill-emacs-hook #'org-clock-save)
-
-(defun zenith/org-manual-clock ()
-  (interactive)
-  (org-clock-in)
-  (org-clock-out))
-
+;; org-ref
+;; should be set before loading the package.
+(setq org-ref-default-bibliography `(,zenith/bibtex-library)
+      org-ref-bibliography-notes (concat zenith/note-directory "biblio.org")
+      org-ref-completion-library 'org-ref-ivy-cite
+      orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
 ;;
 ;;; Bootstrap
+(defun zenith/org-load-packages ()
+  (require 'org-clock)
+  (require 'ox-hugo)
+  (require 'org-bullets)
+  (require 'ox-icalendar)
+  (require 'org-edit-latex)
+  (require 'org-id)
+  (require 'ox-org)
+  (require 'org-edna)
+  (require 'org-mind-map)
+  (require 'org-download)
+  (require 'org-super-links)
+  (require 'org-ref)
+  (require 'doi-utils)
+  (require 'org-ref-isbn))
+
+(zenith/delay-load 'zenith/org-load-packages)
+
 (defun zenith/org-mode-hook ()
+  (zenith/org-load-packages)
   (visual-line-mode)
   ;; cdlatex
   ;; Enable cdlatex mode
   ;; TODO configure cdlatex-command-alist
   (setq-local company-idle-delay nil)
   (display-line-numbers-mode 0)
-  (org-cdlatex-mode 1)
-  ;; ox-hugo
-  ;; dependencies: org
-  (require 'ox-hugo)
-  ;; org-bullet
-  (require 'org-bullets)
   (org-bullets-mode)
-  ;; Org-agenda export to icalendar
-  (require 'ox-icalendar)
-  ;; org-edit-latex
-  (require 'org-edit-latex)
   (org-edit-latex-mode)
-  ;; load org-id
-  (require 'org-id)
-  (require 'org-edna)
   (org-edna-mode)
-  ;; load org-mind-map
-  (require 'ox-org)
-  (require 'org-mind-map)
-  (require 'org-download)
-  (if zenith/wsl-system
-      (setq org-download-screenshot-method
-            "i_view64.exe /capture=4 /convert=\"D:\\\\screenshot.png\"; mv /mnt/d/screenshot.png %s")
-    (setq org-download-screenshot-method "flameshot gui --raw > %s"))
-  (require 'org-super-links))
+  (org-cdlatex-mode 1)
+  (org-clock-load)
+  )
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
@@ -204,8 +196,8 @@
           (:endgrouptag . nil)))
 
   ;; Org habit
-  (require 'org-habit)
-  (setq org-habit-show-habits-only-for-today nil)
+  ;; (require 'org-habit)
+  ;; (setq org-habit-show-habits-only-for-today nil)
 
   ;; Org agenda settings
   (setq org-agenda-start-on-weekday nil
@@ -237,7 +229,7 @@
                               (tags-todo "Urgent"
                                          ((org-agenda-overriding-header "Urgent:")))
                               (tags-todo "-CRUCIAL-Urgent/+NEXT"
-                                    ((org-agenda-overriding-header "========================================\nNext Tasks:")))
+                                         ((org-agenda-overriding-header "========================================\nNext Tasks:")))
                               (tags "BEFOREWEEKGLANCE"
                                     ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
                               (agenda ""
@@ -255,52 +247,7 @@
                                        (org-agenda-start-day "+7d")))))
           ("c" "Todo Lists"
            ((alltodo "" ((org-agenda-overriding-header "TODOs sorted by state, priority, effort")
-                       (org-agenda-sorting-strategy '(todo-state-down priority-down effort-up))))))))
-
-  (defun org-time-to-minutes (time)
-    "Convert an HHMM time to minutes"
-    (+ (* (/ time 100) 60) (% time 100)))
-
-  (defun org-time-from-minutes (minutes)
-    "Convert a number of minutes to an HHMM time"
-    (+ (* (/ minutes 60) 100) (% minutes 60)))
-
-  (defun zenith/extract-window (line)
-    (let ((start (get-text-property 1 'time-of-day line))
-          (dur (get-text-property 1 'duration line)))
-      (cond
-       ((and start dur)
-        (cons start
-              (org-time-from-minutes
-               (truncate
-                (+ dur (org-time-to-minutes start))))))
-       (start start)
-       (t nil))))
-
-  (defadvice org-agenda-add-time-grid-maybe (around mde-org-agenda-grid-tweakify
-                                                    (list ndays todayp))
-    (if (member 'remove-match (car org-agenda-time-grid))
-          (let* ((windows (delq nil (mapcar 'zenith/extract-window list)))
-                 (org-agenda-time-grid
-                  (list
-                   (car org-agenda-time-grid)
-                   (cl-remove-if
-                    (lambda (time)
-                      (cl-find-if (lambda (w)
-                                 (if (numberp w)
-                                     (equal w time)
-                                   (and (>= time (car w))
-                                        (< time (cdr w)))))
-                               windows))
-                    (cadr org-agenda-time-grid))
-                   (caddr org-agenda-time-grid)
-                   (cadddr org-agenda-time-grid)
-                   )))
-            ad-do-it)
-      ad-do-it))
-  (ad-activate 'org-agenda-add-time-grid-maybe)
-
-  (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
+                         (org-agenda-sorting-strategy '(todo-state-down priority-down effort-up))))))))
 
   ;; org-babel
   (org-babel-do-load-languages
@@ -319,8 +266,48 @@
           ("d" . "definition")
           ("P" . "proposition")
           ("s" . "src")
-          ("C" . "comment"))))
+          ("C" . "comment")))
 
+  (require 'evil-org)
+  (evil-org-set-key-theme)
+  (add-hook 'org-mode-hook
+            'evil-org-mode)
+
+  ;; Org attach
+  (setq org-attach-method 'lns)
+
+  (zenith/autoload '(org-attach org-attach-open) "org-attach")
+
+  (defun org-agenda-attach-open ()
+    "Open attachment with one-key stroke."
+    (interactive)
+    (unless (eq major-mode 'org-agenda-mode)
+      (let ((debug-on-quit nil))
+        (signal 'quit '("This was written expressly for `*Org Agenda*`."))))
+    (let ((marker (or (get-text-property (point) 'org-hd-marker)
+                      (get-text-property (point) 'org-marker))))
+      (if marker
+          (save-excursion
+            (set-buffer (marker-buffer marker))
+            (goto-char marker)
+            (org-back-to-heading t)
+            (call-interactively 'org-attach-open))
+        (error "No task in current line")))))
+
+;; org-clock
+(with-eval-after-load 'org-clock
+  (setq org-clock-persist t
+        org-clock-in-resume t
+        org-clock-persist-query-resume nil
+        org-clock-persist-file (concat zenith-emacs-local-dir "org-clock-save.el"))
+  (add-hook 'kill-emacs-hook #'org-clock-save)
+
+  (defun zenith/org-manual-clock ()
+    (interactive)
+    (org-clock-in)
+    (org-clock-out)))
+
+;; ox-latex
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("myart"
@@ -377,12 +364,6 @@
         org-icalendar-alarm-time 15
         org-icalendar-store-UID t
         org-agenda-default-appointment-duration nil))
-
-(with-eval-after-load 'org
-  (require 'evil-org)
-  (evil-org-set-key-theme)
-  (add-hook 'org-mode-hook
-            'evil-org-mode))
 
 (with-eval-after-load 'org-id
   (setq org-id-extra-files (directory-files-recursively zenith/note-directory ".*\\.org"))
@@ -449,13 +430,13 @@
   (defun zenith/org-calc-interval (rep)
     "Calculate the interval in reps."
     (let ((day (string-to-number
-                   (or (car (s-match "\\+[0-9]+d" rep)) "0")))
+                (or (car (s-match "\\+[0-9]+d" rep)) "0")))
           (week (string-to-number
-                   (or (car (s-match "\\+[0-9]+w" rep)) "0")))
+                 (or (car (s-match "\\+[0-9]+w" rep)) "0")))
           (month (string-to-number
-                   (or (car (s-match "\\+[0-9]+m" rep)) "0")))
+                  (or (car (s-match "\\+[0-9]+m" rep)) "0")))
           (year (string-to-number
-                   (or (car (s-match "\\+[0-9]+y" rep)) "0"))))
+                 (or (car (s-match "\\+[0-9]+y" rep)) "0"))))
       (+ day (* 7 week) (* 28 month) (* 365 year))))
 
   (defun zenith/org-calc-clones (timestamp interval)
@@ -466,11 +447,11 @@
   (defun -zenith/org-clone-repeats ()
     "Repeat the daily task 7 times"
     (when-let* ((org-trust-scanner-tags t)
-              (timestamp (org-entry-get nil "TIMESTAMP"))
-              (rep (car-safe (s-match "\\+[0-9]+[dwmy]" timestamp)))
-              (interval (zenith/org-calc-interval rep))
-              (times (zenith/org-calc-clones timestamp interval))
-              (check (> times 0)))
+                (timestamp (org-entry-get nil "TIMESTAMP"))
+                (rep (car-safe (s-match "\\+[0-9]+[dwmy]" timestamp)))
+                (interval (zenith/org-calc-interval rep))
+                (times (zenith/org-calc-clones timestamp interval))
+                (check (> times 0)))
       (save-restriction
         (org-narrow-to-subtree)
         (org-clone-subtree-with-time-shift times rep)
@@ -487,7 +468,52 @@
     "Prepare org-mode for next week"
     (interactive)
     (zenith/org-clean-agenda)
-    (zenith/org-clone-repeats)))
+    (zenith/org-clone-repeats))
+
+  (defun org-time-to-minutes (time)
+    "Convert an HHMM time to minutes"
+    (+ (* (/ time 100) 60) (% time 100)))
+
+  (defun org-time-from-minutes (minutes)
+    "Convert a number of minutes to an HHMM time"
+    (+ (* (/ minutes 60) 100) (% minutes 60)))
+
+  (defun zenith/extract-window (line)
+    (let ((start (get-text-property 1 'time-of-day line))
+          (dur (get-text-property 1 'duration line)))
+      (cond
+       ((and start dur)
+        (cons start
+              (org-time-from-minutes
+               (truncate
+                (+ dur (org-time-to-minutes start))))))
+       (start start)
+       (t nil))))
+
+  (defadvice org-agenda-add-time-grid-maybe (around mde-org-agenda-grid-tweakify
+                                                    (list ndays todayp))
+    (if (member 'remove-match (car org-agenda-time-grid))
+        (let* ((windows (delq nil (mapcar 'zenith/extract-window list)))
+               (org-agenda-time-grid
+                (list
+                 (car org-agenda-time-grid)
+                 (cl-remove-if
+                  (lambda (time)
+                    (cl-find-if (lambda (w)
+                                  (if (numberp w)
+                                      (equal w time)
+                                    (and (>= time (car w))
+                                         (< time (cdr w)))))
+                                windows))
+                  (cadr org-agenda-time-grid))
+                 (caddr org-agenda-time-grid)
+                 (cadddr org-agenda-time-grid)
+                 )))
+          ad-do-it)
+      ad-do-it))
+  (ad-activate 'org-agenda-add-time-grid-maybe)
+
+  (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files))
 
 (with-eval-after-load 'ol-bibtex
   ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.
@@ -498,47 +524,18 @@
 
 ;; org-downloads configuration
 (with-eval-after-load 'org-download
+  (if zenith/wsl-system
+      (setq org-download-screenshot-method
+            "i_view64.exe /capture=4 /convert=\"D:\\\\screenshot.png\"; mv /mnt/d/screenshot.png %s")
+    (setq org-download-screenshot-method "flameshot gui --raw > %s"))
   (setq org-download-image-org-width 600)
   (setq-default org-download-image-dir "./img"
                 org-download-heading-lvl nil))
-;; Org attach
-(setq org-attach-method 'lns)
-
-(zenith/autoload '(org-attach org-attach-open) "org-attach")
-
-(defun org-agenda-attach-open ()
-  "Open attachment with one-key stroke."
-  (interactive)
-  (unless (eq major-mode 'org-agenda-mode)
-    (let ((debug-on-quit nil))
-      (signal 'quit '("This was written expressly for `*Org Agenda*`."))))
-  (let ((marker (or (get-text-property (point) 'org-hd-marker)
-                    (get-text-property (point) 'org-marker))))
-    (if marker
-        (save-excursion
-          (set-buffer (marker-buffer marker))
-          (goto-char marker)
-          (org-back-to-heading t)
-          (call-interactively 'org-attach-open))
-      (error "No task in current line"))))
 
 ;; Global settings
 (defun zenith/my-org-agenda ()
   (interactive)
   (org-agenda 0 "b"))
-
-(setq org-ref-default-bibliography `(,zenith/bibtex-library)
-      org-ref-bibliography-notes (concat zenith/note-directory "biblio.org")
-      org-ref-completion-library 'org-ref-ivy-cite
-      orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
-
-(zenith/delay-load 'zenith/require-org-ref-packages)
-
-(defun zenith/require-org-ref-packages ()
-  (interactive)
-  (require 'org-ref)
-  (require 'doi-utils)
-  (require 'org-ref-isbn))
 
 (provide 'init-org)
 ;;; init-org.el ends here

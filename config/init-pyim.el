@@ -7,12 +7,13 @@
 
 (when zenith/enable-pyim
   ;; pyim
-  (require 'pyim)
+  (zenith/autoload '(pyim-cregexp-build pyim-string-match-p pyim-char-before-to-string) "pyim")
+  ;; (require 'pyim)
 
   (with-eval-after-load 'pyim
     (add-to-list 'pyim-punctuation-dict '("\\" "、")))
 
-  ;; emacs-rime use emacs-rime to replace pyim because it is simpler faster but
+  ;; emacs-rime: use emacs-rime to replace pyim because it is simpler faster but
   ;; pyim provides some useful functions, so I won't throw it away, instead I make
   ;; some minor changes to make it usable to emacs-rime
   (require 'rime)

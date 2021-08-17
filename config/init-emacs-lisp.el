@@ -1,7 +1,7 @@
 ;;; init-emacs-lisp.el --- emacs lisp configuration -*- lexical-binding: t; -*-
 
 ;; macrostep
-(autoload 'macrostep-expand "macro-expand")
+(autoload 'macrostep-expand "macrostep" nil t)
 
 ;; From doom-emacs
 (defvar +emacs-lisp--face nil)

@@ -9,10 +9,11 @@
 (defvar zenith-emacs-extension-dir (expand-file-name "extensions/" zenith-emacs-root-dir))
 (defvar zenith-emacs-config-dir (expand-file-name "config/" zenith-emacs-root-dir))
 (defvar zenith-emacs-local-dir (expand-file-name "local/" zenith-emacs-root-dir))
-(defvar zenith/wsl-system t "Whether emacs starts in wsl. Some interaction with Windows are enabled")
+(defvar zenith/wsl-system nil "Whether emacs starts in wsl. Some interaction with Windows are enabled")
 (defvar zenith/enable-vterm t "Whether enable vterm module.")
 (defvar zenith/enable-pyim t "Whether enable pyim and rime module.")
 (defvar zenith/enable-posframe (display-graphic-p) "Whether enable posframe module.")
+(defvar zenith/low-gc-cons-threshold (* 20 1024 1024))
 
 ;; Do not load package
 (setq initial-major-mode 'fundamental-mode
@@ -43,23 +44,10 @@
   (require 'config)
   )
 
-;; To remove gc limit temporarily
-(defun zenith/temp-no-gc ()
-  (setq gc-cons-threshold most-positive-fixnum))
-
-(defvar zenith/low-gc-cons-threshold (* 20 1024 1024))
-
-;; Restore gc
-(defun zenith/restore-gc ()
-  (setq gc-cons-threshold zenith/low-gc-cons-threshold))
-
-(zenith/restore-gc)
+(setq gc-cons-threshold zenith/low-gc-cons-threshold)
 
 (add-hook 'minibuffer-setup-hook 'zenith/temp-no-gc)
 (add-hook 'minibuffer-exit-hook 'zenith/restore-gc)
-
-(add-hook 'minibuffer-setup-hook #'zenith/temp-no-gc)
-(add-hook 'minibuffer-exit-hook #'zenith/restore-gc)
 
 (require 'server)
 (unless (server-running-p)

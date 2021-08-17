@@ -25,7 +25,7 @@
 
 ;; company-box
 ;; dependencies: dash dash-functional company
-(require 'company-box)
+(zenith/autoload '(company-box-mode) "company-box")
 (add-hook 'company-mode-hook 'company-box-mode)
 (setq company-box-show-single-candidate t
       company-box-doc-enable nil ; Use C-h to manually show doc

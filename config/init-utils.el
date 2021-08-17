@@ -54,7 +54,7 @@
 (ws-butler-global-mode 1)
 
 ;; emacs-wgrep
-(autoload 'wgrep-change-to-wgrep-mode "wgrep")
+(autoload 'wgrep-change-to-wgrep-mode "wgrep" nil t)
 (setq wgrep-auto-save-buffer t)
 
 ;; Mode load
@@ -113,7 +113,7 @@
           font-lock-doc-face
           font-lock-comment-face))
 
-  (require 'wucuo)
+  (zenith/autoload '(wucuo-start) "wucuo")
 
   (setq
    wucuo-enable-camel-case-algorithm-p nil
@@ -302,38 +302,6 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
             (setq arg 0)))))
     (forward-word)))
 
-;; Delete word in a more user friendly way
-(defun zenith/aggressive-delete-space ()
-  "Remove all the space until non-space character."
-  (interactive)
-  (let ((end (point))
-        (begin (save-excursion
-                 (re-search-backward "[^ \t\n\r]" nil t))))
-    (delete-region (+ 1 begin) end)))
-
-(defun zenith/delete-word-or-space ()
-  "Remove all the space until non-space character if the char at
-point and before are all space characters and delete word
-otherwise."
-  (interactive)
-  (if (and (zenith/is-space (char-before))
-           (zenith/is-space (char-before (- (point) 1))))
-      (zenith/aggressive-delete-space)
-    (backward-kill-word 1)))
-
-(defun zenith/fill-and-indent-region ()
-  "Fill paragraph and indent region at once"
-  (interactive)
-  (unless visual-line-mode
-    (call-interactively 'fill-paragraph)))
-
-;; function to unfill
-(defun unfill-paragraph ()
-  "Do the inverse of `fill-paragraph'."
-  (interactive)
-  (let ((fill-column most-positive-fixnum))
-    (call-interactively 'fill-paragraph)))
-
 ;; visual fill column
 (autoload 'visual-fill-column-mode "visual-fill-column" "" t)
 (setq-default visual-fill-column-width (+ fill-column 20)
@@ -394,108 +362,21 @@ otherwise."
 
 (shackle-mode)
 
-;; Special Char Mode
-(defun zenith/special-char-environment-p ()
-  ;; In LaTeX math environment, or in code environment.
-  (if (eq major-mode 'latex-mode)
-      t
-    (if (derived-mode-p 'prog-mode)
-        (if (or (nth 4 (syntax-ppss))
-                  (nth 8 (syntax-ppss)))
-            nil
-          t)
-      nil)))
-
-(defun --is-number-or-dot (char)
-  (or (and (>= char ?0) (<= char ?9))
-      (eq char ?.)))
-
-(defmacro ins-val (origin-var special-var)
-  `(lambda () (interactive)
-     (funcall-interactively 'self-insert-command 1
-                            (if (and (char-before )(--is-number-or-dot (char-before)))
-                                ,(if (--is-number-or-dot origin-var)
-                                     origin-var
-                                   special-var)
-                              (if (zenith/special-char-environment-p)
-                                  ,special-var
-                                ,origin-var)))))
-
-(defvar special-char-mode-map
-  (make-sparse-keymap)
-  "Keymap for special-char-mode")
-
-(define-minor-mode special-char-mode
-  "Toggle Special Character mode"
-  nil
-  " SpecialChar"
-  special-char-mode-map
-  :global nil)
-
-(general-define-key
- :keymaps 'special-char-mode-map
- "M-n" 'zenith/insert-number
- "4"   (ins-val ?4 ?$)
- "$"   (ins-val ?$ ?4)
- "5"   (ins-val ?5 ?%)
- "%"   (ins-val ?% ?5)
- "6"   'zenith/smart-super-script
- "^"   (ins-val ?^ ?6)
- "7"   (ins-val ?7 ?&)
- "&"   (ins-val ?& ?7)
- "8"   (ins-val ?8 ?*)
- "*"   (ins-val ?* ?8)
- "9"   (ins-val ?9 ?\()
- "("   (ins-val ?\( ?9)
- "{"   (lambda ()(interactive)(self-insert-command 1 ?\]))
- "]"   (lambda ()(interactive)(self-insert-command 1 ?\{)))
-
+(require 'special-char-mode)
 (add-hook 'prog-mode-hook 'special-char-mode)
 (add-hook 'LaTeX-mode-hook 'special-char-mode)
 
-(defun zenith/latex-super-script ()
-  (interactive)
-  (funcall-interactively 'self-insert-command 1 ?^)
-  (when (and (eq major-mode 'latex-mode)
-             TeX-electric-sub-and-superscript
-             (texmathp))
-    (insert (concat TeX-grop TeX-grcl))
-    (backward-char)))
-
-(defun zenith/smart-super-script ()
-  (interactive)
-  (if (and
-       (zenith/special-char-environment-p)
-       (not (--is-number-or-dot (char-before))))
-      (zenith/latex-super-script)
-    (self-insert-command 1 ?6)))
-
-(defun zenith/latex-sub-script ()
-  (interactive)
-  (funcall-interactively 'self-insert-command 1 ?_)
-  (when (and (eq major-mode 'latex-mode)
-             TeX-electric-sub-and-superscript
-             (texmathp))
-    (insert (concat TeX-grop TeX-grcl))
-    (backward-char)))
-
-(defun zenith/insert-number ()
-  "Although named insert number, in fact it can insert everything."
-  (interactive)
-  (let ((special-char-mode-map nil))
-    (insert (read-from-minibuffer "Insert Number: "))))
-
 ;; Dired enhancement
-(require 'dired-filter)
-(require 'dired-open)
-(require 'dired-subtree)
+(defun zenith/dired-load-packages ()
+  (require 'dired-filter)
+  (require 'dired-open)
+  (require 'dired-subtree))
+(add-hook 'dired-mode-hook 'zenith/dired-load-packages)
 
 ;; emacs-libvterm
 (if zenith/enable-vterm
     (progn
-      (require 'vterm)
-      (require 'multi-vterm)
-
+      (zenith/autoload '(multi-vterm-project multi-vterm-dedicated-toggle) "multi-term")
       (defun zenith/vterm-toggle ()
         "Toggle vterm."
         (interactive)
@@ -522,7 +403,16 @@ otherwise."
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 ;; ledger-mode
-(with-eval-after-load 'org
-  (require 'ledger-mode))
+(zenith/autoload '(ledger-mode) "ledger-mode")
+(add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
+
+;; fd-dired
+(autoload 'fd-dired "fd-dired" nil t)
+
+;; expnad-region
+(autoload 'er/expand-region "expand-region" nil t)
+
+;; goto-line-preview
+(autoload 'goto-line-preview "goto-line-preview" nil t)
 
 (provide 'init-utils)
