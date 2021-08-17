@@ -85,8 +85,6 @@ simply return whatever you input."
           (t name))))
 
 (with-eval-after-load 'org-download
-  (setq org-download-screenshot-method
-        "i_view64.exe /capture=4 /convert=\"D:\\\\screenshot.png\"; mv /mnt/d/screenshot.png %s")
 
   (defun org-download-yank ()
     "Call `org-download-image' with current kill."

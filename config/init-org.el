@@ -29,7 +29,7 @@
 ;; org-wild-notifier
 (with-eval-after-load 'org-wild-notifier
   (if (not zenith/wsl-system)
-      (setq alert-default-style 'notifications)
+      (setq alert-default-style 'libnotify)
     (require 'burnt-toast-alert)
     (setq burnt-toast-powershell-command "powershell.exe"
           alert-default-style 'burnt-toast))
@@ -79,6 +79,10 @@
   (require 'ox-org)
   (require 'org-mind-map)
   (require 'org-download)
+  (if zenith/wsl-system
+      (setq org-download-screenshot-method
+            "i_view64.exe /capture=4 /convert=\"D:\\\\screenshot.png\"; mv /mnt/d/screenshot.png %s")
+    (setq org-download-screenshot-method "flameshot gui --raw > %s"))
   (require 'org-super-links))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
@@ -261,38 +265,38 @@
     "Convert a number of minutes to an HHMM time"
     (+ (* (/ minutes 60) 100) (% minutes 60)))
 
+  (defun zenith/extract-window (line)
+    (let ((start (get-text-property 1 'time-of-day line))
+          (dur (get-text-property 1 'duration line)))
+      (cond
+       ((and start dur)
+        (cons start
+              (org-time-from-minutes
+               (truncate
+                (+ dur (org-time-to-minutes start))))))
+       (start start)
+       (t nil))))
+
   (defadvice org-agenda-add-time-grid-maybe (around mde-org-agenda-grid-tweakify
                                                     (list ndays todayp))
     (if (member 'remove-match (car org-agenda-time-grid))
-        (flet ((extract-window
-                (line)
-                (let ((start (get-text-property 1 'time-of-day line))
-                      (dur (get-text-property 1 'duration line)))
-                  (cond
-                   ((and start dur)
-                    (cons start
-                          (org-time-from-minutes
-                           (truncate
-                            (+ dur (org-time-to-minutes start))))))
-                   (start start)
-                   (t nil)))))
-          (let* ((windows (delq nil (mapcar 'extract-window list)))
+          (let* ((windows (delq nil (mapcar 'zenith/extract-window list)))
                  (org-agenda-time-grid
                   (list
                    (car org-agenda-time-grid)
-                   (remove-if
+                   (cl-remove-if
                     (lambda (time)
-                      (find-if (lambda (w)
+                      (cl-find-if (lambda (w)
                                  (if (numberp w)
                                      (equal w time)
                                    (and (>= time (car w))
                                         (< time (cdr w)))))
                                windows))
-                    (cadr org-agenda-time-grid) )
+                    (cadr org-agenda-time-grid))
                    (caddr org-agenda-time-grid)
                    (cadddr org-agenda-time-grid)
                    )))
-            ad-do-it))
+            ad-do-it)
       ad-do-it))
   (ad-activate 'org-agenda-add-time-grid-maybe)
 
