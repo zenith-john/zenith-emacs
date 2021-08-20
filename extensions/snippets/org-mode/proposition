@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: proposition
+# key: prop
+# condition: t
+# --
+
+#+begin_proposition
+$0
+#+end_proposition

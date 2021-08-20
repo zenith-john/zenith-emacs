@@ -95,6 +95,7 @@
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t
    org-footnote-auto-label 'plain
+   org-goto-interface 'outline-path-completion
    org-hidden-keywords nil
    org-highlight-latex-and-related '(native)
    org-hide-emphasis-markers nil
@@ -167,7 +168,7 @@
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w@/!)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
+        '((sequence "TODO(t)" "WAITING(w@/!)" "SUSPEND(s)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
 
   (setq org-capture-templates
         '(
@@ -184,7 +185,7 @@
           ("n" "Notes" entry (file "~/Dropbox/Temp.org")
            "* %? \n%U\n")
           ("t" "Daily Review" entry (file "~/Dropbox/Temp.org")
-           "* %(format-time-string \"%Y-%m-%d\") Daily Review\n%U\n%?")))
+           "* %(format-time-string \"%Y-%m-%d\") Daily Review\n%U\n%?" :jump-to-captured t)))
 
   ;; Org tag
   (setq org-tag-alist
@@ -264,6 +265,7 @@
           ("t" . "theorem")
           ("c" . "corollary")
           ("d" . "definition")
+          ("l" . "lemma")
           ("P" . "proposition")
           ("s" . "src")
           ("C" . "comment")))
@@ -292,7 +294,23 @@
             (goto-char marker)
             (org-back-to-heading t)
             (call-interactively 'org-attach-open))
-        (error "No task in current line")))))
+        (error "No task in current line"))))
+
+  (org-link-set-parameters "zotero" :follow
+                         (lambda (zpath)
+                           (browse-url
+                            ;; we get the "zotero:"-less url, so we put it back.
+                            (format "zotero:%s" zpath))))
+
+  (defun zenith/org-link-at-point ()
+    "Return the substring of the raw text of link at the point."
+    (let ((bound (org-in-regexp org-link-bracket-re 1)))
+      (buffer-substring-no-properties (car bound) (cdr bound))))
+
+  (defun zenith/copy-link-at-point ()
+    "Copy the raw text of the link at point."
+    (interactive)
+    (kill-new (zenith/org-link-at-point))))
 
 ;; org-clock
 (with-eval-after-load 'org-clock
@@ -354,6 +372,11 @@
         org-mind-map-include-text nil
         org-mind-map-include-images nil)
   (setcdr (assoc "resolution" org-mind-map-default-graph-attribs) "200"))
+
+;; ox-hugo
+(with-eval-after-load 'ox-hugo
+  (setq org-hugo-base-dir "~/Documents/zenith-john.github.io/"
+        org-hugo-section "post"))
 
 ;; ox-icalendar
 (with-eval-after-load 'ox-icalendar

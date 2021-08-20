@@ -64,7 +64,7 @@ and `nil' otherwise."
 
 (define-minor-mode auto-expand-mode
   "Minor mode for zenith/may-expand"
-  nil nil nil
+  :global nil :lighter nil
   (if auto-expand-mode
       ;; Priority of the function should be high enough to run before fill
       ;; column

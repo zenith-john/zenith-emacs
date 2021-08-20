@@ -24,6 +24,7 @@
     (sp-local-pair "\"" "\""
                    :unless '(sp-latex-point-after-backslash)))
   (sp-with-modes '(org-mode)
+    (sp-local-pair "$" "$")
     (sp-local-pair "\\[" "\\]")))
 
 (zenith/add-hook '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook) 'smartparens-mode)
@@ -376,7 +377,7 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 ;; emacs-libvterm
 (if zenith/enable-vterm
     (progn
-      (zenith/autoload '(multi-vterm-project multi-vterm-dedicated-toggle) "multi-term")
+      (zenith/autoload '(multi-vterm-project multi-vterm-dedicated-toggle) "multi-vterm")
       (defun zenith/vterm-toggle ()
         "Toggle vterm."
         (interactive)

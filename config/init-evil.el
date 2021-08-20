@@ -71,20 +71,19 @@
 
 ;; evil-pinyin
 (require 'evil-pinyin)
-(evil-select-search-module 'evil-search-module 'evil-search)
-(global-evil-pinyin-mode 1)
+(setq-default evil-pinyin-scheme 'simplified-xiaohe-all
+              evil-pinyin-with-search-rule 'always)
+(global-evil-pinyin-mode)
 
 (defun evil-ex-start-search-org-mode-advice (fn direction count)
-  (when (eq major-mode 'org-mode)
-    (outline-show-all))
-  (funcall fn direction count))
+  (let ((evil-ex-search-highlight-all (not (eq major-mode 'org-mode))))
+    (funcall fn direction count)))
 
 (advice-add 'evil-ex-start-search :around 'evil-ex-start-search-org-mode-advice)
 
 ;; evil-collection
 ;; dependencies: evil
 (require 'evil-collection)
-(setq evil-collection-company-use-tng nil)
 
 (defun zenith/prefix-translations (_mode mode-keymaps &rest _rest)
   (evil-collection-swap-key 'normal mode-keymaps ";" ":"))

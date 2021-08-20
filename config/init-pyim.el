@@ -11,7 +11,8 @@
   ;; (require 'pyim)
 
   (with-eval-after-load 'pyim
-    (add-to-list 'pyim-punctuation-dict '("\\" "、")))
+    (add-to-list 'pyim-punctuation-dict '("\\" "、"))
+    (pyim-default-scheme 'xiaohe-shuangpin))
 
   ;; emacs-rime: use emacs-rime to replace pyim because it is simpler faster but
   ;; pyim provides some useful functions, so I won't throw it away, instead I make

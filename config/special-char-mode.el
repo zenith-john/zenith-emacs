@@ -34,10 +34,8 @@
 
 (define-minor-mode special-char-mode
   "Toggle Special Character mode"
-  nil
-  " SpecialChar"
-  special-char-mode-map
-  :global nil)
+  :lighter " SpecialChar" :global nil
+  :keymap special-char-mode-map)
 
 (general-define-key
  :keymaps 'special-char-mode-map

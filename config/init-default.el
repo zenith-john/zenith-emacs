@@ -75,6 +75,7 @@
  save-interprogram-paste-before-kill t
  ;; Bookmarks
  bookmark-default-file (concat zenith-emacs-local-dir "bookmarks")
+ bookmark-fontify nil
  bookmark-save-flag t
  ;; Formatting
  delete-trailing-lines nil
