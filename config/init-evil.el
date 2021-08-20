@@ -73,6 +73,7 @@
 (require 'evil-pinyin)
 (setq-default evil-pinyin-scheme 'simplified-xiaohe-all
               evil-pinyin-with-search-rule 'always)
+(evil-select-search-module 'evil-search-module 'evil-search)
 (global-evil-pinyin-mode)
 
 (defun evil-ex-start-search-org-mode-advice (fn direction count)
