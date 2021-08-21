@@ -53,10 +53,11 @@
   (require 'org-id)
   (require 'ox-org)
   (require 'org-download)
-  (require 'org-super-links)
   (require 'org-ref)
   (require 'doi-utils)
-  (require 'org-ref-isbn))
+  (require 'org-ref-isbn)
+  (setq org-roam-v2-ack t)
+  (require 'org-roam))
 
 (zenith/delay-load 'zenith/org-load-packages)
 
@@ -393,17 +394,14 @@
     "Insert the link by id"
     (interactive)
     (let ((link (org-link--try-special-completion "id")))
-      (org-insert-link nil link))))
+      (org-insert-link nil link)))
 
-(with-eval-after-load 'org-super-links
-  (defun zenith/org-super-links-link ()
+  (defun zenith/org-insert-link ()
+    "Insert the stored link or by id"
     (interactive)
-    (let* ((target (get-register ?^)))
-      (if target
-	      (progn
-	        (org-super-links--insert-link target)
-	        (set-register ?^ nil))
-        (org-super-links-link)))))
+    (if org-stored-links
+        (org-insert-last-stored-link 1)
+      (zenith/org-insert-link-by-id))))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
@@ -533,6 +531,11 @@
   (setq-default org-download-image-dir "./img"
                 org-download-heading-lvl nil))
 
+;; org-roam configuration
+(with-eval-after-load 'org-roam
+  (setq org-roam-directory zenith/note-directory
+        org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir))
+  (org-roam-db-autosync-mode))
 ;; Global settings
 (defun zenith/my-org-agenda ()
   (interactive)

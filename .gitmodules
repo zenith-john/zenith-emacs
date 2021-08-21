@@ -362,10 +362,6 @@
 [submodule "extensions/org-wild-notifier"]
 	path = extensions/org-wild-notifier
 	url = https://github.com/zenith-john/org-wild-notifier.el
-[submodule "extensions/org-super-links"]
-	path = extensions/org-super-links
-	url = https://github.com/toshism/org-super-links
-	branch = develop
 [submodule "extensions/ledger-mode"]
 	path = extensions/ledger-mode
 	url = https://github.com/zenith-john/ledger-mode
@@ -381,3 +377,9 @@
 [submodule "extensions/ht"]
 	path = extensions/ht
 	url = https://github.com/Wilfred/ht.el
+[submodule "extensions/org-roam"]
+	path = extensions/org-roam
+	url = https://github.com/org-roam/org-roam
+[submodule "extensions/emacsql"]
+	path = extensions/emacsql
+	url = https://github.com/skeeto/emacsql

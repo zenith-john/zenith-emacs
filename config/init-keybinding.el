@@ -220,8 +220,8 @@
 
 (general-define-key
  :keymaps 'org-mode-map
- "C-l" 'zenith/org-super-links-link
- "C-;" 'org-super-links-store-link
+ "C-l" 'zenith/org-insert-link
+ "C-;" 'org-store-link
  "M-r" 'zenith/search-id-reverse-link)
 
 ;; I prefer C-c C-c over C-c ' (more consistent)
