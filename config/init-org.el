@@ -52,8 +52,6 @@
   (require 'org-edit-latex)
   (require 'org-id)
   (require 'ox-org)
-  (require 'org-edna)
-  (require 'org-mind-map)
   (require 'org-download)
   (require 'org-super-links)
   (require 'org-ref)
@@ -72,7 +70,6 @@
   (display-line-numbers-mode 0)
   (org-bullets-mode)
   (org-edit-latex-mode)
-  (org-edna-mode)
   (org-cdlatex-mode 1)
   (org-clock-load)
   )
@@ -258,7 +255,6 @@
      (python . t)
      (shell . t)))
 
-  (require 'org-tempo)
   (setq org-structure-template-alist
         '(("p" . "proof")
           ("q" . "quote")
@@ -364,15 +360,6 @@
 (with-eval-after-load 'org-edit-latex
   (setq org-edit-latex-create-master nil))
 
-;; org-mind-map
-;; dependencies: dash org
-(with-eval-after-load 'org-mind-map
-  (setq org-mind-map-engine "dot"
-        org-mind-map-dot-output '("pdf" "png" "eps")
-        org-mind-map-include-text nil
-        org-mind-map-include-images nil)
-  (setcdr (assoc "resolution" org-mind-map-default-graph-attribs) "200"))
-
 ;; ox-hugo
 (with-eval-after-load 'ox-hugo
   (setq org-hugo-base-dir "~/Documents/zenith-john.github.io/"
@@ -404,12 +391,6 @@
     (let ((query
            (cdr (first (org-entry-properties nil "ID")))))
       (rg-project query "*.org")))
-
-  (defun zenith/org-link-edna-id ()
-    "Insert id as edna format"
-    (interactive)
-    (let ((link (org-link--try-special-completion "id")))
-      (insert (concat "ids(" (nth 1 (split-string link ":"))  ")"))))
 
   (defun zenith/org-insert-link-by-id ()
     "Insert the link by id"

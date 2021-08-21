@@ -46,7 +46,8 @@
 
 (defun zenith/open-by-external-program (path)
   "Open file in external program"
-  (let ((display-buffer-alist '(("*Async Shell Command*" . (display-buffer-no-window)))))
+  (let ((display-buffer-alist '(("*Async Shell Command*" . (display-buffer-no-window))))
+        (process-connection-type nil))
     (async-shell-command (format "nohup xdg-open \"%s\" >/dev/null 2>&1"
                                  (file-relative-name path default-directory)))))
 

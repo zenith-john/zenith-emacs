@@ -305,8 +305,7 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 
 ;; visual fill column
 (autoload 'visual-fill-column-mode "visual-fill-column" "" t)
-(setq-default visual-fill-column-width (+ fill-column 20)
-              word-wrap-by-category t)
+(setq-default visual-fill-column-width (+ fill-column 20))
 (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 (add-hook 'auto-fill-mode-hook 'visual-line-mode)
 
@@ -392,11 +391,6 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 ;; dependencies: cl-lib dash
 (require 'winum)
 (winum-mode)
-
-;; auto-capitalize-el
-;; (require 'auto-capitalize)
-;; (setq auto-capitalize-words nil)
-;; (add-hook 'after-change-major-mode-hook 'auto-capitalize-mode)
 
 ;; tramp
 (require 'tramp)

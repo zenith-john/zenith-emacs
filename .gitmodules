@@ -143,9 +143,6 @@
 [submodule "extensions/transient"]
 	path = extensions/transient
 	url = https://github.com/magit/transient
-[submodule "extensions/flx"]
-	path = extensions/flx
-	url = https://github.com/lewang/flx
 [submodule "extensions/all-the-icons-ivy"]
 	path = extensions/all-the-icons-ivy
 	url = https://github.com/asok/all-the-icons-ivy
@@ -233,9 +230,6 @@
 [submodule "extensions/ivy-posframe"]
 	path = extensions/ivy-posframe
 	url = https://github.com/tumashu/ivy-posframe
-[submodule "extensions/fuz.el"]
-	path = extensions/fuz
-	url = https://github.com/rustify-emacs/fuz.el
 [submodule "extensions/nox"]
 	path = extensions/nox
 	url = https://github.com/manateelazycat/nox
@@ -260,9 +254,6 @@
 [submodule "extensions/amx"]
 	path = extensions/amx
 	url = https://github.com/DarwinAwardWinner/amx
-[submodule "extensions/ebib"]
-	path = extensions/ebib
-	url = https://github.com/joostkremers/ebib
 [submodule "extensions/org-mind-map"]
 	path = extensions/org-mind-map
 	url = https://github.com/the-humanities/org-mind-map
@@ -359,9 +350,6 @@
 [submodule "extensions/ESS"]
 	path = extensions/ESS
 	url = https://github.com/emacs-ess/ESS
-[submodule "extensions/auto-capitalize-el"]
-	path = extensions/auto-capitalize-el
-	url = https://github.com/yuutayamada/auto-capitalize-el
 [submodule "extensions/frame-local"]
 	path = extensions/frame-local
 	url = https://github.com/sebastiencs/frame-local

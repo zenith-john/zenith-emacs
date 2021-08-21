@@ -83,6 +83,7 @@
  sentence-end-double-space nil
  warning-suppress-types '((comp) (:warning))
  word-wrap t
+ word-wrap-by-category t
  ;; Scrolling
  hscroll-margin 2
  hscroll-step 1
@@ -124,8 +125,6 @@
   (recentf-mode +1))
 
 (global-auto-revert-mode 1)
-
-;; (cua-mode 1)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 

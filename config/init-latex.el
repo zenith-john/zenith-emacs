@@ -22,11 +22,6 @@
       bibtex-autokey-titlewords 0
       ivy-bibtex-default-action 'zenith/ivy-bibtex-insert-citation)
 
-;; ebib
-;; depedencies: parsebib
-(autoload 'ebib "ebib" nil t)
-(setq ebib-preload-bib-files `(,zenith/bibtex-library))
-
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 ;; Get ReTeX working with biblatex
 ;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#3199
