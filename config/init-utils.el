@@ -410,4 +410,18 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 ;; goto-line-preview
 (autoload 'goto-line-preview "goto-line-preview" nil t)
 
+;; openwith
+;; open multimedia files by external programs
+(defvar zenith/external-extensions '("mp4" "mkv" "xlsx" "pdf" "mp3" "docx" "doc" "xls")
+  "The extension of file that requires external programs to open.")
+(require 'openwith)
+
+(let ((ret '()))
+  (dolist (ext zenith/external-extensions)
+    (add-to-list 'ret `(,(concat "\\." ext "\\'") "xdg-open" (file))))
+  (setq openwith-associations ret))
+(openwith-mode t)
+(require 'mm-util)
+(add-to-list 'mm-inhibit-file-name-handlers 'openwith-file-handler)
+
 (provide 'init-utils)

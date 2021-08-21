@@ -111,6 +111,7 @@ falls back to `ivy-recentf' and the same transformer is used."
     (all-the-icons-ivy-setup)))
 
 (setq counsel-find-file-ignore-regexp "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)"
+      counsel-find-file-extern-extensions zenith/external-extensions
       counsel-describe-function-function #'helpful-callable
       counsel-describe-variable-function #'helpful-variable
       ;; Add smart-casing (-S) to default command arguments:

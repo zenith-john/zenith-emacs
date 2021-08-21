@@ -63,16 +63,13 @@
 (defun zenith/org-mode-hook ()
   (zenith/org-load-packages)
   (visual-line-mode)
-  ;; cdlatex
-  ;; Enable cdlatex mode
-  ;; TODO configure cdlatex-command-alist
-  (setq-local company-idle-delay nil)
   (display-line-numbers-mode 0)
   (org-bullets-mode)
   (org-edit-latex-mode)
   (org-cdlatex-mode 1)
   (org-clock-load)
-  )
+  (require 'company-math)
+  (setq-local company-backends '(company-math-symbols-latex)))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
