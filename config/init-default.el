@@ -56,7 +56,6 @@
  desktop-base-file-name       "autosave"
  desktop-base-lock-name       "autosave-lock"
  pcache-directory             (concat zenith-emacs-local-dir "pcache/")
- process-connection-type nil
  request-storage-directory    (concat zenith-emacs-local-dir "request")
  server-auth-dir              (concat zenith-emacs-local-dir "server/")
  shared-game-score-directory  (concat zenith-emacs-local-dir "shared-game-score/")

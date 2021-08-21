@@ -21,11 +21,11 @@
       projectile-kill-buffers-filter 'kill-only-files
       projectile-files-cache-expire 604800) ; expire after a week
 
-;; Redefine `projectile-dir-files-alien' to ignore submodules searching by
 ;; default
 (defvar projectile-include-subproject nil
   "Whether or not find file in subprojects too.")
 
+;; Redefine `projectile-dir-files-alien' to ignore submodules searching by
 (defun projectile-dir-files-alien (directory)
   "Get the files for DIRECTORY using external tools."
   (let ((vcs (projectile-project-vcs directory)))

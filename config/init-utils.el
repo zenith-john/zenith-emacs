@@ -420,8 +420,13 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
   (dolist (ext zenith/external-extensions)
     (add-to-list 'ret `(,(concat "\\." ext "\\'") "xdg-open" (file))))
   (setq openwith-associations ret))
-(openwith-mode t)
+(openwith-mode)
 (require 'mm-util)
 (add-to-list 'mm-inhibit-file-name-handlers 'openwith-file-handler)
+
+(defun openwith-file-handler-advice (fn &rest args)
+  (let ((process-connection-type nil))
+    (apply fn args)))
+(advice-add 'openwith-file-handler :around 'openwith-file-handler-advice)
 
 (provide 'init-utils)
