@@ -13,3 +13,4 @@ session*
 /.rgignore
 /projects
 eln-cache/*
+/autosave-lock

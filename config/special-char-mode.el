@@ -4,14 +4,14 @@
 ;; Special Char Mode
 (defun zenith/special-char-environment-p ()
   ;; In LaTeX math environment, or in code environment.
-  (if (eq major-mode 'latex-mode)
-      t
-    (if (derived-mode-p 'prog-mode)
-        (if (or (nth 4 (syntax-ppss))
-                  (nth 8 (syntax-ppss)))
-            nil
-          t)
-      nil)))
+  (cond ((eq major-mode 'latex-mode) t)
+        ((eq major-mode 'org-mode) t)
+        ((derived-mode-p 'prog-mode)
+         (if (or (nth 4 (syntax-ppss))
+                 (nth 8 (syntax-ppss)))
+             nil
+           t))
+        (t nil)))
 
 (defun --is-number-or-dot (char)
   (or (and (>= char ?0) (<= char ?9))

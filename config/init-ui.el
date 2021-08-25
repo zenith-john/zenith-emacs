@@ -27,7 +27,7 @@
 
 (require 'doom-modeline)
 ;; the height has to be 1 to use org-set-tags-command
-(setq doom-modeline-height 25)
+(setq doom-modeline-height 1)
 (doom-modeline-mode 1)
 (setq inhibit-compacting-font-caches t)
 

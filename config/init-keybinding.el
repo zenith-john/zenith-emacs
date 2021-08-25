@@ -94,7 +94,6 @@
  "C-r"                         'evil-search-backward
  "C-v"                         'yank
  "C-x C-j"                     'company-complete-common
- "C-x C-s"                     (lambda ()(interactive)(message "Don't use C-x C-s to save, it hurts."))
  "C-z"                         'undo
  "M-;"                         'evilnc-comment-or-uncomment-lines
  "M-/"                         'zenith/rime-convert-string-at-point
@@ -222,7 +221,8 @@
  :keymaps 'org-mode-map
  "C-l" 'zenith/org-insert-link
  "C-;" 'org-store-link
- "M-r" 'zenith/search-id-reverse-link)
+ "M-r" 'zenith/search-id-reverse-link
+ "j"   'zenith/latex-magic-j)
 
 ;; I prefer C-c C-c over C-c ' (more consistent)
 (general-define-key

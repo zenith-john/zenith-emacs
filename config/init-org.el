@@ -70,13 +70,19 @@
   (org-cdlatex-mode 1)
   (org-clock-load)
   (require 'company-math)
-  (setq-local company-backends '(company-math-symbols-latex)))
+  (remove-hook 'completion-at-point-functions #'pcomplete-completions-at-point t)
+  (setq-local company-backends '(company-math-symbols-latex company-capf)))
 
 (add-hook 'org-mode-hook 'zenith/org-mode-hook)
 
 (with-eval-after-load 'org
   (defun zenith/refile-targets-notes ()
     (directory-files zenith/note-directory t ".*\\.org\\'"))
+
+  (defun zenith/org-agenda-files ()
+    (when-let ((agenda (car org-agenda-files)))
+      (remove (expand-file-name "chinese_lunar.org" agenda)
+              (directory-files agenda t ".*\\.org\\'"))))
 
   (setq-default
    org-adapt-indentation nil
@@ -90,7 +96,6 @@
    org-fontify-quote-and-verse-blocks t
    org-fontify-whole-heading-line t
    org-footnote-auto-label 'plain
-   org-goto-interface 'outline-path-completion
    org-hidden-keywords nil
    org-highlight-latex-and-related '(native)
    org-hide-emphasis-markers nil
@@ -112,7 +117,7 @@
      (?C . success))
    org-refile-targets
    '((nil :maxlevel . 3)
-     (org-agenda-files :maxlevel . 3)
+     (zenith/org-agenda-files :maxlevel . 3)
      (zenith/refile-targets-notes :maxlevel . 4))
    org-refile-use-outline-path 'file
    org-special-ctrl-a/e t
@@ -163,53 +168,81 @@
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w@/!)" "SUSPEND(s)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
+        ;; TODO means the task that requires work.
+        ;; SUSPEND means the work that is not continued by various reasons.
+        ;; WAITING means the work is deferred and I am waiting for reply.
+        ;; ACTIVE means the project is under construction but requires a lot of time
+        ;; and is not so clear.
+        ;; NEXT means the task is under my work and is immediate (compare to ACTIVE).
+        ;; DONE means that the task is finished.
+        ;; CANCELLED means that the work will not be continued anymore.
+        '((sequence "TODO(t)" "SUSPEND(s)" "WAITING(w@/!)" "ACTIVE(a)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
 
+  ;; Use org-protocol to capture web.
+  (require 'org-protocol)
   (setq org-capture-templates
         '(
           ("d" "Deadline" entry (file+headline "~/Dropbox/Agenda.org"  "Deadline")
-           "* TODO %?\nDEADLINE:%^t\n%U\n")
+           "* TODO %^{Title} :Work:\nDEADLINE: %^t\n%U\n%?")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
-           "* TODO %?\n%^t\n%U\n")
+           "* %^{Title} :Work:\n%^t\n%U\n%?")
           ("a" "Mails" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
-           "* TODO %?\n%a\n")
+           "* TODO %^{Title} :Work:\n%U\n%a\n%?")
           ("s" "Schedule" entry (file+headline "~/Dropbox/Agenda.org" "Schedule")
-           "* TODO %?\nSCHEDULED:%^t\n%U\n")
+           "* TODO %^{Title} :Work:\nSCHEDULED: %^t\n%U\n%?")
           ("p" "Project" entry (file "~/Dropbox/Projects.org")
-           "* TODO %?\n%U\n")
+           "* TODO %^{Title}\n%U\n%?")
           ("n" "Notes" entry (file "~/Dropbox/Temp.org")
-           "* %? \n%U\n")
+           "* %^{Title}\n%U\n%?")
+          ("o" "Todo Notes" entry (file "~/Dropbox/Temp.org")
+           "* %?\nSCHEDULED: %t\n%U\n")
           ("t" "Daily Review" entry (file "~/Dropbox/Temp.org")
-           "* %(format-time-string \"%Y-%m-%d\") Daily Review\n%U\n%?" :jump-to-captured t)))
+           "* %(format-time-string \"%Y-%m-%d\") Daily Review\n%U\n%?" :immediate-finish t :jump-to-captured t)
+          ("r" "Reference" entry (file "~/Dropbox/Temp.org")
+           "* %^{Title}\n%U\nAuthor: %^{Author}%?")
+          ("x" "Web Capture" entry (file "~/Dropbox/Temp.org")
+           "* %:description\n:PROPERTIES:\n:ROAM_REFS: %:link\n:END:\n%U\n%:annotation\n%i\n%?")))
+
+  ;; Create id when capture ends.
+  (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+
+  (defun zenith/org-insert-heading ()
+    "Insert heading, create id and add a timestamp."
+    (interactive)
+    (org-capture 0 "n"))
 
   ;; Org tag
   (setq org-tag-alist
         '(
-          (:startgrouptag . nil)
-          ("CRUCIAL" . ?c)
-          ("Important" . ?i)
+          (:startgroup . nil)
+          ("Node" . ?n)
+          ("Ignore" . ?g)
+          (:endgroup . nil)
+          (:startgroup . nil)
+          ("Work" . ?w)
+          ("Personal" . ?e)
+          (:endgroup . nil)
+          ("Question" . ?q)
           ("Urgent" . ?u)
-          (:endgrouptag . nil)))
-
-  ;; Org habit
-  ;; (require 'org-habit)
-  ;; (setq org-habit-show-habits-only-for-today nil)
+          ("Project" . ?p)))
 
   ;; Org agenda settings
   (setq org-agenda-start-on-weekday nil
-        org-agenda-skip-scheduled-if-deadline-is-shown t
+        org-agenda-skip-scheduled-if-deadline-is-shown nil
         org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-agenda-span 7
         org-agenda-compact-blocks t
         org-agenda-show-all-dates nil
+        org-agenda-tags-todo-honor-ignore-options t
+        org-agenda-todo-ignore-with-date t
         org-deadline-warning-days 365
-        org-agenda-show-future-repeats 'next
+        org-agenda-show-future-repeats t
         org-agenda-window-setup 'current-window)
 
   (setq org-agenda-custom-commands
-        '(("b" "Agenda View" ((tags "AGENDAHEADER"
+        '(("b" "Today" ((tags "AGENDAHEADER"
                                     ((org-agenda-overriding-header "Today's Schedule:")))
                               (agenda ""
                                       ((org-agenda-show-all-dates t)
@@ -220,27 +253,30 @@
                                        (org-agenda-span 'day)
                                        (org-deadline-warning-days 0)
                                        (org-agenda-start-day "+0d")))
-                              (tags-todo "CRUCIAL"
-                                         ((org-agenda-overriding-header "CRUCIAL:")))
-                              (tags-todo "Urgent"
-                                         ((org-agenda-overriding-header "Urgent:")))
-                              (tags-todo "-CRUCIAL-Urgent/+NEXT"
+                              (tags-todo "/+NEXT"
                                          ((org-agenda-overriding-header "========================================\nNext Tasks:")))
+                              (tags-todo "/+ACTIVE"
+                                         ((org-agenda-overriding-header "Active Projects:")))
+                              (tags-todo "Urgent/-NEXT"
+                                         ((org-agenda-overriding-header "Works")))
+                              (tags-todo "Work-Urgent/-Next"
+                                         ((org-agenda-overriding-header "")))
                               (tags "BEFOREWEEKGLANCE"
-                                    ((org-agenda-overriding-header "========================================\nNext Week Glance:")))
+                                    ((org-agenda-overriding-header "========================================\nTomorrow Glance:")))
                               (agenda ""
                                       ((org-agenda-show-all-dates t)
                                        (org-agenda-show-future-repeats t)
-                                       (org-agenda-span 6)
+                                       (org-agenda-span 1)
                                        (org-agenda-start-day "+1d")))
                               (tags "BEFOREDEADLINE"
                                     ((org-agenda-overriding-header "========================================\nFar Away Tasks:")))
                               (agenda ""
-                                      ((org-agenda-span 180)
+                                      ((org-agenda-show-future-repeats 'next)
+                                       (org-agenda-span 180)
                                        (org-agenda-time-grid nil)
                                        (org-agenda-show-all-dates nil)
                                        (org-agenda-entry-types '(:deadline :scheduled))
-                                       (org-agenda-start-day "+7d")))))
+                                       (org-agenda-start-day "+2d")))))
           ("c" "Todo Lists"
            ((alltodo "" ((org-agenda-overriding-header "TODOs sorted by state, priority, effort")
                          (org-agenda-sorting-strategy '(todo-state-down priority-down effort-up))))))))
@@ -390,11 +426,21 @@
            (cdr (first (org-entry-properties nil "ID")))))
       (rg-project query "*.org")))
 
+  (defun zenith/org-id-get-headline (id)
+    "Get the headline of the given id."
+    (save-window-excursion
+      (save-excursion
+        (org-id-open id "")
+        (org-back-to-heading)
+        (when (looking-at org-complex-heading-regexp)
+          (match-string-no-properties 4)))))
+
   (defun zenith/org-insert-link-by-id ()
     "Insert the link by id"
     (interactive)
-    (let ((link (org-link--try-special-completion "id")))
-      (org-insert-link nil link)))
+    (let* ((link (org-link--try-special-completion "id"))
+           (desc (zenith/org-id-get-headline (substring link 3))))
+      (org-insert-link nil link desc)))
 
   (defun zenith/org-insert-link ()
     "Insert the stored link or by id"
@@ -532,10 +578,30 @@
                 org-download-heading-lvl nil))
 
 ;; org-roam configuration
+;; In fact I only use org-roams backlink feature
 (with-eval-after-load 'org-roam
+  (defun zenith/org-headline-has-child ()
+    "If the headline has any child return `t', else return `nil'"
+    (save-excursion
+      (if (org-goto-first-child)
+          t
+        nil)))
+
+  (defun zenith/org-roam-db-node-include-function ()
+    "Check the node tag and whether has child."
+    (let ((tags (org-get-tags)))
+      (if (member "Node" tags)
+          t
+        (if (member "Ignore" tags)
+            nil
+          (not (zenith/org-headline-has-child))))))
+
   (setq org-roam-directory zenith/note-directory
-        org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir))
-  (org-roam-db-autosync-mode))
+        org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir)
+        org-roam-db-gc-threshold most-positive-fixnum
+        org-roam-db-update-on-save nil
+        org-roam-completion-everywhere nil))
+
 ;; Global settings
 (defun zenith/my-org-agenda ()
   (interactive)

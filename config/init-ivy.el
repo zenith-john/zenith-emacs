@@ -42,38 +42,36 @@
   ;; dependencies: ivy posframe
   (require 'ivy-posframe)
 
+  (defvar zenith/ivy-posframe-width 100
+    "width of the ivy-posframe")
+
   (defun zenith/ivy-posframe-get-size ()
     "Set size of by the posframe"
     (list
-     :height (max (+ 3 ivy-height) ivy-posframe-height)
-     :width (round (* 0.5 (frame-width)))
-     :min-height (max (+ 3 ivy-height) ivy-posframe-height)
-     :min-width (max 80 (round (* 0.5 (frame-width))))))
+     :min-height 3
+     :width zenith/ivy-posframe-width
+     :min-width zenith/ivy-posframe-width))
 
-  (defun ivy-posframe--display (str &optional poshandler)
-    "Show STR in ivy's posframe with POSHANDLER."
-    (if (not (posframe-workable-p))
-        (ivy-display-function-fallback str)
-      (with-ivy-window
-        (apply #'posframe-show
-               ivy-posframe-buffer
-               :font ivy-posframe-font
-               :string str
-               :position (point)
-               :poshandler poshandler
-               :lines-truncate t
-               :background-color (face-attribute 'ivy-posframe :background nil t)
-               :foreground-color (face-attribute 'ivy-posframe :foreground nil t)
-               :internal-border-width ivy-posframe-border-width
-               :internal-border-color (face-attribute 'ivy-posframe-border :background nil t)
-               :override-parameters ivy-posframe-parameters
-               (funcall ivy-posframe-size-function))
-        (ivy-posframe--add-prompt 'ignore))))
+  (defun ivy-posframe-display-at-frame-center/zenith (str)
+    (ivy-posframe--display str #'zenith/posframe-poshandler-frame-center))
 
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
+  (defun zenith/posframe-poshandler-frame-center (info)
+    "Put the posframe at frame center, while keep the top row fixed"
+    (cons (/ (- (plist-get info :parent-frame-width)
+                (+ (* (plist-get info :font-width) zenith/ivy-posframe-width) 2))
+             2)
+          (/ (- (plist-get info :parent-frame-height)
+                (+ (* (plist-get info :font-height) ivy-posframe-height) 2))
+             2)))
+
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center/zenith))
         ivy-posframe-size-function #'zenith/ivy-posframe-get-size
         ivy-posframe-height 20)
-  (ivy-posframe-mode))
+  (ivy-posframe-mode)
+  ;; TODO The problem is that you can not use pyim when ivy-posframe exists.
+  ;; Therefore it can be annoying to have ivy-posframe open when some chinese
+  ;; characters are going to be input
+  )
 
 ;; all-the-icons-ivy
 ;; dependencies: ivy all-the-icons

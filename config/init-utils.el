@@ -347,7 +347,8 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 
 (setq shackle-rules
       '((" \\*" :regexp t :custom zenith/shackle-custom-window)
-        ("\\*Help" :regexp t :custom zenith/shackle-custom-window)))
+        ("\\*Help" :regexp t :custom zenith/shackle-custom-window)
+        ("*org-roam*"  :inhibit-window-quit t :select nil :popup t :size 0.33 :align 'below)))
 
 (defun zenith/matching-popup (str)
   (let ((ret))
@@ -365,6 +366,7 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 (require 'special-char-mode)
 (add-hook 'prog-mode-hook 'special-char-mode)
 (add-hook 'LaTeX-mode-hook 'special-char-mode)
+(add-hook 'org-mode-hook 'special-char-mode)
 
 ;; Dired enhancement
 (defun zenith/dired-load-packages ()

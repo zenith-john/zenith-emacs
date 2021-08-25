@@ -131,6 +131,9 @@
 ;; winner-mode
 (winner-mode 1)
 
+;; desktop-save
+(desktop-save-mode 1)
+
 (provide 'init-default)
 ;;; init-default.el ends here
 
