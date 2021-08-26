@@ -58,8 +58,7 @@
 (defun zenith/latex-super-script ()
   (interactive)
   (funcall-interactively 'self-insert-command 1 ?^)
-  (when (and (eq major-mode 'latex-mode)
-             TeX-electric-sub-and-superscript
+  (when (and TeX-electric-sub-and-superscript
              (texmathp))
     (insert (concat TeX-grop TeX-grcl))
     (backward-char)))

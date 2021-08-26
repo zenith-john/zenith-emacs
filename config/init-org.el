@@ -209,7 +209,12 @@
   (defun zenith/org-insert-heading ()
     "Insert heading, create id and add a timestamp."
     (interactive)
-    (org-capture 0 "n"))
+    (let ((org-capture-templates
+           '(
+             ("n" "Notes" entry (file "~/Dropbox/Temp.org")
+              "* %^{Title}\n%U\n" :immediate-finish t)
+             )))
+      (org-capture 0 "n")))
 
   ;; Org tag
   (setq org-tag-alist
@@ -580,22 +585,6 @@
 ;; org-roam configuration
 ;; In fact I only use org-roams backlink feature
 (with-eval-after-load 'org-roam
-  (defun zenith/org-headline-has-child ()
-    "If the headline has any child return `t', else return `nil'"
-    (save-excursion
-      (if (org-goto-first-child)
-          t
-        nil)))
-
-  (defun zenith/org-roam-db-node-include-function ()
-    "Check the node tag and whether has child."
-    (let ((tags (org-get-tags)))
-      (if (member "Node" tags)
-          t
-        (if (member "Ignore" tags)
-            nil
-          (not (zenith/org-headline-has-child))))))
-
   (setq org-roam-directory zenith/note-directory
         org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir)
         org-roam-db-gc-threshold most-positive-fixnum

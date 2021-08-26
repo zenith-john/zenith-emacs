@@ -222,7 +222,10 @@
  "C-l" 'zenith/org-insert-link
  "C-;" 'org-store-link
  "M-r" 'zenith/search-id-reverse-link
- "j"   'zenith/latex-magic-j)
+ "j"   'zenith/latex-magic-j
+ "["   'zenith/latex-magic-bracket
+ "-"   'zenith/latex-magic-underscore
+ )
 
 ;; I prefer C-c C-c over C-c ' (more consistent)
 (general-define-key

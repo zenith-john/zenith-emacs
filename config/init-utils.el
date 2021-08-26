@@ -24,7 +24,6 @@
     (sp-local-pair "\"" "\""
                    :unless '(sp-latex-point-after-backslash)))
   (sp-with-modes '(org-mode)
-    (sp-local-pair "$" "$")
     (sp-local-pair "\\[" "\\]")))
 
 (zenith/add-hook '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook) 'smartparens-mode)

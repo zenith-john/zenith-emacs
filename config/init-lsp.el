@@ -29,6 +29,7 @@
   (zenith/add-hook '(js-mode-hook) 'zenith/nox-load-and-ensure))
 (when (executable-find "mspyls")
   (zenith/add-hook '(python-mode-hook) 'zenith/nox-load-and-ensure))
+;; (add-hook 'ess-r-mode-hook 'zenith/nox-load-and-ensure)
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here
