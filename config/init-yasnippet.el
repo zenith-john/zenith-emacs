@@ -68,8 +68,8 @@ and `nil' otherwise."
   (if auto-expand-mode
       ;; Priority of the function should be high enough to run before fill
       ;; column
-      (add-hook 'post-command-hook 'zenith/post-command-hook 0)
-    (remove-hook 'post-command-hook 'zenith/post-command-hook)))
+      (add-hook 'post-command-hook 'zenith/post-command-hook 0 t)
+    (remove-hook 'post-command-hook 'zenith/post-command-hook t)))
 (define-globalized-minor-mode global-auto-expand-mode auto-expand-mode auto-expand-mode-on)
 
 (defun auto-expand-mode-on ()

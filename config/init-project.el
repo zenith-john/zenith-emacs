@@ -54,9 +54,11 @@
           (setq new 'counsel-projectile-switch-to-buffer))
          ('counsel-projectile-switch-to-buffer
           (setq new 'ivy-switch-buffer)))
-        (ivy-quit-and-run
-          (let ((ivy-initial-inputs-alist `((t . ,ivy-text))))
-            (funcall-interactively new))))
+        (if new
+            (ivy-quit-and-run
+              (let ((ivy-initial-inputs-alist `((t . ,ivy-text))))
+                (funcall-interactively new)))
+          (message "Cannot switch to other mode.")))
     (message "Cannot switch to other mode.")))
 
 ;; Find-file

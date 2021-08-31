@@ -219,12 +219,13 @@
 
 (general-define-key
  :keymaps 'org-mode-map
- "C-l" 'zenith/org-insert-link
- "C-;" 'org-store-link
- "M-r" 'zenith/search-id-reverse-link
- "j"   'zenith/latex-magic-j
- "["   'zenith/latex-magic-bracket
- "-"   'zenith/latex-magic-underscore
+ "C-l"                  'zenith/org-insert-link
+ "C-;"                  'org-store-link
+ "M-r"                  'zenith/search-id-reverse-link
+ "j"                    'zenith/latex-magic-j
+ "["                    'zenith/latex-magic-bracket
+ "-"                    'zenith/latex-magic-underscore
+ [remap org-ctrl-c-ret] 'zenith/org-ctrl-c-ret
  )
 
 ;; I prefer C-c C-c over C-c ' (more consistent)

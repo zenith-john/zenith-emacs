@@ -39,9 +39,14 @@
 ;; org-ref
 ;; should be set before loading the package.
 (setq org-ref-default-bibliography `(,zenith/bibtex-library)
-      org-ref-bibliography-notes (concat zenith/note-directory "biblio.org")
+      org-ref-bibliography-notes (concat zenith/note-directory "Reference.org")
       org-ref-completion-library 'org-ref-ivy-cite
+      org-ref-note-title-format "* %t\n:PROPERTIES:\n:CUSTOM_ID: %k\n:AUTHOR: %9a\n:JOURNAL: %j\n:YEAR: %y\n:VOLUME: %v\n:PAGES: %p\n:DOI: %D\n:URL: %U\n:ROAM_REFS: cite:%k\n:END:\n"
       orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
+
+(with-eval-after-load 'org-ref
+  (setq org-ref-create-notes-hook '(org-id-get-create)))
+
 ;;
 ;;; Bootstrap
 (defun zenith/org-load-packages ()
@@ -68,6 +73,7 @@
   (org-bullets-mode)
   (org-edit-latex-mode)
   (org-cdlatex-mode 1)
+  (org-roam-db-autosync-mode 1)
   (org-clock-load)
   (require 'company-math)
   (remove-hook 'completion-at-point-functions #'pcomplete-completions-at-point t)
@@ -176,7 +182,7 @@
         ;; NEXT means the task is under my work and is immediate (compare to ACTIVE).
         ;; DONE means that the task is finished.
         ;; CANCELLED means that the work will not be continued anymore.
-        '((sequence "TODO(t)" "SUSPEND(s)" "WAITING(w@/!)" "ACTIVE(a)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
+        '((sequence "TODO(t)" "SUSPEND(s)" "WAITING(w!)" "ACTIVE(a)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
 
   ;; Use org-protocol to capture web.
   (require 'org-protocol)
@@ -206,15 +212,26 @@
   ;; Create id when capture ends.
   (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
 
-  (defun zenith/org-insert-heading ()
-    "Insert heading, create id and add a timestamp."
+  (defun zenith/org-insert-decoration ()
+    "Insert the inactive timestamp and add id."
     (interactive)
-    (let ((org-capture-templates
-           '(
-             ("n" "Notes" entry (file "~/Dropbox/Temp.org")
-              "* %^{Title}\n%U\n" :immediate-finish t)
-             )))
-      (org-capture 0 "n")))
+    (save-excursion
+      (newline)
+      (org-time-stamp-inactive '(16))
+      (org-id-get-create)))
+
+  (defun zenith/org-insert-heading ()
+    "Insert heading for org-roam."
+    (interactive)
+    (org-insert-heading)
+    (zenith/org-insert-decoration))
+
+  (defun zenith/org-ctrl-c-ret (&optional arg)
+    "Insert heading, create id and add a timestamp."
+    (interactive "p")
+    (pcase arg
+      (4 (zenith/org-insert-heading))
+      (_ (call-interactively 'org-ctrl-c-ret))))
 
   ;; Org tag
   (setq org-tag-alist
@@ -242,6 +259,10 @@
         org-agenda-show-all-dates nil
         org-agenda-tags-todo-honor-ignore-options t
         org-agenda-todo-ignore-with-date t
+        org-agenda-time-grid '((daily today require-timed remove-match)
+                              (800 1000 1200 1400 1600 1800 2000 2200)
+                              "......" "----Free----")
+
         org-deadline-warning-days 365
         org-agenda-show-future-repeats t
         org-agenda-window-setup 'current-window)
@@ -252,9 +273,6 @@
                               (agenda ""
                                       ((org-agenda-show-all-dates t)
                                        (org-agenda-use-time-grid t)
-                                       (org-agenda-time-grid '((daily today require-timed remove-match)
-                                                               (700 800 900 1000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300)
-                                                               "......" "----Free----"))
                                        (org-agenda-span 'day)
                                        (org-deadline-warning-days 0)
                                        (org-agenda-start-day "+0d")))
@@ -262,6 +280,8 @@
                                          ((org-agenda-overriding-header "========================================\nNext Tasks:")))
                               (tags-todo "/+ACTIVE"
                                          ((org-agenda-overriding-header "Active Projects:")))
+                              (tags-todo "/+WAITING"
+                                         ((org-agenda-overriding-header "")))
                               (tags-todo "Urgent/-NEXT"
                                          ((org-agenda-overriding-header "Works")))
                               (tags-todo "Work-Urgent/-Next"
@@ -540,8 +560,7 @@
        (start start)
        (t nil))))
 
-  (defadvice org-agenda-add-time-grid-maybe (around mde-org-agenda-grid-tweakify
-                                                    (list ndays todayp))
+  (defun zenith/org-agenda-grid-tweakify (orig-fun list ndays todayp)
     (if (member 'remove-match (car org-agenda-time-grid))
         (let* ((windows (delq nil (mapcar 'zenith/extract-window list)))
                (org-agenda-time-grid
@@ -559,9 +578,9 @@
                  (caddr org-agenda-time-grid)
                  (cadddr org-agenda-time-grid)
                  )))
-          ad-do-it)
-      ad-do-it))
-  (ad-activate 'org-agenda-add-time-grid-maybe)
+          (funcall orig-fun list ndays todayp))
+      (funcall orig-fun list ndays todayp)))
+  (advice-add 'org-agenda-add-time-grid-maybe :around 'zenith/org-agenda-grid-tweakify)
 
   (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files))
 
@@ -589,7 +608,21 @@
         org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir)
         org-roam-db-gc-threshold most-positive-fixnum
         org-roam-db-update-on-save nil
-        org-roam-completion-everywhere nil))
+        org-roam-completion-everywhere nil)
+
+  ;; Add node by org-roam-capture to a headline with specific name This should
+  ;; be done easily by file argument, however, the file argument failed to add
+  ;; the new headline at the end of the file.
+  (defun zenith/org-roam-capture-find-or-create-olp-advice (orig-fun &rest args)
+    "Make `org-roam-capture-find-or-create-olp' respect roam template"
+    (let ((new-args (mapcar (lambda (temp)
+                              (org-roam-capture--fill-template temp t)) (car-safe args))))
+      (funcall orig-fun new-args)))
+  (advice-add 'org-roam-capture-find-or-create-olp :around 'zenith/org-roam-capture-find-or-create-olp-advice)
+
+  (setq org-roam-capture-templates
+        '(("d" "default" plain "%U\n%?" :if-new
+           (file+olp "Temp.org" ("${title}"))))))
 
 ;; Global settings
 (defun zenith/my-org-agenda ()
