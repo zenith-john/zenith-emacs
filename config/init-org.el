@@ -215,16 +215,17 @@
   (defun zenith/org-insert-decoration ()
     "Insert the inactive timestamp and add id."
     (interactive)
-    (save-excursion
-      (newline)
-      (org-time-stamp-inactive '(16))
-      (org-id-get-create)))
+    (org-time-stamp-inactive '(16))
+    (org-id-get-create)
+    (newline))
 
   (defun zenith/org-insert-heading ()
     "Insert heading for org-roam."
     (interactive)
     (org-insert-heading)
-    (zenith/org-insert-decoration))
+    (save-excursion
+      (newline)
+      (zenith/org-insert-decoration)))
 
   (defun zenith/org-ctrl-c-ret (&optional arg)
     "Insert heading, create id and add a timestamp."
@@ -312,13 +313,17 @@
    '((emacs-lisp . t)
      (latex . t)
      (python . t)
+     (dot . t)
      (shell . t)))
 
+  ;; Define mathemtaical environment for emacs
   (setq org-structure-template-alist
         '(("p" . "proof")
           ("q" . "quote")
+          ("r" . "remark")
           ("t" . "theorem")
           ("c" . "corollary")
+          ("j" . "conjecture")
           ("d" . "definition")
           ("l" . "lemma")
           ("P" . "proposition")
@@ -422,7 +427,31 @@
 ;; ox-hugo
 (with-eval-after-load 'ox-hugo
   (setq org-hugo-base-dir "~/Documents/zenith-john.github.io/"
-        org-hugo-section "post"))
+        org-hugo-section "post"
+        org-hugo-default-static-subdirectory-for-externals "img"
+        org-hugo-paired-shortcodes "%theorem %corollary %proof %proposition %lemma %conjecture"
+        org-export-with-timestamps 'active)
+
+  ;; ox-hugo requires the level of first heading the to be 2.
+  (defun zenith/org-hugo-export-advice (orig-fn &rest args)
+    ;; Advice the ox-hugo export to use another version of bibliography.
+    (let ((orig (symbol-function 'org-ref-get-md-bibliography)))
+      (cl-letf (((symbol-function 'org-ref-get-md-bibliography)
+                 'zenith/org-ref-get-md-bibliography))
+        (apply orig-fn args))))
+  (advice-add 'org-hugo-export-to-md :around 'zenith/org-hugo-export-advice)
+  (advice-add 'org-hugo-export-as-md :around 'zenith/org-hugo-export-advice)
+  (advice-add 'org-hugo-export-wim-to-md :around 'zenith/org-hugo-export-advice)
+
+  (defun zenith/org-ref-get-md-bibliography (&optional sort)
+    "Create an md bibliography when there are keys.
+if SORT is non-nil the bibliography is sorted alphabetically by key."
+    (let ((keys (org-ref-get-bibtex-keys sort)))
+      (when keys
+        (concat
+         "## Bibliography\n"
+         (mapconcat (lambda (x) (org-ref-get-bibtex-entry-md x)) keys "\n\n")
+         "\n")))))
 
 ;; ox-icalendar
 (with-eval-after-load 'ox-icalendar
@@ -582,7 +611,20 @@
       (funcall orig-fun list ndays todayp)))
   (advice-add 'org-agenda-add-time-grid-maybe :around 'zenith/org-agenda-grid-tweakify)
 
-  (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files))
+  ;; (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
+  ;; The evalution process is added to the crontab to run every one hour
+
+  (defun zenith/org-review-note-today (&optional arg)
+    (interactive "p")
+    (let* ((org-agenda-files (list zenith/note-directory))
+           (org-export-use-babel nil)
+           (org-agenda-finalize-hook nil)
+           (time (pcase arg
+                  (4 "-1w")
+                  (16 "-1m")
+                  (_ "today")))
+           (match (concat "TIMESTAMP_IA>=\"<" time ">\"")))
+      (org-tags-view nil match))))
 
 (with-eval-after-load 'ol-bibtex
   ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.

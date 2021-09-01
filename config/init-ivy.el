@@ -49,6 +49,7 @@
     "Set size of by the posframe"
     (list
      :min-height 3
+     :height 23
      :width zenith/ivy-posframe-width
      :min-width zenith/ivy-posframe-width))
 
