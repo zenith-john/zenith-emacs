@@ -13,6 +13,8 @@
 (defvar zenith/note-directory (expand-file-name "~/Documents/Notes/"))
 (defvar zenith/bibtex-library (expand-file-name "~/Dropbox/Library.bib")
   "The default bibtex library")
+(defvar zenith/org-roam-capture-id nil
+  "Store the id of the capture template.")
 
 ;;
 ;;; Packages
@@ -73,7 +75,6 @@
   (org-bullets-mode)
   (org-edit-latex-mode)
   (org-cdlatex-mode 1)
-  (org-roam-db-autosync-mode 1)
   (org-clock-load)
   (require 'company-math)
   (remove-hook 'completion-at-point-functions #'pcomplete-completions-at-point t)
@@ -188,6 +189,8 @@
   (require 'org-protocol)
   (setq org-capture-templates
         '(
+          ("n" "Notes" entry (file "~/Dropbox/Temp.org")
+           "* %^{Title}\n%U\n%?")
           ("d" "Deadline" entry (file+headline "~/Dropbox/Agenda.org"  "Deadline")
            "* TODO %^{Title} :Work:\nDEADLINE: %^t\n%U\n%?")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
@@ -198,8 +201,6 @@
            "* TODO %^{Title} :Work:\nSCHEDULED: %^t\n%U\n%?")
           ("p" "Project" entry (file "~/Dropbox/Projects.org")
            "* TODO %^{Title}\n%U\n%?")
-          ("n" "Notes" entry (file "~/Dropbox/Temp.org")
-           "* %^{Title}\n%U\n%?")
           ("o" "Todo Notes" entry (file "~/Dropbox/Temp.org")
            "* %?\nSCHEDULED: %t\n%U\n")
           ("t" "Daily Review" entry (file "~/Dropbox/Temp.org")
@@ -210,7 +211,14 @@
            "* %:description\n:PROPERTIES:\n:ROAM_REFS: %:link\n:END:\n%U\n%:annotation\n%i\n%?")))
 
   ;; Create id when capture ends.
-  (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+  (defun zenith/org-id-get-create (&optional force)
+    (interactive "P")
+    (let ((id (org-id-get-create)))
+      (when (org-roam-capture-p)
+        (org-roam-capture--put :id (org-id-get-create force))
+        (org-roam-capture--put :finalize (or (org-capture-get :finalize)
+                                             (org-roam-capture--get :finalize))))))
+  (add-hook 'org-capture-prepare-finalize-hook 'zenith/org-id-get-create)
 
   (defun zenith/org-insert-decoration ()
     "Insert the inactive timestamp and add id."
@@ -501,7 +509,9 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
     (interactive)
     (if org-stored-links
         (org-insert-last-stored-link 1)
-      (zenith/org-insert-link-by-id))))
+      (if (featurep 'org-roam)
+          (org-roam-node-insert)
+        (zenith/org-insert-link-by-id))))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
@@ -650,21 +660,47 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
         org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir)
         org-roam-db-gc-threshold most-positive-fixnum
         org-roam-db-update-on-save nil
-        org-roam-completion-everywhere nil)
+        org-roam-completion-everywhere nil
+        org-roam-node-display-template "${my-olp}${title} ${my-file}")
 
-  ;; Add node by org-roam-capture to a headline with specific name This should
-  ;; be done easily by file argument, however, the file argument failed to add
-  ;; the new headline at the end of the file.
-  (defun zenith/org-roam-capture-find-or-create-olp-advice (orig-fun &rest args)
-    "Make `org-roam-capture-find-or-create-olp' respect roam template"
-    (let ((new-args (mapcar (lambda (temp)
-                              (org-roam-capture--fill-template temp t)) (car-safe args))))
-      (funcall orig-fun new-args)))
-  (advice-add 'org-roam-capture-find-or-create-olp :around 'zenith/org-roam-capture-find-or-create-olp-advice)
+  (cl-defmethod org-roam-node-my-olp ((node org-roam-node))
+    (let ((olp (org-roam-node-olp node)))
+      (if olp
+          (concat (s-join "/" (org-roam-node-olp node)) "/")
+        "")))
 
-  (setq org-roam-capture-templates
-        '(("d" "default" plain "%U\n%?" :if-new
-           (file+olp "Temp.org" ("${title}"))))))
+  (cl-defmethod org-roam-node-my-file ((node org-roam-node))
+    (let ((file (org-roam-node-file node)))
+      (concat "(" (file-name-nondirectory file) ")")))
+
+  (org-roam-db-autosync-mode 1)
+  (defun zenith/convert-template (template props title)
+    "Modify the template for org-roam."
+    (let ((templ (cl-copy-list template))
+          (expansion (nth 4 template))
+          org-roam-plist options)
+      (while props
+        (let* ((key (pop props))
+               (val (pop props))
+               (custom (member key org-roam-capture--template-keywords)))
+          (if custom
+              (setq org-roam-plist (plist-put org-roam-plist key val))
+            (setq options (plist-put options key val)))))
+      (setcar (nthcdr 4 templ) (replace-regexp-in-string "%^{Title}" title expansion t t))
+      (append templ options (list :org-roam org-roam-plist))))
+
+  ;; Redefine org-roam-capture to integrate my own org-roam workflow
+  (cl-defun org-roam-capture- (&key goto keys node info props templates)
+    "Personal version of org-roam-capture-"
+    (let* ((props (plist-put props :call-location (point-marker)))
+           (title (org-roam-node-title node))
+           (org-capture-templates (list (zenith/convert-template (car org-capture-templates) props title)))
+           (org-roam-capture--node node)
+           (org-roam-capture--info info))
+
+      (when (not keys)
+        (setq keys (caar org-capture-templates)))
+      (org-capture goto keys))))
 
 ;; Global settings
 (defun zenith/my-org-agenda ()
