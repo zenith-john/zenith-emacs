@@ -310,7 +310,7 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 
 ;; jump in my way
 (defvar zenith/jump-function-alist
-  '((org-mode . org-goto)
+  '((org-mode . counsel-org-goto-all)
     (latex-mode . reftex-toc)
     (org-agenda-mode . org-agenda-redo)
     (t . counsel-imenu))
@@ -373,6 +373,8 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
   (require 'dired-open)
   (require 'dired-subtree))
 (add-hook 'dired-mode-hook 'zenith/dired-load-packages)
+(require 'dired-async)
+(dired-async-mode 1)
 
 ;; emacs-libvterm
 (if zenith/enable-vterm

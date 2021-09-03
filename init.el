@@ -33,9 +33,29 @@
       ;; Do not load major mode
       (file-name-handler-alist nil))
 
+  (require 'cl-lib)
+  ;; From https://emacs-china.org/t/topic/3931/2
+  (defun eh-hack-load-path ()
+    ;; Delete buildin org's PATH
+    (setq load-path
+          (cl-remove-if
+           #'(lambda (path)
+               (string-match "lisp/org$" path))
+           load-path))
+    ;; Demove property lists to defeat cus-load and remove autoloads
+    (mapatoms
+     #'(lambda (sym)
+         (let ((sym-name (symbol-name sym)))
+           (when (string-match "^\\(org\\|ob\\|ox\\)-?" sym-name)
+             (setplist sym nil)
+             (when (autoloadp sym)
+               (unintern sym)))))))
+
+  (eh-hack-load-path)
+  ;; Load new org-mode rather than system one
   (add-to-list 'load-path zenith-emacs-config-dir)
   (add-subdirs-to-load-path zenith-emacs-extension-dir)
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
 
   (require 'benchmark-init)
   (require 'benchmark-init-modes)

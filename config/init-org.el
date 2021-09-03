@@ -59,6 +59,7 @@
   (require 'org-edit-latex)
   (require 'org-id)
   (require 'ox-org)
+  (require 'ob-async)
   (require 'org-download)
   (require 'org-ref)
   (require 'doi-utils)
@@ -189,8 +190,8 @@
   (require 'org-protocol)
   (setq org-capture-templates
         '(
-          ("n" "Notes" entry (file "~/Dropbox/Temp.org")
-           "* %^{Title}\n%U\n%?")
+          ("o" "Todo Notes" entry (file "~/Dropbox/Temp.org")
+           "* TODO %^{Title}\n%U\n")
           ("d" "Deadline" entry (file+headline "~/Dropbox/Agenda.org"  "Deadline")
            "* TODO %^{Title} :Work:\nDEADLINE: %^t\n%U\n%?")
           ("m" "Meeting" entry (file+headline "~/Dropbox/Agenda.org" "Meeting")
@@ -201,8 +202,8 @@
            "* TODO %^{Title} :Work:\nSCHEDULED: %^t\n%U\n%?")
           ("p" "Project" entry (file "~/Dropbox/Projects.org")
            "* TODO %^{Title}\n%U\n%?")
-          ("o" "Todo Notes" entry (file "~/Dropbox/Temp.org")
-           "* %?\nSCHEDULED: %t\n%U\n")
+          ("n" "Notes" entry (file "~/Dropbox/Temp.org")
+           "* %^{Title}\n%U\n%?")
           ("t" "Daily Review" entry (file "~/Dropbox/Temp.org")
            "* %(format-time-string \"%Y-%m-%d\") Daily Review\n%U\n%?" :immediate-finish t :jump-to-captured t)
           ("r" "Reference" entry (file "~/Dropbox/Temp.org")
@@ -474,10 +475,104 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
 (with-eval-after-load 'org-id
   (setq org-id-extra-files (directory-files-recursively zenith/note-directory ".*\\.org"))
   (org-id-update-id-locations)
+
+  ;; The following code implements my way of Zettelkasten instead of using
+  ;; org-roam which is too slow.
+
+  ;; Modified from `org-refile-get-location'
+  ;; Create new nodes by capture when necessary.
+  (defun zenith/org-refile-get-location (&optional prompt default-buffer new-nodes)
+    "Prompt the user for a refile location, using PROMPT.
+PROMPT should not be suffixed with a colon and a space, because
+this function appends the default value from
+`org-refile-history' automatically, if that is not empty."
+    (let ((org-refile-targets org-refile-targets)
+          (org-refile-use-outline-path org-refile-use-outline-path))
+      (setq org-refile-target-table (org-refile-get-targets default-buffer)))
+    (unless org-refile-target-table
+      (user-error "No refile targets"))
+    (let* ((cbuf (current-buffer))
+           (cfn (buffer-file-name (buffer-base-buffer cbuf)))
+           (cfunc (if (and org-refile-use-outline-path
+                           org-outline-path-complete-in-steps)
+                      #'org-olpath-completing-read
+                    #'completing-read))
+           (extra (if org-refile-use-outline-path "/" ""))
+           (cbnex (concat (buffer-name) extra))
+           (filename (and cfn (expand-file-name cfn)))
+           (tbl (mapcar
+                 (lambda (x)
+                   (if (and (not (member org-refile-use-outline-path
+                                         '(file full-file-path)))
+                            (not (equal filename (nth 1 x))))
+                       (cons (concat (car x) extra " ("
+                                     (file-name-nondirectory (nth 1 x)) ")")
+                             (cdr x))
+                     (cons (concat (car x) extra) (cdr x))))
+                 org-refile-target-table))
+           (completion-ignore-case t)
+           cdef
+           (prompt (concat prompt
+                           (or (and (car org-refile-history)
+                                    (concat " (default " (car org-refile-history) ")"))
+                               (and (assoc cbnex tbl) (setq cdef cbnex)
+                                    (concat " (default " cbnex ")"))) ": "))
+           pa answ parent-target child parent old-hist)
+      (setq old-hist org-refile-history)
+      (setq answ (funcall cfunc prompt tbl nil (not new-nodes)
+                          nil 'org-refile-history
+                          (or cdef (car org-refile-history))))
+      (if (setq pa (org-refile--get-location answ tbl))
+          (let ((last-refile-loc (car org-refile-history)))
+            (org-refile-check-position pa)
+            (when (or (not org-refile-history)
+                      (not (eq old-hist org-refile-history))
+                      (not (equal (car pa) last-refile-loc)))
+              (setq org-refile-history
+                    (cons (car pa) (if (assoc last-refile-loc tbl)
+                                       org-refile-history
+                                     (cdr org-refile-history))))
+              (when (equal last-refile-loc (nth 1 org-refile-history))
+                (pop org-refile-history)))
+            pa)
+        (if (string-match "\\`\\(.*\\)\\'" answ)
+            (progn (setq title (match-string 1 answ))
+                   (when
+                       (or (eq new-nodes t)
+                           (and (eq new-nodes 'confirm)
+				                (y-or-n-p (format "Create new node \"%s\"? "
+						                          child))))
+                     (let (
+                           (org-capture-templates
+                            (list (zenith/convert-template (car org-capture-templates)
+                                                           '(:unnarrowed t :immediate-finish t) title))))
+                       (org-capture nil (caar org-capture-templates))
+                       org-capture-last-stored-marker)))
+	      (user-error "Invalid target location")))))
+
+  ;; Modified from `org-id-get-with-outline-path-completion'
+  (defun zenith/org-id-get-with-outline-path-completion (&optional targets)
+    "Use `outline-path-completion' to retrieve the ID of an entry.
+TARGETS may be a setting for `org-refile-targets' to define
+eligible headlines.  When omitted, all headlines in the current
+file are eligible.  This function returns the ID of the entry.
+If necessary, the ID is created."
+    (let* ((org-refile-targets (or targets '((nil . (:maxlevel . 10)))))
+           (org-refile-use-outline-path
+            (if (caar org-refile-targets) 'file t))
+           (org-refile-target-verify-function nil)
+           (spos (zenith/org-refile-get-location "Entry" nil t))
+           (pom (and spos (if (listp spos)
+                              (move-marker (make-marker) (or (nth 3 spos) 1)
+                                           (get-file-buffer (nth 1 spos)))
+                            (copy-marker spos)))))
+      (prog1 (org-id-get pom 'create)
+        (move-marker pom nil))))
+
   (defun org-id-complete-link (&optional arg)
     "Create an id: link using completion"
     (concat "id:"
-            (org-id-get-with-outline-path-completion org-refile-targets)))
+            (zenith/org-id-get-with-outline-path-completion org-refile-targets)))
   (org-link-set-parameters "id"
                            :complete 'org-id-complete-link)
 
@@ -509,9 +604,7 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
     (interactive)
     (if org-stored-links
         (org-insert-last-stored-link 1)
-      (if (featurep 'org-roam)
-          (org-roam-node-insert)
-        (zenith/org-insert-link-by-id))))
+      (zenith/org-insert-link-by-id))))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
@@ -663,6 +756,9 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
         org-roam-completion-everywhere nil
         org-roam-node-display-template "${my-olp}${title} ${my-file}")
 
+  ;; I change the way org-roam-capture- work to fit my headline oriented
+  ;; workflow. However, I found that org-roam is extremely slow of no particular
+  ;; reason, so I invent my new way.
   (cl-defmethod org-roam-node-my-olp ((node org-roam-node))
     (let ((olp (org-roam-node-olp node)))
       (if olp
@@ -674,6 +770,7 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
       (concat "(" (file-name-nondirectory file) ")")))
 
   (org-roam-db-autosync-mode 1)
+
   (defun zenith/convert-template (template props title)
     "Modify the template for org-roam."
     (let ((templ (cl-copy-list template))
