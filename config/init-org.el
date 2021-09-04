@@ -143,6 +143,7 @@
    org-preview-latex-image-directory (concat zenith-emacs-local-dir "org-latex/")
    org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
+  ;; Set org-format-latex-options
   (setq-default
    org-format-latex-options
    (plist-put org-format-latex-options
@@ -150,6 +151,13 @@
               (face-attribute (or (cadr (assq 'default face-remapping-alist))
                                   'default)
                               :background nil t)))
+  (setq-default
+   org-format-latex-options
+   (plist-put org-format-latex-options
+              :foreground
+              (face-attribute (or (cadr (assq 'default face-remapping-alist))
+                                  'default)
+                              :foreground nil t))
 
   ;; seems that default open method is not by default usable in org-file-apps
   (setcdr (assoc "\\.pdf\\'" org-file-apps) "/usr/bin/zathura %s")
