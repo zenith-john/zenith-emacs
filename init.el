@@ -20,6 +20,9 @@
       package-enable-at-startup nil
       frame-inhibit-implied-resize t)
 
+(when (fboundp 'native-compile-async)
+  (setq native-comp-deferred-compilation t))
+
 (defun add-subdirs-to-load-path (dir)
   "Recursive add directories to `load-path'."
   (let ((default-directory (file-name-as-directory dir)))

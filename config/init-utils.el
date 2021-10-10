@@ -131,7 +131,7 @@
     (let ((wucuo-flyspell-start-mode "normal"))
       (wucuo-spell-check-buffer)))
 
-  (add-hook 'text-mode-hook 'wucuo-start)
+  ;; (add-hook 'text-mode-hook 'wucuo-start)
   (add-hook 'prog-mode-hook 'wucuo-start)
 
   ;; Redefine `flyspell-external-point-words'
@@ -403,6 +403,8 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 ;; ledger-mode
 (zenith/autoload '(ledger-mode) "ledger-mode")
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
+(with-eval-after-load 'ledger-mode
+  (add-to-list 'ledger-reports '("month" "%(binary) -f %(ledger-file) balance --period %(month) ^Income ^Expenses")))
 
 ;; fd-dired
 (autoload 'fd-dired "fd-dired" nil t)

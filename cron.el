@@ -92,6 +92,14 @@
         96
       (funcall orig-fn)))
 
+  (defun zenith/color-values-advice (orig-fn color &optional frame)
+    "Make `color-values' work temporarily in terminal condition."
+    (if (length= color 7)
+        (mapcar (lambda (str)
+              (* (string-to-number str 16) 256))
+                `(,(substring color 1 3) ,(substring color 3 5) ,(substring color 5 7)))
+      (apply orig-fn color frame)))
+
   ;; Modified from `org-format-latex'
 
   ;; Remove the modification of the buffer and make dvipng always generate
@@ -234,9 +242,11 @@ BEG and END are buffer positions."
     "Generate the cache for `org-latex-preview'"
     (interactive)
     (advice-add 'org--get-display-dpi :around 'zenith/org--get-diplay-dpi-advice)
+    (advice-add 'color-values :around 'zenith/color-values-advice)
     (dolist (file (directory-files zenith/note-directory t "\\.org\\'"))
       (zenith/org-latex-preview-file file))
-    (advice-remove 'org--get-display-dpi 'zenith/org--get-diplay-dpi-advice))
+    (advice-remove 'org--get-display-dpi 'zenith/org--get-diplay-dpi-advice)
+    (advice-remove 'color-values 'zenith/color-values-advice))
 
   (zenith/org-latex-preview-cache))
 

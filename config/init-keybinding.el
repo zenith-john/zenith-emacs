@@ -303,5 +303,9 @@
  :keymaps 'inferior-ess-r-mode-map
  "," 'zenith/leader-map)
 
+(general-define-key
+ :keymaps 'rime-mode-map
+ "C-`" 'rime-send-keybinding)
+
 (provide 'init-keybinding)
 ;;; init-keybinding ends here
