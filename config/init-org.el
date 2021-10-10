@@ -9,7 +9,8 @@
 
 ;; org-mode
 (defvar org-directory "~/Dropbox/")
-(defvar org-agenda-files '("~/Dropbox/"))
+(defvar zenith/org-agenda-files '("~/Dropbox/"))
+(defvar org-agenda-files zenith/org-agenda-files)
 (defvar zenith/note-directory (expand-file-name "~/Documents/Notes/"))
 (defvar zenith/bibtex-library (expand-file-name "~/Dropbox/Library.bib")
   "The default bibtex library")
@@ -47,7 +48,12 @@
       orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
 
 (with-eval-after-load 'org-ref
-  (setq org-ref-create-notes-hook '(org-id-get-create)))
+  (setq org-ref-create-notes-hook '(org-id-get-create))
+  (defun zenith/org-ref-bibliography-format-advice (orig-fn keyword desc format)
+    (if (eq format 'latex)
+        "\\printbibliography"
+      (funcall orig-fn keyword desc format)))
+  (advice-add 'org-ref-bibliography-format :around 'zenith/org-ref-bibliography-format-advice))
 
 ;;
 ;;; Bootstrap
@@ -76,6 +82,7 @@
   (org-bullets-mode)
   (org-edit-latex-mode)
   (org-cdlatex-mode 1)
+  (eldoc-mode 0)
   (org-clock-load)
   (require 'company-math)
   (remove-hook 'completion-at-point-functions #'pcomplete-completions-at-point t)
@@ -88,7 +95,7 @@
     (directory-files zenith/note-directory t ".*\\.org\\'"))
 
   (defun zenith/org-agenda-files ()
-    (when-let ((agenda (car org-agenda-files)))
+    (when-let ((agenda (car zenith/org-agenda-files)))
       (remove (expand-file-name "chinese_lunar.org" agenda)
               (directory-files agenda t ".*\\.org\\'"))))
 
@@ -157,7 +164,14 @@
               :foreground
               (face-attribute (or (cadr (assq 'default face-remapping-alist))
                                   'default)
-                              :foreground nil t))
+                              :foreground nil t)))
+
+  ;; Because of the double screen with different dpi, I set it manually.
+  (defun zenith/org--get-diplay-dpi-advice (orig-fn)
+    "Make `org--get-display-dpi' work for non graphic mode"
+    ;; manually set default dpi
+    96)
+  (advice-add 'org--get-display-dpi :around 'zenith/org--get-diplay-dpi-advice)
 
   ;; seems that default open method is not by default usable in org-file-apps
   (setcdr (assoc "\\.pdf\\'" org-file-apps) "/usr/bin/zathura %s")
@@ -192,7 +206,7 @@
         ;; NEXT means the task is under my work and is immediate (compare to ACTIVE).
         ;; DONE means that the task is finished.
         ;; CANCELLED means that the work will not be continued anymore.
-        '((sequence "TODO(t)" "SUSPEND(s)" "WAITING(w!)" "ACTIVE(a)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
+        '((sequence "TODO(t)" "Maybe(m)" "SUSPEND(s)" "WAITING(w!)" "ACTIVE(a)" "NEXT(n)" "|" "DONE(d!)" "CANCELLED(c@)")))
 
   ;; Use org-protocol to capture web.
   (require 'org-protocol)
@@ -287,39 +301,39 @@
 
   (setq org-agenda-custom-commands
         '(("b" "Today" ((tags "AGENDAHEADER"
-                                    ((org-agenda-overriding-header "Today's Schedule:")))
-                              (agenda ""
-                                      ((org-agenda-show-all-dates t)
-                                       (org-agenda-use-time-grid t)
-                                       (org-agenda-span 'day)
-                                       (org-deadline-warning-days 0)
-                                       (org-agenda-start-day "+0d")))
-                              (tags-todo "/+NEXT"
-                                         ((org-agenda-overriding-header "========================================\nNext Tasks:")))
-                              (tags-todo "/+ACTIVE"
-                                         ((org-agenda-overriding-header "Active Projects:")))
-                              (tags-todo "/+WAITING"
-                                         ((org-agenda-overriding-header "")))
-                              (tags-todo "Urgent/-NEXT"
-                                         ((org-agenda-overriding-header "Works")))
-                              (tags-todo "Work-Urgent/-Next"
-                                         ((org-agenda-overriding-header "")))
-                              (tags "BEFOREWEEKGLANCE"
-                                    ((org-agenda-overriding-header "========================================\nTomorrow Glance:")))
-                              (agenda ""
-                                      ((org-agenda-show-all-dates t)
-                                       (org-agenda-show-future-repeats t)
-                                       (org-agenda-span 1)
-                                       (org-agenda-start-day "+1d")))
-                              (tags "BEFOREDEADLINE"
-                                    ((org-agenda-overriding-header "========================================\nFar Away Tasks:")))
-                              (agenda ""
-                                      ((org-agenda-show-future-repeats 'next)
-                                       (org-agenda-span 180)
-                                       (org-agenda-time-grid nil)
-                                       (org-agenda-show-all-dates nil)
-                                       (org-agenda-entry-types '(:deadline :scheduled))
-                                       (org-agenda-start-day "+2d")))))
+                              ((org-agenda-overriding-header "Today's Schedule:")))
+                        (agenda ""
+                                ((org-agenda-show-all-dates t)
+                                 (org-agenda-use-time-grid t)
+                                 (org-agenda-span 'day)
+                                 (org-agenda-start-day "+0d")))
+                        (tags-todo "/+NEXT"
+                                   ((org-agenda-overriding-header "========================================\nNext Tasks:")))
+                        (tags-todo "/+ACTIVE"
+                                   ((org-agenda-overriding-header "Active Projects:")))
+                        (tags-todo "/+WAITING"
+                                   ((org-agenda-overriding-header "")))
+                        (tags-todo "Urgent/-NEXT"
+                                   ((org-agenda-overriding-header "Works")))
+                        (tags-todo "Work-Urgent/-Next"
+                                   ((org-agenda-overriding-header "")))
+                        (tags "BEFOREWEEKGLANCE"
+                              ((org-agenda-overriding-header "========================================\nTomorrow Glance:")))
+                        (agenda ""
+                                ((org-agenda-show-all-dates t)
+                                 (org-agenda-show-future-repeats t)
+                                 (org-deadline-warning-days 0)
+                                 (org-agenda-span 1)
+                                 (org-agenda-start-day "+1d")))
+                        (tags "BEFOREDEADLINE"
+                              ((org-agenda-overriding-header "========================================\nFar Away Tasks:")))
+                        (agenda ""
+                                ((org-agenda-show-future-repeats 'next)
+                                 (org-agenda-span 7)
+                                 (org-agenda-time-grid nil)
+                                 (org-agenda-show-all-dates nil)
+                                 (org-agenda-entry-types '(:deadline :scheduled))
+                                 (org-agenda-start-day "+2d")))))
           ("c" "Todo Lists"
            ((alltodo "" ((org-agenda-overriding-header "TODOs sorted by state, priority, effort")
                          (org-agenda-sorting-strategy '(todo-state-down priority-down effort-up))))))))
@@ -340,6 +354,7 @@
           ("r" . "remark")
           ("t" . "theorem")
           ("c" . "corollary")
+          ("e" . "exam")
           ("j" . "conjecture")
           ("d" . "definition")
           ("l" . "lemma")
@@ -406,7 +421,7 @@
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("myart"
-                 "\\documentclass{article}
+                 "\\documentclass{ctexart}
 [DEFAULT-PACKAGES]
 [PACKAGES]
 \\usepackage{xcolor}
@@ -414,10 +429,8 @@
 \\usepackage{fontspec}
 \\usepackage{xeCJK}
 \\usepackage{etoolbox}
-\\usepackage[backend=biber,style=alphabetic]{biblatex}
-\\addbibresource[location=local]{~/Dropbox/Library.bib}
-\\setCJKmainfont{Source Han Sans CN}
-\\setmonofont{Source Code Pro}
+\\usepackage{indentfirst}
+\\setCJKmainfont{Noto Sans CJK SC}
 \\gappto{\\UrlBreaks}{\\UrlOrds}
 "
                  ("\\section{%s}" . "\\section*{%s}")
@@ -435,7 +448,13 @@
                                    ("breakanywhere" "true")
                                    ("fontsize" "\\footnotesize"))
         org-latex-pdf-process
-        '("latexmk -g -pdf -pdflatex=\"%latex\" -shell-escape -outdir=%o %f")))
+        '("latexmk -g -pdf -pdflatex=\"%latex\" -shell-escape -outdir=%o %f"))
+  (defun zenith/org-latex-timestamp-advice (origin-fn timestamp _contents info)
+    (if org-export-with-timestamps
+        (funcall origin-fn timestamp _contents info)
+      ""))
+
+  (advice-add 'org-latex-timestamp :around 'zenith/org-latex-timestamp-advice))
 
 ;; org-edit-latex
 (with-eval-after-load 'org-edit-latex
@@ -446,8 +465,8 @@
   (setq org-hugo-base-dir "~/Documents/zenith-john.github.io/"
         org-hugo-section "post"
         org-hugo-default-static-subdirectory-for-externals "img"
-        org-hugo-paired-shortcodes "%theorem %corollary %proof %proposition %lemma %conjecture"
-        org-export-with-timestamps 'active)
+        org-hugo-paired-shortcodes "%theorem %corollary %proof %proposition %lemma %conjecture %remark %exam"
+        org-export-with-timestamps nil)
 
   ;; ox-hugo requires the level of first heading the to be 2.
   (defun zenith/org-hugo-export-advice (orig-fn &rest args)
@@ -460,13 +479,90 @@
   (advice-add 'org-hugo-export-as-md :around 'zenith/org-hugo-export-advice)
   (advice-add 'org-hugo-export-wim-to-md :around 'zenith/org-hugo-export-advice)
 
+  (defun zenith/org-blackfriday-escape-chars-in-equation-advice (str)
+    "Replace the newline by space for katex."
+    (let* ((escape-str (replace-regexp-in-string "\n" " " str)))
+      escape-str))
+  (advice-add 'org-blackfriday-escape-chars-in-equation :filter-return 'zenith/org-blackfriday-escape-chars-in-equation-advice)
+
+  (defun zenith/org-ref-format-cite-advice (origin-fn keyword desc format)
+    "Add advice to change the citation format for markdown output."
+    (if (eq format 'md)
+        (concat "["
+                (mapconcat
+                 (lambda
+                   (key)
+                   (format "<span id=\"%s\"><a href=\"#%s\" title=\"%s\">%s</a></span>"
+                           (md5 key)
+                           key
+                           (let
+                               ((org-ref-bibliography-files
+                                 (org-ref-find-bibliography))
+                                (file)
+                                (entry)
+                                (bibtex-entry)
+                                (entry-type)
+                                (format)
+                                (org-ref-bibliography-entry-format
+                                 '(("article" . "%a, %t, %j, v(%n), %p (%y).")
+                                   ("book" . "%a, %t, %u (%y).")
+                                   ("techreport" . "%a, %t, %i, %u (%y).")
+                                   ("proceedings" . "%e, %t in %S, %u (%y).")
+                                   ("inproceedings" . "%a, %t, %p, in %b, edited by %e, %u (%y)"))))
+                             (setq file
+                                   (catch 'result
+                                     (cl-loop for file in org-ref-bibliography-files do
+                                              (if
+                                                  (org-ref-key-in-file-p key
+                                                                         (file-truename file))
+                                                  (throw 'result file)
+                                                (message "%s not found in %s" key
+                                                         (file-truename file))))))
+                             (if file
+                                 (with-temp-buffer
+                                   (insert-file-contents file)
+                                   (bibtex-set-dialect
+                                    (parsebib-find-bibtex-dialect)
+                                    t)
+                                   (bibtex-search-entry key nil 0)
+                                   (setq bibtex-entry
+                                         (bibtex-parse-entry))
+                                   (dolist
+                                       (cons-cell bibtex-entry)
+                                     (setf
+                                      (car cons-cell)
+                                      (downcase
+                                       (car cons-cell))))
+                                   (setq entry-type
+                                         (downcase
+                                          (cdr
+                                           (assoc "=type=" bibtex-entry))))
+                                   (setq format
+                                         (cdr
+                                          (assoc entry-type org-ref-bibliography-entry-format)))
+                                   (if format
+                                       (setq entry
+                                             (org-ref-reftex-format-citation bibtex-entry format))
+                                     (save-restriction
+                                       (bibtex-narrow-to-entry)
+                                       (setq entry
+                                             (buffer-string)))))
+                               "Key not found")
+                             (replace-regexp-in-string "\"" ""
+                                                       (htmlize-escape-or-link entry)))
+                           key))
+                 (s-split "," keyword)
+                 ", ")
+                "]")
+        (funcall origin-fn keyword desc format)))
+  (advice-add 'org-ref-format-cite :around 'zenith/org-ref-format-cite-advice)
+
   (defun zenith/org-ref-get-md-bibliography (&optional sort)
     "Create an md bibliography when there are keys.
 if SORT is non-nil the bibliography is sorted alphabetically by key."
     (let ((keys (org-ref-get-bibtex-keys sort)))
       (when keys
         (concat
-         "## Bibliography\n"
          (mapconcat (lambda (x) (org-ref-get-bibtex-entry-md x)) keys "\n\n")
          "\n")))))
 
@@ -572,7 +668,7 @@ If necessary, the ID is created."
            (spos (zenith/org-refile-get-location "Entry" nil t))
            (pom (and spos (if (listp spos)
                               (move-marker (make-marker) (or (nth 3 spos) 1)
-                                           (get-file-buffer (nth 1 spos)))
+                                           (find-buffer-visiting (nth 1 spos)))
                             (copy-marker spos)))))
       (prog1 (org-id-get pom 'create)
         (move-marker pom nil))))
@@ -652,7 +748,7 @@ If necessary, the ID is created."
   (defun zenith/org-calc-clones (timestamp interval)
     "Calculate the clone numbers."
     (let ((time (org-time-stamp-to-now timestamp)))
-      (max (/ (- (+ interval 7) time) interval) 0)))
+      (max (/ (- (+ interval 7) time) interval) -1)))
 
   (defun -zenith/org-clone-repeats ()
     "Repeat the daily task 7 times"
@@ -661,7 +757,7 @@ If necessary, the ID is created."
                 (rep (car-safe (s-match "\\+[0-9]+[dwmy]" timestamp)))
                 (interval (zenith/org-calc-interval rep))
                 (times (zenith/org-calc-clones timestamp interval))
-                (check (> times 0)))
+                (check (>= times 0)))
       (save-restriction
         (org-narrow-to-subtree)
         (org-clone-subtree-with-time-shift times rep)

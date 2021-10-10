@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: remark
+# key: rmk
+# condition: t
+# --
+
+#+begin_remark
+$0
+#+end_remark

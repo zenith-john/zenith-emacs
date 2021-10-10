@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: example
+# key: ex
+# condition: t
+# --
+
+#+begin_exam
+$0
+#+end_exam
