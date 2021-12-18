@@ -10,6 +10,12 @@
 
 (setq-default sp-autoskip-closing-pair t) ;; manually add closing pair work as I like
 
+(defun zenith/sp-org-latex-predicate (_id _action _context)
+  "Check whether in org latex fragment."
+  (and (derived-mode-p  'org-mode)
+       (or (org-inside-LaTeX-fragment-p)
+           (org-inside-latex-macro-p))))
+
 (with-eval-after-load 'smartparens-latex
   (sp-with-modes '(
                    tex-mode
@@ -24,7 +30,11 @@
     (sp-local-pair "\"" "\""
                    :unless '(sp-latex-point-after-backslash)))
   (sp-with-modes '(org-mode)
-    (sp-local-pair "\\[" "\\]")))
+    (sp-local-pair "\\[" "\\]")
+    (sp-local-pair "*" "*" :unless '(zenith/sp-org-latex-predicate))
+    (sp-local-pair "_" "_" :unless '(zenith/sp-org-latex-predicate))
+    (sp-local-pair "+" "+" :unless '(zenith/sp-org-latex-predicate))
+    (sp-local-pair "/" "/" :unless '(zenith/sp-org-latex-predicate))))
 
 (zenith/add-hook '(comint-mode-hook prog-mode-hook LaTeX-mode-hook org-mode-hook) 'smartparens-mode)
 
@@ -116,6 +126,7 @@
   (zenith/autoload '(wucuo-start) "wucuo")
 
   (setq
+   wucuo-spell-check-region-max 20000
    wucuo-enable-camel-case-algorithm-p nil
    wucuo-flyspell-start-mode "fast")
 

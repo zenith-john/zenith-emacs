@@ -181,9 +181,9 @@
                '("*" (:foreground "pink")))
   (setq org-emphasis-regexp-components
         ;; markup 记号前后允许中文
-        (list (concat " \t('\"{"            "[:nonascii:]")
-              (concat "- \t.,:!?;'\")}\\["  "[:nonascii:]")
-              " \t\r\n,\"'"
+        (list (concat " \t('\""            "[:nonascii:]")
+              (concat "- \t.,:!?;'\")\\["  "[:nonascii:]")
+              " \t\r\n,\"'*"
               "."
               1)
         org-match-substring-regexp
@@ -465,7 +465,7 @@
   (setq org-hugo-base-dir "~/Documents/zenith-john.github.io/"
         org-hugo-section "post"
         org-hugo-default-static-subdirectory-for-externals "img"
-        org-hugo-paired-shortcodes "%theorem %corollary %proof %proposition %lemma %conjecture %remark %exam"
+        org-hugo-paired-shortcodes "%theorem %corollary %proof %proposition %lemma %conjecture %remark %exam %definition"
         org-export-with-timestamps nil)
 
   ;; ox-hugo requires the level of first heading the to be 2.
@@ -728,6 +728,7 @@ If necessary, the ID is created."
         (setq org-map-continue-from (point))
         (org-archive-subtree))))
 
+  ;; To avoid cleaning multiple timestamp element, the timestamps should be put in reverse order.
   (defun zenith/org-clean-agenda ()
     "Remove the old events without repeats in agenda."
     (interactive)
@@ -860,6 +861,10 @@ If necessary, the ID is created."
         org-roam-completion-everywhere nil
         org-roam-node-display-template "${my-olp}${title} ${my-file}")
 
+  ;; Don't include Review.org as nodes
+  (setq org-roam-db-node-include-function
+        (lambda ()
+          (not (member "Review" (org-get-tags)))))
   ;; I change the way org-roam-capture- work to fit my headline oriented
   ;; workflow. However, I found that org-roam is extremely slow of no particular
   ;; reason, so I invent my new way.
@@ -872,8 +877,6 @@ If necessary, the ID is created."
   (cl-defmethod org-roam-node-my-file ((node org-roam-node))
     (let ((file (org-roam-node-file node)))
       (concat "(" (file-name-nondirectory file) ")")))
-
-  (org-roam-db-autosync-mode 1)
 
   (defun zenith/convert-template (template props title)
     "Modify the template for org-roam."
@@ -901,12 +904,81 @@ If necessary, the ID is created."
 
       (when (not keys)
         (setq keys (caar org-capture-templates)))
-      (org-capture goto keys))))
+      (org-capture goto keys)))
+
+  (defun org-roam-open-id-at-point-advice (orig-fun)
+    nil)
+  (advice-add 'org-roam-open-id-at-point :around 'org-roam-open-id-at-point-advice))
 
 ;; Global settings
 (defun zenith/my-org-agenda ()
   (interactive)
   (org-agenda 0 "b"))
+
+;; Adpated from
+;; https://org-roam.discourse.group/t/export-backlinks-on-org-export/1756/21
+(defun collect-backlinks-string ()
+  (interactive)
+  (org-show-all)
+  (org-roam-update-org-id-locations)
+  (org-roam-db-sync)
+  (when-let* (
+         (source-file buffer-file-name)
+         (check (org-roam-file-p source-file))
+         (nodes-in-file (--filter (s-equals? (org-roam-node-file it) source-file)
+                                  (org-roam-node-list)))
+         (nodes-start-position (-map 'org-roam-node-point nodes-in-file))
+         ;; Nodes don't store the last position, so get the next headline position
+         ;; and subtract one character (or, if no next headline, get point-max)
+         ;; (nodes-end-position (-map (lambda (nodes-start-position)
+         ;;                             (goto-char nodes-start-position)
+         ;;                             (if (org-before-first-heading-p) ;; file node
+         ;;                                 (point-max)
+         ;;                               (call-interactively
+         ;;                                'org-next-visible-heading)
+         ;;                               (if (> (point) nodes-start-position)
+         ;;                                   (- (point) 1) ;; successfully found next
+         ;;                                 (point-max)))) ;; there was no next
+         ;;                           nodes-start-position))
+         ;; sort in order of decreasing end position
+         (nodes-in-file-sorted (->> (-zip nodes-in-file nodes-start-position)
+                                    (--sort (> (cdr it) (cdr other))))))
+    (dolist (node-and-start nodes-in-file-sorted)
+      (-let (((node . start-position) node-and-start)
+             (heading "REFERENCED")
+             (values))
+        (goto-char start-position)
+        (if (org-roam-backlinks-get node)
+            (progn
+              ;; Add the references as a subtree of the node
+              ;; (setq heading "\n\nReferences: ")
+              ;; (insert heading)
+              (with-temp-buffer
+                (let ((backlinks (cl-remove-duplicates
+                                  (-map 'org-roam-backlink-source-node
+                                        (org-roam-backlinks-get node)) :key 'org-roam-node-id :test 'string-equal)))
+                  (dolist (backlink backlinks)
+                    (let* ((reference (format "[[id:%s][%s]], "
+                                              (org-roam-node-id backlink)
+                                              (org-roam-node-title backlink))))
+                      (insert reference)))
+                  (delete-backward-char 2)
+                  (setq values (buffer-substring-no-properties (point-min) (point-max)))))
+              (org-set-property heading values))
+          (org-delete-property heading))))))
+
+;; The following code will cause error in exporting process unexpectedly.
+(defun zenith/extract-referenced ()
+  (when-let ((referenced (org-entry-get nil "REFERENCED")))
+    (call-interactively 'org-next-visible-heading)
+    (backward-char 1)
+    (insert (concat "\n\nReferenced: " referenced "."))))
+
+(defun zenith/export-backlinks (_backend)
+  (org-show-all)
+  (org-map-entries 'zenith/extract-referenced))
+
+(add-hook 'org-export-before-parsing-hook 'zenith/export-backlinks)
 
 (provide 'init-org)
 ;;; init-org.el ends here
