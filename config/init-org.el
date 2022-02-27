@@ -468,6 +468,22 @@
         org-hugo-paired-shortcodes "%theorem %corollary %proof %proposition %lemma %conjecture %remark %exam %definition"
         org-export-with-timestamps nil)
 
+  ;; Redefine `org-hugo-link--headline-anchor-maybe' to remove the `kill-buffer' function.
+  (defun org-hugo-link--headline-anchor-maybe (link)
+    "Return headline pointed to by LINK."
+    (with-temp-buffer
+      (org-id-goto (org-element-property :path link))
+      ;; Thu Oct 21 21:29:17 EDT 2021 - kmodi
+      ;; It was necessary to set the major mode to `org-mode' after the
+      ;; `org-id-goto' jump. Otherwise, the temp buffer would remain
+      ;; in fundamental mode, and so the `org-find-top-headline'
+      ;; always returned nil.
+      (org-mode)
+      (let ((headline (org-find-top-headline)))
+        ;; (kill-buffer (current-buffer))
+        (if headline
+            (org-hugo-slug headline)
+          ""))))
   ;; ox-hugo requires the level of first heading the to be 2.
   (defun zenith/org-hugo-export-advice (orig-fn &rest args)
     ;; Advice the ox-hugo export to use another version of bibliography.
@@ -703,12 +719,16 @@ If necessary, the ID is created."
            (desc (zenith/org-id-get-headline (substring link 3))))
       (org-insert-link nil link desc)))
 
-  (defun zenith/org-insert-link ()
+  (defun zenith/org-insert-link (&optional arg)
     "Insert the stored link or by id"
-    (interactive)
+    (interactive "p")
     (if org-stored-links
         (org-insert-last-stored-link 1)
-      (zenith/org-insert-link-by-id))))
+      (let ((org-refile-targets
+             (pcase arg
+               (4 org-refile-targets)
+               (_ '((nil :maxlevel . 4))))))
+        (zenith/org-insert-link-by-id)))))
 
 (with-eval-after-load 'org-agenda
   (require 'evil-org-agenda)
@@ -749,7 +769,7 @@ If necessary, the ID is created."
   (defun zenith/org-calc-clones (timestamp interval)
     "Calculate the clone numbers."
     (let ((time (org-time-stamp-to-now timestamp)))
-      (max (/ (- (+ interval 7) time) interval) -1)))
+      (max (/ (- (max 7 interval) time) interval) -1)))
 
   (defun -zenith/org-clone-repeats ()
     "Repeat the daily task 7 times"
@@ -774,8 +794,8 @@ If necessary, the ID is created."
   (defun zenith/org-next-week ()
     "Prepare org-mode for next week"
     (interactive)
-    (zenith/org-clean-agenda)
-    (zenith/org-clone-repeats))
+    (zenith/org-clone-repeats)
+    (zenith/org-clean-agenda))
 
   (defun org-time-to-minutes (time)
     "Convert an HHMM time to minutes"
