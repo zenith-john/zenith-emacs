@@ -8,7 +8,7 @@
 ;; The code is adjusted from https://github.com/manateelazycat/auto-save. The
 ;; problem of the original code is that it calls buffer-modified-p which makes
 ;; ws-butler unhappy.
-(setq auto-save-idle 2)
+(setq auto-save-idle 6)
 
 (defun zenith/auto-save-buffers ()
   (interactive)

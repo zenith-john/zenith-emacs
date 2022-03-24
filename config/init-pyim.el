@@ -30,7 +30,7 @@
     "Check whether the point is beginning of the line"
     (save-excursion
       (let ((pt (point)))
-        (beginning-of-line)
+        (back-to-indentation)
         (equal (point) pt))))
 
   (setq rime-disable-predicates
