@@ -35,6 +35,7 @@
 (require 'init-latex)
 (require 'init-rust)
 (require 'init-R)
+(require 'typescript-mode)
 
 (when zenith/wsl-system
   (require 'init-wsl))

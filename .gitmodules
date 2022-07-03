@@ -383,3 +383,6 @@
 [submodule "extensions/emacsql"]
 	path = extensions/emacsql
 	url = https://github.com/skeeto/emacsql
+[submodule "extensions/typescript"]
+	path = extensions/typescript
+	url = https://github.com/emacs-typescript/typescript.el

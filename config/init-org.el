@@ -696,6 +696,32 @@ If necessary, the ID is created."
   (org-link-set-parameters "id"
                            :complete 'org-id-complete-link)
 
+  ;; Always respect behavior of `org-link-frame-setup', regardless of opening
+  ;; the same file or not.
+  (defun zenith/org-id-open (id _)
+    "Go to the entry with id ID."
+    (org-mark-ring-push)
+    (let ((m (org-id-find id 'marker))
+          cmd)
+      (unless m
+        (error "Cannot find entry with ID \"%s\"" id))
+      ;; Use a buffer-switching command in analogy to finding files
+      (setq cmd
+            (or
+             (cdr
+              (assq
+               (cdr (assq 'file org-link-frame-setup))
+               '((find-file . switch-to-buffer)
+                 (find-file-other-window . switch-to-buffer-other-window)
+                 (find-file-other-frame . switch-to-buffer-other-frame))))
+             'switch-to-buffer-other-window))
+      (funcall cmd (marker-buffer m))
+      (goto-char m)
+      (move-marker m nil)
+      (org-show-context)))
+  (org-link-set-parameters "id"
+                           :follow 'zenith/org-id-open)
+
   (defun zenith/search-id-reverse-link ()
     "Search the id in the directory"
     (interactive)
