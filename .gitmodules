@@ -326,18 +326,6 @@
 [submodule "extensions/dired-hacks"]
 	path = extensions/dired-hacks
 	url = https://github.com/Fuco1/dired-hacks
-[submodule "extensions/emacs-jupyter"]
-	path = extensions/emacs-jupyter
-	url = https://github.com/nnicandro/emacs-jupyter
-[submodule "extensions/emacs-zmq"]
-	path = extensions/emacs-zmq
-	url = https://github.com/nnicandro/emacs-zmq
-[submodule "extensions/emacs-web-server"]
-	path = extensions/emacs-web-server
-	url = https://github.com/skeeto/emacs-web-server
-[submodule "extensions/emacs-websocket"]
-	path = extensions/emacs-websocket
-	url = https://github.com/ahyatt/emacs-websocket
 [submodule "extensions/emacs-libvterm"]
 	path = extensions/emacs-libvterm
 	url = https://github.com/akermu/emacs-libvterm
@@ -386,3 +374,6 @@
 [submodule "extensions/typescript"]
 	path = extensions/typescript
 	url = https://github.com/emacs-typescript/typescript.el
+[submodule "extensions/compat"]
+	path = extensions/compat
+	url = https://github.com/emacs-straight/compat

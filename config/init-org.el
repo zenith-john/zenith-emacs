@@ -70,7 +70,6 @@
   (require 'org-ref)
   (require 'doi-utils)
   (require 'org-ref-isbn)
-  (setq org-roam-v2-ack t)
   (require 'org-roam))
 
 (zenith/delay-load 'zenith/org-load-packages)
