@@ -627,7 +627,7 @@
 ;; Set up LaTeX-mode hooks
 (defun zenith/update-after-save-hook ()
   (make-local-variable 'after-save-hook)
-  (add-hook 'after-save-hook '(lambda ()
+  (add-hook 'after-save-hook (lambda ()
                                 (TeX-update-style t))))
 
 (defun zenith/latex-mode-hook ()

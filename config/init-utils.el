@@ -31,6 +31,7 @@
                    :unless '(sp-latex-point-after-backslash)))
   (sp-with-modes '(org-mode)
     (sp-local-pair "\\[" "\\]")
+    (sp-local-pair "$" "$")
     (sp-local-pair "*" "*" :unless '(zenith/sp-org-latex-predicate))
     (sp-local-pair "_" "_" :unless '(zenith/sp-org-latex-predicate))
     (sp-local-pair "+" "+" :unless '(zenith/sp-org-latex-predicate))
