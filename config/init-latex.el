@@ -459,13 +459,25 @@
   ;; prompt for master
   (setq-default TeX-master nil)
   ;; set default pdf viewer
-  (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
+  (add-to-list 'TeX-view-program-selection '(output-pdf "my-zathura"))
+  ;; open subdirectory pdf files
+  (setq TeX-view-program-list
+        '(("my-zathura"
+           ("zathura ./output/%o" (mode-io-correlate " --synctex-forward %n:0:\"%b\" -x \"emacsclient +%{line} %{input}\"")) "zathura")))
   ;; set-up chktex
   (setcar (cdr (assoc "Check" TeX-command-list)) "chktex -v6 -H %s")
   ;; Set-up latexmk
   (require 'auctex-latexmk)
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-  (auctex-latexmk-setup)
+
+  (setq-default TeX-command-list
+                (cons
+                 '("LatexMk" "latexmk %t" TeX-run-latexmk nil
+                   (plain-tex-mode latex-mode doctex-mode) :help "Run LatexMk")
+                 TeX-command-list)
+                LaTeX-clean-intermediate-suffixes
+                (append LaTeX-clean-intermediate-suffixes
+                        '("\\.fdb_latexmk" "\\.aux.bak" "\\.fls")))
 
   (defun zenith/latexmk-compile ()
     (interactive)
@@ -636,7 +648,8 @@
   ;; Set up environment for LaTeX
   (LaTeX-add-environments
    '("tikzcd" LaTeX-env-label))
-  (zenith/reftex-label-alist-toggle t))
+  (zenith/reftex-label-alist-toggle t)
+  (setq TeX-command-default "LatexMk"))
 
 ;; tell emacs how to parse tex files
 (add-hook 'TeX-mode-hook (lambda () (setq ispell-parser 'tex)))
