@@ -377,3 +377,6 @@
 [submodule "extensions/compat"]
 	path = extensions/compat
 	url = https://github.com/emacs-straight/compat
+[submodule "extensions/emacs-calfw"]
+	path = extensions/emacs-calfw
+	url = https://github.com/kiwanami/emacs-calfw

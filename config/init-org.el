@@ -58,19 +58,20 @@
 ;;
 ;;; Bootstrap
 (defun zenith/org-load-packages ()
-  (require 'org-clock)
-  (require 'ox-hugo)
+  (require 'calfw-org)
+  (require 'doi-utils)
+  (require 'ob-async)
   (require 'org-bullets)
-  (require 'ox-icalendar)
+  (require 'org-clock)
+  (require 'org-download)
   (require 'org-edit-latex)
   (require 'org-id)
-  (require 'ox-org)
-  (require 'ob-async)
-  (require 'org-download)
   (require 'org-ref)
-  (require 'doi-utils)
   (require 'org-ref-isbn)
-  (require 'org-roam))
+  (require 'org-roam)
+  (require 'ox-hugo)
+  (require 'ox-icalendar)
+  (require 'ox-org))
 
 (zenith/delay-load 'zenith/org-load-packages)
 
@@ -291,8 +292,8 @@
         org-agenda-tags-todo-honor-ignore-options t
         org-agenda-todo-ignore-with-date t
         org-agenda-time-grid '((daily today require-timed remove-match)
-                              (800 1000 1200 1400 1600 1800 2000 2200)
-                              "......" "----Free----")
+                               (800 1000 1200 1400 1600 1800 2000 2200)
+                               "......" "----Free----")
 
         org-deadline-warning-days 365
         org-agenda-show-future-repeats t
@@ -388,10 +389,10 @@
         (error "No task in current line"))))
 
   (org-link-set-parameters "zotero" :follow
-                         (lambda (zpath)
-                           (browse-url
-                            ;; we get the "zotero:"-less url, so we put it back.
-                            (format "zotero:%s" zpath))))
+                           (lambda (zpath)
+                             (browse-url
+                              ;; we get the "zotero:"-less url, so we put it back.
+                              (format "zotero:%s" zpath))))
 
   (defun zenith/org-link-at-point ()
     "Return the substring of the raw text of link at the point."
@@ -569,7 +570,7 @@
                  (s-split "," keyword)
                  ", ")
                 "]")
-        (funcall origin-fn keyword desc format)))
+      (funcall origin-fn keyword desc format)))
   (advice-add 'org-ref-format-cite :around 'zenith/org-ref-format-cite-advice)
 
   (defun zenith/org-ref-get-md-bibliography (&optional sort)
@@ -659,15 +660,15 @@ this function appends the default value from
                    (when
                        (or (eq new-nodes t)
                            (and (eq new-nodes 'confirm)
-				                (y-or-n-p (format "Create new node \"%s\"? "
-						                          child))))
+                                (y-or-n-p (format "Create new node \"%s\"? "
+                                                  child))))
                      (let (
                            (org-capture-templates
                             (list (zenith/convert-template (car org-capture-templates)
                                                            '(:unnarrowed t :immediate-finish t) title))))
                        (org-capture nil (caar org-capture-templates))
                        org-capture-last-stored-marker)))
-	      (user-error "Invalid target location")))))
+          (user-error "Invalid target location")))))
 
   ;; Modified from `org-id-get-with-outline-path-completion'
   (defun zenith/org-id-get-with-outline-path-completion (&optional targets)
@@ -873,11 +874,63 @@ If necessary, the ID is created."
            (org-export-use-babel nil)
            (org-agenda-finalize-hook nil)
            (time (pcase arg
-                  (4 "-1w")
-                  (16 "-1m")
-                  (_ "today")))
+                   (4 "-1w")
+                   (16 "-1m")
+                   (_ "today")))
            (match (concat "TIMESTAMP_IA>=\"<" time ">\"")))
-      (org-tags-view nil match))))
+      (org-tags-view nil match)))
+
+  ;; Adpated from
+  ;; https://org-roam.discourse.group/t/export-backlinks-on-org-export/1756/21
+  (defun collect-backlinks-string ()
+    (interactive)
+    (org-show-all)
+    (org-roam-update-org-id-locations)
+    (org-roam-db-sync)
+    (when-let* (
+                (source-file buffer-file-name)
+                (check (org-roam-file-p source-file))
+                (nodes-in-file (--filter (s-equals? (org-roam-node-file it) source-file)
+                                         (org-roam-node-list)))
+                (nodes-start-position (-map 'org-roam-node-point nodes-in-file))
+                ;; Nodes don't store the last position, so get the next headline position
+                ;; and subtract one character (or, if no next headline, get point-max)
+                ;; (nodes-end-position (-map (lambda (nodes-start-position)
+                ;;                             (goto-char nodes-start-position)
+                ;;                             (if (org-before-first-heading-p) ;; file node
+                ;;                                 (point-max)
+                ;;                               (call-interactively
+                ;;                                'org-next-visible-heading)
+                ;;                               (if (> (point) nodes-start-position)
+                ;;                                   (- (point) 1) ;; successfully found next
+                ;;                                 (point-max)))) ;; there was no next
+                ;;                           nodes-start-position))
+                ;; sort in order of decreasing end position
+                (nodes-in-file-sorted (->> (-zip nodes-in-file nodes-start-position)
+                                           (--sort (> (cdr it) (cdr other))))))
+      (dolist (node-and-start nodes-in-file-sorted)
+        (-let (((node . start-position) node-and-start)
+               (heading "REFERENCED")
+               (values))
+          (goto-char start-position)
+          (if (org-roam-backlinks-get node)
+              (progn
+                ;; Add the references as a subtree of the node
+                ;; (setq heading "\n\nReferences: ")
+                ;; (insert heading)
+                (with-temp-buffer
+                  (let ((backlinks (cl-remove-duplicates
+                                    (-map 'org-roam-backlink-source-node
+                                          (org-roam-backlinks-get node)) :key 'org-roam-node-id :test 'string-equal)))
+                    (dolist (backlink backlinks)
+                      (let* ((reference (format "[[id:%s][%s]], "
+                                                (org-roam-node-id backlink)
+                                                (org-roam-node-title backlink))))
+                        (insert reference)))
+                    (delete-backward-char 2)
+                    (setq values (buffer-substring-no-properties (point-min) (point-max)))))
+                (org-set-property heading values))
+            (org-delete-property heading)))))))
 
 (with-eval-after-load 'ol-bibtex
   ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.
@@ -960,70 +1013,8 @@ If necessary, the ID is created."
   (interactive)
   (org-agenda 0 "b"))
 
-;; Adpated from
-;; https://org-roam.discourse.group/t/export-backlinks-on-org-export/1756/21
-(defun collect-backlinks-string ()
-  (interactive)
-  (org-show-all)
-  (org-roam-update-org-id-locations)
-  (org-roam-db-sync)
-  (when-let* (
-         (source-file buffer-file-name)
-         (check (org-roam-file-p source-file))
-         (nodes-in-file (--filter (s-equals? (org-roam-node-file it) source-file)
-                                  (org-roam-node-list)))
-         (nodes-start-position (-map 'org-roam-node-point nodes-in-file))
-         ;; Nodes don't store the last position, so get the next headline position
-         ;; and subtract one character (or, if no next headline, get point-max)
-         ;; (nodes-end-position (-map (lambda (nodes-start-position)
-         ;;                             (goto-char nodes-start-position)
-         ;;                             (if (org-before-first-heading-p) ;; file node
-         ;;                                 (point-max)
-         ;;                               (call-interactively
-         ;;                                'org-next-visible-heading)
-         ;;                               (if (> (point) nodes-start-position)
-         ;;                                   (- (point) 1) ;; successfully found next
-         ;;                                 (point-max)))) ;; there was no next
-         ;;                           nodes-start-position))
-         ;; sort in order of decreasing end position
-         (nodes-in-file-sorted (->> (-zip nodes-in-file nodes-start-position)
-                                    (--sort (> (cdr it) (cdr other))))))
-    (dolist (node-and-start nodes-in-file-sorted)
-      (-let (((node . start-position) node-and-start)
-             (heading "REFERENCED")
-             (values))
-        (goto-char start-position)
-        (if (org-roam-backlinks-get node)
-            (progn
-              ;; Add the references as a subtree of the node
-              ;; (setq heading "\n\nReferences: ")
-              ;; (insert heading)
-              (with-temp-buffer
-                (let ((backlinks (cl-remove-duplicates
-                                  (-map 'org-roam-backlink-source-node
-                                        (org-roam-backlinks-get node)) :key 'org-roam-node-id :test 'string-equal)))
-                  (dolist (backlink backlinks)
-                    (let* ((reference (format "[[id:%s][%s]], "
-                                              (org-roam-node-id backlink)
-                                              (org-roam-node-title backlink))))
-                      (insert reference)))
-                  (delete-backward-char 2)
-                  (setq values (buffer-substring-no-properties (point-min) (point-max)))))
-              (org-set-property heading values))
-          (org-delete-property heading))))))
-
-;; The following code will cause error in exporting process unexpectedly.
-(defun zenith/extract-referenced ()
-  (when-let ((referenced (org-entry-get nil "REFERENCED")))
-    (call-interactively 'org-next-visible-heading)
-    (backward-char 1)
-    (insert (concat "\n\nReferenced: " referenced "."))))
-
-(defun zenith/export-backlinks (_backend)
-  (org-show-all)
-  (org-map-entries 'zenith/extract-referenced))
-
-(add-hook 'org-export-before-parsing-hook 'zenith/export-backlinks)
+(with-eval-after-load 'calfw-org
+  (setq cfw:org-overwrite-default-keybinding t))
 
 (provide 'init-org)
 ;;; init-org.el ends here
