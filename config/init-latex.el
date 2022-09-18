@@ -457,7 +457,7 @@
       (next-line)))
 
   ;; prompt for master
-  (setq-default TeX-master nil)
+  (setq-default TeX-master t)
   ;; set default pdf viewer
   (add-to-list 'TeX-view-program-selection '(output-pdf "my-zathura"))
   ;; open subdirectory pdf files
@@ -524,7 +524,7 @@
 
   (defvar zenith/equation-env-list
     '(("\\begin{equation}" . "\\end{equation}")
-      ("$" . "$")
+      ("\\(" . "\\)")
       ("\\[" . "\\]"))
     "The pairs of equation environment")
 
