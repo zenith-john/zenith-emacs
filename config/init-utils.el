@@ -96,12 +96,6 @@
     (interactive)
     (message "Program rg is not found.")))
 
-;; ace-window
-;; dependencies: avy
-(zenith/autoload '(ace-window ace-delete-window) "ace-window")
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-      aw-scope 'frame
-      aw-background t)
 
 ;; helpful
 ;; dependencies: dash dash-functional s f elisp-refs

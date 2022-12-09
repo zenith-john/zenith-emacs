@@ -53,12 +53,6 @@
 [submodule "extensions/avy"]
 	path = extensions/avy
 	url = https://github.com/abo-abo/avy
-[submodule "extensions/ace-window"]
-	path = extensions/ace-window
-	url = https://github.com/abo-abo/ace-window
-[submodule "extensions/ace-link"]
-	path = extensions/ace-link
-	url = https://github.com/abo-abo/ace-link
 [submodule "extensions/pfuture"]
 	path = extensions/pfuture
 	url = https://github.com/Alexander-Miller/pfuture
@@ -230,9 +224,6 @@
 [submodule "extensions/ivy-posframe"]
 	path = extensions/ivy-posframe
 	url = https://github.com/tumashu/ivy-posframe
-[submodule "extensions/nox"]
-	path = extensions/nox
-	url = https://github.com/manateelazycat/nox
 [submodule "extensions/emacs-format-all-the-code"]
 	path = extensions/emacs-format-all-the-code
 	url = https://github.com/lassik/emacs-format-all-the-code
@@ -269,9 +260,6 @@
 [submodule "extensions/rg"]
 	path = extensions/rg
 	url = https://github.com/dajva/rg.el
-[submodule "extensions/org-ref"]
-	path = extensions/org-ref
-	url = https://github.com/jkitchin/org-ref
 [submodule "extensions/emacs-htmlize"]
 	path = extensions/emacs-htmlize
 	url = https://github.com/hniksic/emacs-htmlize
@@ -344,21 +332,12 @@
 [submodule "extensions/org-download"]
 	path = extensions/org-download
 	url = https://github.com/abo-abo/org-download
-[submodule "extensions/alert"]
-	path = extensions/alert
-	url = https://github.com/jwiegley/alert
-[submodule "extensions/org-wild-notifier"]
-	path = extensions/org-wild-notifier
-	url = https://github.com/zenith-john/org-wild-notifier.el
 [submodule "extensions/ledger-mode"]
 	path = extensions/ledger-mode
 	url = https://github.com/zenith-john/ledger-mode
 [submodule "extensions/inheritenv"]
 	path = extensions/inheritenv
 	url = https://github.com/purcell/inheritenv
-[submodule "extensions/burnt-toast"]
-	path = extensions/burnt-toast
-	url = https://github.com/cedarbaum/burnt-toast.el
 [submodule "extensions/mu4e-alert"]
 	path = extensions/mu4e-alert
 	url = https://github.com/iqbalansari/mu4e-alert
@@ -377,9 +356,6 @@
 [submodule "extensions/compat"]
 	path = extensions/compat
 	url = https://github.com/emacs-straight/compat
-[submodule "extensions/emacs-calfw"]
-	path = extensions/emacs-calfw
-	url = https://github.com/kiwanami/emacs-calfw
 [submodule "extensions/citeproc-el"]
 	path = extensions/citeproc-el
 	url = https://github.com/andras-simonyi/citeproc-el
