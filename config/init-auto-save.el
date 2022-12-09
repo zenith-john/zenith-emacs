@@ -21,7 +21,8 @@
              (not company-candidates)))
     (with-temp-message ""
       (let ((inhibit-message t))
-        (evil-write-all nil)))))
+        (ignore-errors
+          (evil-write-all nil))))))
 
 (defun zenith/auto-save-enable ()
   (interactive)

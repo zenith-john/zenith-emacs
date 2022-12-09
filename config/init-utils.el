@@ -415,8 +415,8 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 ;; ledger-mode
 (zenith/autoload '(ledger-mode) "ledger-mode")
 (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
-(with-eval-after-load 'ledger-mode
-  (add-to-list 'ledger-reports '("month" "%(binary) -f %(ledger-file) balance --period %(month) ^Income ^Expenses")))
+;; (with-eval-after-load 'ledger-mode
+;;   (add-to-list 'ledger-reports '("month" "%(binary) -f %(ledger-file) balance --period %(month) ^Income ^Expenses")))
 
 ;; fd-dired
 (autoload 'fd-dired "fd-dired" nil t)
@@ -445,5 +445,10 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
   (let ((process-connection-type nil))
     (apply fn args)))
 (advice-add 'openwith-file-handler :around 'openwith-file-handler-advice)
+
+;; narrow
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disable nil)
+(put 'narrow-to-page 'disable nil)
 
 (provide 'init-utils)

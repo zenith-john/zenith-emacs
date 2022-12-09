@@ -41,19 +41,36 @@
 
 ;; org-ref
 ;; should be set before loading the package.
-(setq org-ref-default-bibliography `(,zenith/bibtex-library)
-      org-ref-bibliography-notes (concat zenith/note-directory "Reference.org")
-      org-ref-completion-library 'org-ref-ivy-cite
-      org-ref-note-title-format "* %t\n:PROPERTIES:\n:CUSTOM_ID: %k\n:AUTHOR: %9a\n:JOURNAL: %j\n:YEAR: %y\n:VOLUME: %v\n:PAGES: %p\n:DOI: %D\n:URL: %U\n:ROAM_REFS: cite:%k\n:END:\n"
-      orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
+;; (setq org-ref-default-bibliography `(,zenith/bibtex-library)
+;;       org-ref-bibliography-notes (concat zenith/note-directory "Reference.org")
+;;       org-ref-completion-library 'org-ref-ivy-cite
+;;       org-ref-note-title-format "* %t\n:PROPERTIES:\n:CUSTOM_ID: %k\n:AUTHOR: %9a\n:JOURNAL: %j\n:YEAR: %y\n:VOLUME: %v\n:PAGES: %p\n:DOI: %D\n:URL: %U\n:ROAM_REFS: cite:%k\n:END:\n"
+;;       orhc-bibtex-cache-file (concat zenith-emacs-local-dir ".orhc-bibtex-cache"))
 
-(with-eval-after-load 'org-ref
-  (setq org-ref-create-notes-hook '(org-id-get-create))
-  (defun zenith/org-ref-bibliography-format-advice (orig-fn keyword desc format)
-    (if (eq format 'latex)
-        "\\printbibliography"
-      (funcall orig-fn keyword desc format)))
-  (advice-add 'org-ref-bibliography-format :around 'zenith/org-ref-bibliography-format-advice))
+;; (with-eval-after-load 'org-ref
+;;   (setq org-ref-create-notes-hook '(org-id-get-create))
+;;   (defun zenith/org-ref-bibliography-format-advice (orig-fn keyword desc format)
+;;     (if (eq format 'latex)
+;;         "\\printbibliography"
+;;       (funcall orig-fn keyword desc format)))
+;;   (advice-add 'org-ref-bibliography-format :around 'zenith/org-ref-bibliography-format-advice))
+
+;; Citation by citeproc
+(require 'oc-csl)
+(setq org-cite-global-bibliography `(,zenith/bibtex-library)
+      org-cite-csl-styles-dir "~/Zotero/styles/"
+      org-cite-export-processors
+      '((html . (csl "journal-of-combinatorics.csl"))
+        (md . (csl "journal-of-combinatorics.csl"))   ; Footnote reliant
+        (latex . biblatex)                                 ; For humanities
+        (odt . (csl "chicago-fullnote-bibliography.csl"))  ; Footnote reliant
+        (t . (csl "modern-language-association.csl"))))    ; Fallback
+
+(require 'citar-org)
+(setq org-cite-insert-processor 'citar
+      org-cite-follow-processor 'citar
+      org-cite-activate-processor 'citar
+      citar-bibliography org-cite-global-bibliography)
 
 ;;
 ;;; Bootstrap
@@ -66,8 +83,8 @@
   (require 'org-download)
   (require 'org-edit-latex)
   (require 'org-id)
-  (require 'org-ref)
-  (require 'org-ref-isbn)
+  ;; (require 'org-ref)
+  ;; (require 'org-ref-isbn)
   (require 'org-roam)
   (require 'ox-hugo)
   (require 'ox-icalendar)

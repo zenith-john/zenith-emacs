@@ -380,3 +380,9 @@
 [submodule "extensions/emacs-calfw"]
 	path = extensions/emacs-calfw
 	url = https://github.com/kiwanami/emacs-calfw
+[submodule "extensions/citeproc-el"]
+	path = extensions/citeproc-el
+	url = https://github.com/andras-simonyi/citeproc-el
+[submodule "extensions/citar"]
+	path = extensions/citar
+	url = https://github.com/emacs-citar/citar

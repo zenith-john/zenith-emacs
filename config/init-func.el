@@ -60,6 +60,17 @@
                  (re-search-backward "[^ \t\n\r]" nil t))))
     (delete-region (+ 1 begin) end)))
 
+(defun zenith/delete-word (arg)
+  "Delete characters forward until encountering the end of a word.
+With argument, do this that many times.
+This command does not push text to `kill-ring'."
+  (interactive "p")
+  (delete-region
+   (point)
+   (progn
+     (forward-word arg)
+     (point))))
+
 (defun zenith/delete-word-or-space ()
   "Remove all the space until non-space character if the char at
 point and before are all space characters and delete word
@@ -68,7 +79,7 @@ otherwise."
   (if (and (zenith/is-space (char-before))
            (zenith/is-space (char-before (- (point) 1))))
       (zenith/aggressive-delete-space)
-    (backward-kill-word 1)))
+    (zenith/delete-word -1)))
 
 (defun zenith/fill-and-indent-region ()
   "Fill paragraph and indent region at once"

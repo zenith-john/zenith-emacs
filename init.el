@@ -78,15 +78,13 @@
 
 (provide 'init)
 ;;; init.el ends here
-(setq warning-suppress-types '((org-element-cache) (comp) (:warning)))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   '("/home/zenith-john/Dropbox/Temp.org" "/home/zenith-john/Dropbox/Agenda.org" "/home/zenith-john/Dropbox/Projects.org" "/home/zenith-john/Dropbox/chinese_lunar.org" "/home/zenith-john/Dropbox/webcal.org"))
- '(warning-suppress-types '((org-element-cache) (comp) (:warning))))
+   '("~/Documents/Notes/Blog.org" "/home/zenith-john/Dropbox/Temp.org" "/home/zenith-john/Dropbox/Agenda.org" "/home/zenith-john/Dropbox/Projects.org" "/home/zenith-john/Dropbox/Remember.org" "/home/zenith-john/Dropbox/chinese_lunar.org" "/home/zenith-john/Dropbox/webcal.org")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

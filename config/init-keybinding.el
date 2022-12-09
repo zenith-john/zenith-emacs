@@ -219,6 +219,7 @@
 
 (general-define-key
  :keymaps 'org-mode-map
+ "C-c ["                'citar-insert-citation
  "C-l"                  'zenith/org-insert-link
  "C-;"                  'org-store-link
  "M-r"                  'zenith/search-id-reverse-link
