@@ -20,7 +20,6 @@
 (require 'init-yasnippet)
 (require 'init-flycheck)
 (require 'init-org)
-(require 'init-mail)
 (require 'init-project)
 (require 'init-git)
 (require 'init-lsp)
