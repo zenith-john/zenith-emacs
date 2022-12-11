@@ -125,6 +125,13 @@
    wucuo-enable-camel-case-algorithm-p nil
    wucuo-flyspell-start-mode "fast")
 
+  (defun zenith/wucuo-extra-predicate (word)
+    "If the word is too short or capitalized, then ignore it."
+    (if (or (< (length word) 3) (string= word (upcase word)))
+        nil
+      t))
+  (setq wucuo-extra-predicate 'zenith/wucuo-extra-predicate)
+
   (defun zenith/flyspell-check-region ()
     "Remove overlay and check region"
     (interactive)
@@ -137,7 +144,7 @@
     (let ((wucuo-flyspell-start-mode "normal"))
       (wucuo-spell-check-buffer)))
 
-  ;; (add-hook 'text-mode-hook 'wucuo-start)
+  (add-hook 'text-mode-hook 'wucuo-start)
   (add-hook 'prog-mode-hook 'wucuo-start)
 
   ;; Redefine `flyspell-external-point-words'
@@ -258,9 +265,9 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
     "Add word at point to the dictionary"
     (interactive "r")
     (save-excursion
-      (let* ((word (concat (if (region-active-p)
+      (let* ((word (concat (downcase (if (region-active-p)
                                (buffer-substring-no-properties beg end)
-                             (word-at-point t))
+                             (word-at-point t)))
                            "\n"))
              (file (expand-file-name (concat "~/.hunspell_" ispell-dictionary))))
         (append-to-file word nil file)))
@@ -367,11 +374,6 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
       (shackle--display-buffer-aligned-window buffer alist plist))))
 
 (shackle-mode)
-
-(require 'special-char-mode)
-(add-hook 'prog-mode-hook 'special-char-mode)
-(add-hook 'LaTeX-mode-hook 'special-char-mode)
-(add-hook 'org-mode-hook 'special-char-mode)
 
 ;; Dired enhancement
 (defun zenith/dired-load-packages ()

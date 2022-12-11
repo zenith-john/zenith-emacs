@@ -149,9 +149,6 @@
 [submodule "extensions/elisp-refs"]
 	path = extensions/elisp-refs
 	url = https://github.com/Wilfred/elisp-refs
-[submodule "extensions/loop"]
-	path = extensions/loop
-	url = https://github.com/Wilfred/loop.el
 [submodule "extensions/shut-up"]
 	path = extensions/shut-up
 	url = https://github.com/cask/shut-up
