@@ -127,9 +127,13 @@
 
   (defun zenith/wucuo-extra-predicate (word)
     "If the word is too short or capitalized, then ignore it."
-    (if (or (< (length word) 3) (string= word (upcase word)))
-        nil
-      t))
+    (cond
+     ((or (< (length word) 3) (string= word (upcase word)))
+        nil)
+     ((string-suffix-p "'s" word)
+      (if (string-match-p "^&" (wucuo-spell-checker-to-string (substring word 0 (- (length word) 2)))) t))
+     (t
+      t)))
   (setq wucuo-extra-predicate 'zenith/wucuo-extra-predicate)
 
   (defun zenith/flyspell-check-region ()
@@ -265,9 +269,12 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
     "Add word at point to the dictionary"
     (interactive "r")
     (save-excursion
-      (let* ((word (concat (downcase (if (region-active-p)
-                               (buffer-substring-no-properties beg end)
-                             (word-at-point t)))
+      (let* ((word (concat (downcase
+                            (car
+                             (split-string (if (region-active-p)
+                                               (buffer-substring-no-properties beg end)
+                                             (word-at-point t))
+                                           "'")))
                            "\n"))
              (file (expand-file-name (concat "~/.hunspell_" ispell-dictionary))))
         (append-to-file word nil file)))
