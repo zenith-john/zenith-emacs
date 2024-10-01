@@ -121,8 +121,7 @@
   (zenith/autoload '(wucuo-start) "wucuo")
 
   (setq
-   wucuo-spell-check-region-max 20000
-   wucuo-enable-camel-case-algorithm-p nil
+   wucuo-enable-camel-case-algorithm-p t
    wucuo-flyspell-start-mode "fast")
 
   (defun zenith/wucuo-extra-predicate (word)
@@ -132,6 +131,8 @@
         nil)
      ((string-suffix-p "'s" word)
       (if (string-match-p "^&" (wucuo-spell-checker-to-string (substring word 0 (- (length word) 2)))) t))
+     ((string-suffix-p "s" word)
+      (if (string-match-p "^&" (wucuo-spell-checker-to-string (substring word 0 (- (length word) 1)))) t))
      (t
       t)))
   (setq wucuo-extra-predicate 'zenith/wucuo-extra-predicate)

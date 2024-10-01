@@ -10,7 +10,7 @@
 (defvar zenith-emacs-config-dir (expand-file-name "config/" zenith-emacs-root-dir))
 (defvar zenith-emacs-local-dir (expand-file-name "local/" zenith-emacs-root-dir))
 (defvar zenith/wsl-system nil "Whether emacs starts in wsl. Some interaction with Windows are enabled")
-(defvar zenith/enable-vterm t "Whether enable vterm module.")
+(defvar zenith/enable-vterm nil "Whether enable vterm module.")
 (defvar zenith/enable-pyim t "Whether enable pyim and rime module.")
 (defvar zenith/enable-posframe (display-graphic-p) "Whether enable posframe module.")
 (defvar zenith/low-gc-cons-threshold (* 20 1024 1024))
@@ -58,8 +58,8 @@
   ;; Load new org-mode rather than system one
   (add-to-list 'load-path zenith-emacs-config-dir)
   (add-subdirs-to-load-path zenith-emacs-extension-dir)
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
 
+  (load-file (concat zenith-emacs-root-dir "loaddefs.el"))
   (require 'benchmark-init)
   (require 'benchmark-init-modes)
   (benchmark-init/activate)
@@ -78,17 +78,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("/home/zenith-john/Documents/Notes/Blog.org" "/home/zenith-john/Dropbox/Agenda.org" "/home/zenith-john/Dropbox/Projects.org" "/home/zenith-john/Dropbox/Remember.org" "/home/zenith-john/Dropbox/chinese_lunar.org" "/home/zenith-john/Dropbox/webcal.org")))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-latex-subscript-face ((t nil)))
- '(font-latex-superscript-face ((t nil))))

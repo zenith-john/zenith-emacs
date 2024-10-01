@@ -27,6 +27,7 @@
 (require 'init-keyfreq)
 (require 'init-keybinding)
 
+(require 'init-lsp)
 (require 'init-emacs-lisp)
 (require 'init-graphviz-dot)
 (require 'init-python)
@@ -34,7 +35,7 @@
 (require 'init-latex)
 (require 'init-rust)
 (require 'init-R)
-(require 'typescript-mode)
+(require 'init-lean)
 
 (when zenith/wsl-system
   (require 'init-wsl))

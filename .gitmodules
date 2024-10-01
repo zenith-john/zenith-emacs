@@ -353,3 +353,12 @@
 [submodule "extensions/citar"]
 	path = extensions/citar
 	url = https://github.com/emacs-citar/citar
+[submodule "extensions/spinner"]
+	path = extensions/spinner
+	url = https://github.com/Malabarba/spinner.el
+[submodule "extensions/lsp-mode"]
+	path = extensions/lsp-mode
+	url = https://github.com/emacs-lsp/lsp-mode/
+[submodule "extensions/lean4-mode"]
+	path = extensions/lean4-mode
+	url = https://github.com/leanprover-community/lean4-mode

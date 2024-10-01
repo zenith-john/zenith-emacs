@@ -14,30 +14,11 @@
 (defvar zenith/note-directory (expand-file-name "~/Documents/Notes/"))
 (defvar zenith/bibtex-library (expand-file-name "~/Dropbox/Library.bib")
   "The default bibtex library")
-(defvar zenith/org-roam-capture-id nil
-  "Store the id of the capture template.")
 
 ;;
 ;;; Packages
 
-(require 'org)
-
-;; Citation by citeproc
-(require 'oc-csl)
-(setq org-cite-global-bibliography `(,zenith/bibtex-library)
-      org-cite-csl-styles-dir "~/Zotero/styles/"
-      org-cite-export-processors
-      '((html . (csl "journal-of-combinatorics.csl"))
-        (md . (csl "journal-of-combinatorics.csl"))   ; Footnote reliant
-        (latex . biblatex)                                 ; For humanities
-        (odt . (csl "chicago-fullnote-bibliography.csl"))  ; Footnote reliant
-        (t . (csl "modern-language-association.csl"))))    ; Fallback
-
-(require 'citar-org)
-(setq org-cite-insert-processor 'citar
-      org-cite-follow-processor 'citar
-      org-cite-activate-processor 'citar
-      citar-bibliography org-cite-global-bibliography)
+;; (require 'org)
 
 ;;
 ;;; Bootstrap
@@ -48,9 +29,9 @@
   (require 'org-download)
   (require 'org-edit-latex)
   (require 'org-id)
-  (require 'org-roam)
   (require 'ox-hugo)
-  (require 'ox-icalendar)
+  (require 'oc-csl)
+  (require 'citar-org)
   (require 'ox-org))
 
 (zenith/delay-load 'zenith/org-load-packages)
@@ -211,17 +192,9 @@
           ("r" "Reference" entry (file "~/Dropbox/Temp.org")
            "* %^{Title}\n%U\nAuthor: %^{Author}%?")
           ("x" "Web Capture" entry (file "~/Dropbox/Temp.org")
-           "* %:description\n:PROPERTIES:\n:ROAM_REFS: %:link\n:END:\n%U\n%:annotation\n%i\n%?")))
+           "* %:description\n:PROPERTIES:\n:END:\n%U\n%:annotation\n%i\n%?")))
 
-  ;; Create id when capture ends.
-  (defun zenith/org-id-get-create (&optional force)
-    (interactive "P")
-    (let ((id (org-id-get-create)))
-      (when (org-roam-capture-p)
-        (org-roam-capture--put :id (org-id-get-create force))
-        (org-roam-capture--put :finalize (or (org-capture-get :finalize)
-                                             (org-roam-capture--get :finalize))))))
-  (add-hook 'org-capture-prepare-finalize-hook 'zenith/org-id-get-create)
+  (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
 
   (defun zenith/org-insert-decoration ()
     "Insert the inactive timestamp and add id."
@@ -574,7 +547,7 @@ if SORT is non-nil the bibliography is sorted alphabetically by key."
 
 (with-eval-after-load 'org-id
   (setq org-id-extra-files (directory-files-recursively zenith/note-directory ".*\\.org"))
-  (org-id-update-id-locations)
+  ;; (org-id-update-id-locations)
 
   ;; The following code implements my way of Zettelkasten instead of using
   ;; org-roam which is too slow.
@@ -845,9 +818,6 @@ If necessary, the ID is created."
       (funcall orig-fun list ndays todayp)))
   (advice-add 'org-agenda-add-time-grid-maybe :around 'zenith/org-agenda-grid-tweakify)
 
-  ;; (add-hook 'org-agenda-finalize-hook 'org-icalendar-combine-agenda-files)
-  ;; The evalution process is added to the crontab to run every one hour
-
   (defun zenith/org-review-note-today (&optional arg)
     (interactive "p")
     (let* ((org-agenda-files (list zenith/note-directory))
@@ -858,59 +828,7 @@ If necessary, the ID is created."
                    (16 "-1m")
                    (_ "today")))
            (match (concat "TIMESTAMP_IA>=\"<" time ">\"")))
-      (org-tags-view nil match)))
-
-  ;; Adpated from
-  ;; https://org-roam.discourse.group/t/export-backlinks-on-org-export/1756/21
-  (defun collect-backlinks-string ()
-    (interactive)
-    (org-show-all)
-    (org-roam-update-org-id-locations)
-    (org-roam-db-sync)
-    (when-let* (
-                (source-file buffer-file-name)
-                (check (org-roam-file-p source-file))
-                (nodes-in-file (--filter (s-equals? (org-roam-node-file it) source-file)
-                                         (org-roam-node-list)))
-                (nodes-start-position (-map 'org-roam-node-point nodes-in-file))
-                ;; Nodes don't store the last position, so get the next headline position
-                ;; and subtract one character (or, if no next headline, get point-max)
-                ;; (nodes-end-position (-map (lambda (nodes-start-position)
-                ;;                             (goto-char nodes-start-position)
-                ;;                             (if (org-before-first-heading-p) ;; file node
-                ;;                                 (point-max)
-                ;;                               (call-interactively
-                ;;                                'org-next-visible-heading)
-                ;;                               (if (> (point) nodes-start-position)
-                ;;                                   (- (point) 1) ;; successfully found next
-                ;;                                 (point-max)))) ;; there was no next
-                ;;                           nodes-start-position))
-                ;; sort in order of decreasing end position
-                (nodes-in-file-sorted (->> (-zip nodes-in-file nodes-start-position)
-                                           (--sort (> (cdr it) (cdr other))))))
-      (dolist (node-and-start nodes-in-file-sorted)
-        (-let (((node . start-position) node-and-start)
-               (heading "REFERENCED")
-               (values))
-          (goto-char start-position)
-          (if (org-roam-backlinks-get node)
-              (progn
-                ;; Add the references as a subtree of the node
-                ;; (setq heading "\n\nReferences: ")
-                ;; (insert heading)
-                (with-temp-buffer
-                  (let ((backlinks (cl-remove-duplicates
-                                    (-map 'org-roam-backlink-source-node
-                                          (org-roam-backlinks-get node)) :key 'org-roam-node-id :test 'string-equal)))
-                    (dolist (backlink backlinks)
-                      (let* ((reference (format "[[id:%s][%s]], "
-                                                (org-roam-node-id backlink)
-                                                (org-roam-node-title backlink))))
-                        (insert reference)))
-                    (delete-backward-char 2)
-                    (setq values (buffer-substring-no-properties (point-min) (point-max)))))
-                (org-set-property heading values))
-            (org-delete-property heading)))))))
+      (org-tags-view nil match))))
 
 (with-eval-after-load 'ol-bibtex
   ;; Redefine `org-bibtex-read-file' to avoid coding problem caused by loading as rawfile.
@@ -929,65 +847,23 @@ If necessary, the ID is created."
   (setq-default org-download-image-dir "./img"
                 org-download-heading-lvl nil))
 
-;; org-roam configuration
-;; In fact I only use org-roams backlink feature
-(with-eval-after-load 'org-roam
-  (setq org-roam-directory zenith/note-directory
-        org-roam-db-location (expand-file-name "org-roam.db" zenith-emacs-local-dir)
-        org-roam-db-gc-threshold most-positive-fixnum
-        org-roam-db-update-on-save nil
-        org-roam-completion-everywhere nil
-        org-roam-node-display-template "${my-olp}${title} ${my-file}")
+;; Citation by citeproc
+(with-eval-after-load 'oc-csl
+  (setq org-cite-global-bibliography `(,zenith/bibtex-library)
+        org-cite-csl-styles-dir "~/Zotero/styles/"
+        org-cite-export-processors
+        '((html . (csl "journal-of-combinatorics.csl"))
+          (md . (csl "journal-of-combinatorics.csl"))   ; Footnote reliant
+          (latex . biblatex)                                 ; For humanities
+          (odt . (csl "chicago-fullnote-bibliography.csl"))  ; Footnote reliant
+          (t . (csl "modern-language-association.csl"))))    ; Fallback
+  )
 
-  ;; Don't include Review.org as nodes
-  (setq org-roam-db-node-include-function
-        (lambda ()
-          (not (member "Review" (org-get-tags)))))
-  ;; I change the way org-roam-capture- work to fit my headline oriented
-  ;; workflow. However, I found that org-roam is extremely slow of no particular
-  ;; reason, so I invent my new way.
-  (cl-defmethod org-roam-node-my-olp ((node org-roam-node))
-    (let ((olp (org-roam-node-olp node)))
-      (if olp
-          (concat (s-join "/" (org-roam-node-olp node)) "/")
-        "")))
-
-  (cl-defmethod org-roam-node-my-file ((node org-roam-node))
-    (let ((file (org-roam-node-file node)))
-      (concat "(" (file-name-nondirectory file) ")")))
-
-  (defun zenith/convert-template (template props title)
-    "Modify the template for org-roam."
-    (let ((templ (cl-copy-list template))
-          (expansion (nth 4 template))
-          org-roam-plist options)
-      (while props
-        (let* ((key (pop props))
-               (val (pop props))
-               (custom (member key org-roam-capture--template-keywords)))
-          (if custom
-              (setq org-roam-plist (plist-put org-roam-plist key val))
-            (setq options (plist-put options key val)))))
-      (setcar (nthcdr 4 templ) (replace-regexp-in-string "%^{Title}" title expansion t t))
-      (append templ options (list :org-roam org-roam-plist))))
-
-  ;; Redefine org-roam-capture to integrate my own org-roam workflow
-  (cl-defun org-roam-capture- (&key goto keys node info props templates)
-    "Personal version of org-roam-capture-"
-    (let* ((props (plist-put props :call-location (point-marker)))
-           (title (org-roam-node-title node))
-           (org-capture-templates (list (zenith/convert-template (car org-capture-templates) props title)))
-           (org-roam-capture--node node)
-           (org-roam-capture--info info))
-
-      (when (not keys)
-        (setq keys (caar org-capture-templates)))
-      (org-capture goto keys)))
-
-  (defun org-roam-open-id-at-point-advice (orig-fun)
-    nil)
-  (advice-add 'org-roam-open-id-at-point :around 'org-roam-open-id-at-point-advice))
-
+(with-eval-after-load 'citar-org
+  (setq org-cite-insert-processor 'citar
+        org-cite-follow-processor 'citar
+        org-cite-activate-processor 'citar
+        citar-bibliography org-cite-global-bibliography))
 ;; Global settings
 (defun zenith/my-org-agenda ()
   (interactive)
