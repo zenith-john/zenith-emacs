@@ -113,9 +113,6 @@
 [submodule "extensions/markdown-mode"]
 	path = extensions/markdown-mode
 	url = https://github.com/jrblevin/markdown-mode
-[submodule "extensions/emacs-memoize"]
-	path = extensions/emacs-memoize
-	url = https://github.com/skeeto/emacs-memoize
 [submodule "extensions/auctex"]
 	path = extensions/auctex
 	url = https://git.savannah.gnu.org/git/auctex.git
@@ -227,9 +224,6 @@
 [submodule "extensions/pyenv-mode"]
 	path = extensions/pyenv-mode
 	url = https://github.com/pythonic-emacs/pyenv-mode
-[submodule "extensions/unicode-escape"]
-	path = extensions/unicode-escape
-	url = https://github.com/kosh04/unicode-escape.el
 [submodule "extensions/names"]
 	path = extensions/names
 	url = https://github.com/Malabarba/names
@@ -308,12 +302,6 @@
 [submodule "extensions/dired-hacks"]
 	path = extensions/dired-hacks
 	url = https://github.com/Fuco1/dired-hacks
-[submodule "extensions/emacs-libvterm"]
-	path = extensions/emacs-libvterm
-	url = https://github.com/akermu/emacs-libvterm
-[submodule "extensions/multi-vterm"]
-	path = extensions/multi-vterm
-	url = https://github.com/suonlight/multi-vterm
 [submodule "extensions/emacs-winum"]
 	path = extensions/emacs-winum
 	url = https://github.com/deb0ch/emacs-winum
@@ -335,12 +323,6 @@
 [submodule "extensions/ht"]
 	path = extensions/ht
 	url = https://github.com/Wilfred/ht.el
-[submodule "extensions/org-roam"]
-	path = extensions/org-roam
-	url = https://github.com/org-roam/org-roam
-[submodule "extensions/emacsql"]
-	path = extensions/emacsql
-	url = https://github.com/skeeto/emacsql
 [submodule "extensions/typescript"]
 	path = extensions/typescript
 	url = https://github.com/emacs-typescript/typescript.el

@@ -10,7 +10,6 @@
 (defvar zenith-emacs-config-dir (expand-file-name "config/" zenith-emacs-root-dir))
 (defvar zenith-emacs-local-dir (expand-file-name "local/" zenith-emacs-root-dir))
 (defvar zenith/wsl-system nil "Whether emacs starts in wsl. Some interaction with Windows are enabled")
-(defvar zenith/enable-vterm nil "Whether enable vterm module.")
 (defvar zenith/enable-pyim t "Whether enable pyim and rime module.")
 (defvar zenith/enable-posframe (display-graphic-p) "Whether enable posframe module.")
 (defvar zenith/low-gc-cons-threshold (* 20 1024 1024))

@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: summary
+# key: sum
+# condition: t
+# --
+
+\section{$1}
+
+\subsection{Past}
+
+\subsection{Main Result}
+
+\subsection{Method}
+
+\subsection{Corollary}
+
+\subsection{Future}
+
+\subsection{Cogito}

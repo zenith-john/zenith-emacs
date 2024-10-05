@@ -206,6 +206,12 @@
  :states    '(emacs insert)
  "<return>" 'newline-dwim)
 
+(general-define-key
+ :keymaps 'lean4-mode-map
+ :states '(emacs insert)
+ "<return>" 'newline-and-indent
+ )
+
 ;; flyspell-mode
 (general-define-key
  :keymaps 'flyspell-mode-map

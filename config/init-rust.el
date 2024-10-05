@@ -12,7 +12,6 @@
 (defun zenith/rust-flycheck-hook ()
   (flycheck-mode 1)
   (setq-local flycheck-checker 'rust-clippy))
-(add-hook 'rust-mode-hook 'zenith/nox-load-and-ensure)
 (add-hook 'rust-mode-hook 'zenith/rust-flycheck-hook)
 
 (provide 'init-rust)

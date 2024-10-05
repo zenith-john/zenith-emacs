@@ -392,20 +392,6 @@ The buffer to mark them in is `flyspell-large-region-buffer'."
 (require 'dired-async)
 (dired-async-mode 1)
 
-;; emacs-libvterm
-(if zenith/enable-vterm
-    (progn
-      (zenith/autoload '(multi-vterm-project multi-vterm-dedicated-toggle) "multi-vterm")
-      (defun zenith/vterm-toggle ()
-        "Toggle vterm."
-        (interactive)
-        (if (projectile-project-p)
-            (multi-vterm-project)
-          (multi-vterm-dedicated-toggle))))
-  (defun zenith/vterm-toggle ()
-    (interactive)
-    (message "Vterm module is not enabled.")))
-
 ;; emacs-winum
 ;; dependencies: cl-lib dash
 (require 'winum)
