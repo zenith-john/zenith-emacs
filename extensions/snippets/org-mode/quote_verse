@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: quote_verse
+# key: qv
+# --
+
+#+begin_quote
+#+begin_verse
+$0
+#+end_verse
+#+end_quote

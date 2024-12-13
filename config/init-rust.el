@@ -1,4 +1,4 @@
-;;; init-ui.el --- ui configuration -*- lexical-binding: t; -*-
+;;; init-rust.el --- rust configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;;

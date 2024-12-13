@@ -32,7 +32,7 @@
 \usepackage[titles]{tocloft}
 \usepackage{xspace}
 \setlength{\parindent}{2em}
-\usepackage[backend=biber,style=alphabetic]{biblatex}
+\usepackage[backend=biber,maxbibnames=99,maxalphanames=99,style=alphabetic]{biblatex}
 \addbibresource[location=local]{~/Dropbox/Library.bib}
 \geometry{a4paper,centering,scale=0.8}
 \intervalconfig{soft open fences}
@@ -63,18 +63,11 @@
 \def\ddashint{\Xint=} \def\dashint{\Xint-}
 \numberwithin{equation}{section}
 
-\makeatletter
-\def\term{\@ifnextchar[{\@with}{\@without}}
-\def\@with[#1]#2{\textbf{#2}\index{#1}}
-\def\@without#1{\textbf{#1}\index{#1}}
-
-\def\@pnumwidth{2.55em}
-\makeatother
-
 \overfullrule=2cm
 
 \usepackage[capitalise,nameinlink]{cleveref}
-\usepackage{zenthm}
+\usepackage{Commons}
+\usepackage[section,plain]{zenthm}
 
 \title{$1}
 \author{Nantao Zhang}

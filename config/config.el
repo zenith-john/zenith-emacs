@@ -36,6 +36,7 @@
 (require 'init-rust)
 (require 'init-R)
 (require 'init-lean)
+(require 'init-racket)
 
 (when zenith/wsl-system
   (require 'init-wsl))

@@ -344,3 +344,6 @@
 [submodule "extensions/lean4-mode"]
 	path = extensions/lean4-mode
 	url = https://github.com/leanprover-community/lean4-mode
+[submodule "extensions/racket-mode"]
+	path = extensions/racket-mode
+	url = https://github.com/greghendershott/racket-mode

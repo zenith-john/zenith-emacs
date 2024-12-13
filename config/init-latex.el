@@ -39,31 +39,16 @@
       reftex-ref-macro-prompt nil
       reftex-format-ref-function 'reftex-format-cref)
 
-(defun zenith/reftex-label-alist-toggle (&optional multi)
-  (interactive)
-  (if (and (not multi)
-           reftex-label-alist
-           (string-suffix-p "%f" (nth 3 (first reftex-label-alist))))
-      (setq-local reftex-label-alist
-                  '(("theorem" ?h "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
-                    ("lemma"   ?l "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
-                    ("proposition" ?p "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
-                    ("remark"      ?r "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
-                    ("definition"  ?d "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
-                    ("corollary"   ?c "cor:"  "~\\ref{%s}" t (regexp "[Cc]orollary" "[Cc]or\\.") -3)
-                    ("exercise"    ?g "ex:"   "~\\ref{%s}" nil (regexp "[Ex]ercise" "[Ee]x.") -3)
-                    ("equation"  ?e "eq:" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
-                    ("eqnarray"  ?e "eq:" nil eqnarray-like)))
-    (setq-local reftex-label-alist
-                '(("theorem" ?h "thm:%f-" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
-                  ("lemma"   ?l "lem:%f-" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
-                  ("proposition" ?p "prop:%f-" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
-                  ("remark"      ?r "rmk:%f-"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
-                  ("definition"  ?d "def:%f-"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
-                  ("corollary"   ?c "cor:%f-"  "~\\ref{%s}" nil (regexp "[Cc]orollary" "[Cc]or\\.") -3)
-                  ("exercise"    ?g "ex:"   "~\\ref{%s}" nil (regexp "[Ex]ercise" "[Ee]x.") -3)
-                  ("equation"  ?e "eq:%f-" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
-                  ("eqnarray"  ?e "eq:%f-" nil eqnarray-like)))))
+(setq-default reftex-label-alist
+              '(("theorem" ?h "thm:" "~\\ref{%s}" nil (regexp "[Tt]heorem" "[Tt]h\\.") -3)
+                ("lemma"   ?l "lem:" "~\\ref{%s}" nil (regexp "[Ll]emma"   "[Ll]m\\.") -3)
+                ("proposition" ?p "prop:" "~\\ref{%s}" nil (regexp "[Pp]roposition" "[Pp]rop\\.") -3)
+                ("remark"      ?r "rmk:"  "~\\ref{%s}" nil (regexp "[Rr]emark" "[Rr]mk\\.") -3)
+                ("definition"  ?d "def:"  "~\\ref{%s}" nil (regexp "[Dd]efinition" "[Dd]ef\\.") -3)
+                ("corollary"   ?c "cor:"  "~\\ref{%s}" t (regexp "[Cc]orollary" "[Cc]or\\.") -3)
+                ("exercise"    ?g "ex:"   "~\\ref{%s}" nil (regexp "[Ex]ercise" "[Ee]x.") -3)
+                ("equation"  ?e "eq:" "~\\eqref{%s}" t (regexp "equations?" "eqs?\\." "eqn\\." "Gleichung\\(en\\)?"  "Gl\\."))
+                ("eqnarray"  ?e "eq:" nil eqnarray-like)))
 
 (defvar zenith/label-kinds
   (rx (or "thm:" "lem:" "prop:" "rmk:" "def:" "cor:" "eq:" "ex:")))
@@ -648,7 +633,6 @@
   ;; Set up environment for LaTeX
   (LaTeX-add-environments
    '("tikzcd" LaTeX-env-label))
-  (zenith/reftex-label-alist-toggle t)
   (setq TeX-command-default "LatexMk"))
 
 ;; tell emacs how to parse tex files
